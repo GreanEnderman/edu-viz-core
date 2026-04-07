@@ -1,6 +1,8 @@
 import { useRef, useEffect, createContext, useContext, type ComponentPropsWithoutRef } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
+import remarkMath from 'remark-math'
+import rehypeKatex from 'rehype-katex'
 import { useTypewriter } from '../../hooks/useTypewriter'
 import { MermaidDiagram } from './MermaidDiagram'
 
@@ -63,14 +65,16 @@ export function TextBubble({ content, isStreaming, role }: TextBubbleProps) {
     <div className="space-y-10 mb-16" ref={containerRef}>
       {headline ? (
         <div className="text-center space-y-4">
-          <h3 className="font-serif text-3xl text-primary leading-relaxed">{headline}</h3>
+          <h3 className="font-serif text-3xl text-primary leading-relaxed">
+                <ReactMarkdown remarkPlugins={[remarkMath]} rehypePlugins={[rehypeKatex]}>{headline}</ReactMarkdown>
+              </h3>
           <div className="h-[1px] w-24 bg-secondary-fixed-dim mx-auto opacity-30" />
         </div>
       ) : null}
       <div className="font-serif text-on-surface-variant leading-relaxed text-lg space-y-6 max-w-3xl mx-auto">
         <StreamingContext.Provider value={isStreaming}>
           <div className="prose prose-lg max-w-none text-left prose-headings:font-serif prose-headings:text-primary prose-p:text-on-surface-variant prose-strong:text-primary prose-p:font-serif">
-            <ReactMarkdown remarkPlugins={[remarkGfm]} components={{ code: CodeBlock, pre: PreBlock }}>{bodyContent}</ReactMarkdown>
+            <ReactMarkdown remarkPlugins={[remarkGfm, remarkMath]} rehypePlugins={[rehypeKatex]} components={{ code: CodeBlock, pre: PreBlock }}>{bodyContent}</ReactMarkdown>
           </div>
         </StreamingContext.Provider>
         {isStreaming && (

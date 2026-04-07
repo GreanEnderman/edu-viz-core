@@ -240,3 +240,21 @@ body {
   color: var(--color-outline);
   font-size: 0.875rem;
 }
+
+/* KaTeX 公式样式 — 匹配设计系统 */
+.katex {
+  color: var(--color-on-surface-variant);
+  font-size: 1.05em;
+}
+
+.katex-display {
+  margin: 1.5rem 0;
+  text-align: center;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.5rem 0;
+}
+
+.katex-display > .katex {
+  color: var(--color-on-surface-variant);
+}

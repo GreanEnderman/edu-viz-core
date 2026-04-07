@@ -12,11 +12,14 @@
   "dependencies": {
     "@a2ui/react": "file:../vendor/A2UI-main/renderers/react",
     "@tailwindcss/typography": "^0.5.19",
+    "katex": "^0.16.45",
     "mermaid": "^11.13.0",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "react-markdown": "^10.1.0",
+    "rehype-katex": "^7.0.1",
     "remark-gfm": "^4.0.1",
+    "remark-math": "^6.0.0",
     "zustand": "^5.0.12"
   },
   "devDependencies": {

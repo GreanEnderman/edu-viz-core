@@ -7,6 +7,55 @@ export interface UseTypewriterOptions {
   minCharDelay?: number
 }
 
+/**
+ * 检测 startIndex 处是否开始一个完整的数学公式块。
+ * 返回闭合定界符之后的索引，或 null（不完整/非公式）。
+ *
+ * 支持 $$...$$（块级）和 $...$（行内）。
+ * 行内 $ 的启发式：开头后不能是空白/$，闭合 $ 前不能是空白。
+ */
+function findMathBlockEnd(text: string, startIndex: number): number | null {
+  if (startIndex >= text.length) return null
+
+  // 块级公式 $$...$$
+  if (text[startIndex] === '$' && text[startIndex + 1] === '$') {
+    const closeIdx = text.indexOf('$$', startIndex + 2)
+    return closeIdx !== -1 ? closeIdx + 2 : null
+  }
+
+  // 行内公式 $...$
+  if (text[startIndex] === '$') {
+    const nextChar = text[startIndex + 1]
+    if (nextChar === undefined || nextChar === '$' || nextChar === ' ' || nextChar === '\n' || nextChar === '\r') {
+      return null
+    }
+
+    let searchIdx = startIndex + 1
+    while (searchIdx < text.length) {
+      const found = text.indexOf('$', searchIdx)
+      if (found === -1) return null
+
+      // 跳过 $$ 的一部分
+      if (text[found + 1] === '$') {
+        searchIdx = found + 2
+        continue
+      }
+
+      // 闭合 $ 前不能是空白
+      const charBefore = text[found - 1]
+      if (charBefore === ' ' || charBefore === '\n' || charBefore === '\r') {
+        searchIdx = found + 1
+        continue
+      }
+
+      return found + 1
+    }
+    return null
+  }
+
+  return null
+}
+
 export function useTypewriter(
   content: string,
   isStreaming: boolean,
@@ -62,9 +111,15 @@ export function useTypewriter(
         }
 
         if (timestamp - lastTickRef.current >= delay) {
-          // 大积压时每次推进多个字符
-          const advance = backlog > 100 ? Math.min(3, backlog) : 1
-          indexRef.current = Math.min(indexRef.current + advance, currentContent.length)
+          // 公式感知：完整公式块一次性跳过
+          const mathEnd = findMathBlockEnd(currentContent, indexRef.current)
+          if (mathEnd !== null) {
+            indexRef.current = mathEnd
+          } else {
+            // 大积压时每次推进多个字符
+            const advance = backlog > 100 ? Math.min(3, backlog) : 1
+            indexRef.current = Math.min(indexRef.current + advance, currentContent.length)
+          }
           setDisplayedIndex(indexRef.current)
           lastTickRef.current = timestamp
         }
