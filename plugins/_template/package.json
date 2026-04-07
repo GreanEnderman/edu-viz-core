@@ -1,0 +1,20 @@
+{
+  "name": "plugin-<plugin-id>",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite build --watch"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "@vitejs/plugin-react": "^4.3.4",
+    "react": "^19.0.0",
+    "typescript": "^5.7.2",
+    "vite": "^6.0.5"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0"
+  }
+}

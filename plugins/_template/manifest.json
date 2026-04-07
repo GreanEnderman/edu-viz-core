@@ -1,0 +1,12 @@
+{
+  "id": "<plugin-id>",
+  "version": "1.0.0",
+  "subject": "<subject>",
+  "name": "<插件名称>",
+  "keywords": [],
+  "entry": {
+    "js": "dist/index.esm.js",
+    "vector_db": "knowledge/vector.db"
+  },
+  "capabilities": []
+}

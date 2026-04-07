@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+
+<html class="light" lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Insight AI - 洞察的建构</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "inverse-primary": "#b9c6ed",
+              "on-secondary": "#ffffff",
+              "inverse-surface": "#2f312e",
+              "on-error": "#ffffff",
+              "surface-container": "#efeeea",
+              "on-primary-fixed-variant": "#394667",
+              "on-surface-variant": "#45464e",
+              "surface": "#faf9f5",
+              "inverse-on-surface": "#f2f1ed",
+              "primary-fixed": "#d9e2ff",
+              "primary": "#182544",
+              "tertiary-fixed-dim": "#dfc389",
+              "tertiary-container": "#4b390b",
+              "secondary-container": "#fed488",
+              "on-secondary-fixed": "#261900",
+              "background": "#faf9f5",
+              "on-secondary-fixed-variant": "#5d4201",
+              "on-tertiary": "#ffffff",
+              "outline": "#75777e",
+              "secondary-fixed-dim": "#e9c176",
+              "surface-dim": "#dbdad6",
+              "primary-fixed-dim": "#b9c6ed",
+              "on-primary-container": "#98a5cb",
+              "surface-tint": "#515e80",
+              "secondary": "#775a19",
+              "on-secondary-container": "#785a1a",
+              "surface-bright": "#faf9f5",
+              "tertiary-fixed": "#fddfa2",
+              "on-primary-fixed": "#0c1a39",
+              "on-background": "#1b1c1a",
+              "tertiary": "#322400",
+              "on-tertiary-container": "#bda36b",
+              "error": "#ba1a1a",
+              "outline-variant": "#c5c6cf",
+              "primary-container": "#2e3b5b",
+              "on-tertiary-fixed": "#251a00",
+              "secondary-fixed": "#ffdea5",
+              "surface-container-high": "#e9e8e4",
+              "on-surface": "#1b1c1a",
+              "surface-container-low": "#f4f4f0",
+              "error-container": "#ffdad6",
+              "surface-container-highest": "#e3e2df",
+              "surface-container-lowest": "#ffffff",
+              "on-primary": "#ffffff",
+              "on-tertiary-fixed-variant": "#574416",
+              "on-error-container": "#93000a",
+              "surface-variant": "#e3e2df"
+            },
+            fontFamily: {
+              "headline": ["'Noto Serif SC'", "serif"],
+              "body": ["'Noto Serif SC'", "serif"],
+              "label": ["'Noto Serif SC'", "serif"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        vertical-align: middle;
+      }
+      .glass-panel {
+        background: rgba(250, 249, 245, 0.4);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+      }
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      
+      .sidebar-hidden {
+        transform: translateX(-100%);
+        width: 0 !important;
+        opacity: 0;
+        pointer-events: none;
+        margin-right: 0 !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+      }
+      .sidebar-right-hidden {
+        transform: translateX(100%);
+        width: 0 !important;
+        opacity: 0;
+        pointer-events: none;
+      }
+      #library-sidebar:not(.sidebar-hidden) {
+        width: 18rem;
+      }
+      /* Improved Chinese Typography */
+      body {
+        line-height: 1.8;
+      }
+      p {
+        margin-bottom: 1.5em;
+      }
+
+      /* Cold Start Transitions */
+      #welcome-header,
+      #chat-history,
+      header,
+      aside {
+        opacity: 0;
+        transition: opacity 0.5s ease-in-out;
+        transition-delay: 0.2s;
+      }
+
+      body.chat-active #welcome-header,
+      body.chat-active #chat-history,
+      body.chat-active header {
+        opacity: 1;
+      }
+
+      #footer-input-container {
+        position: absolute;
+        width: 100%;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 50;
+      }
+
+      body.chat-active #footer-input-container {
+        top: calc(100% - 100px);
+      }
+
+      #initial-welcome-title {
+        transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
+      }
+
+      body.chat-active #initial-welcome-title {
+        opacity: 0;
+        transform: translateY(-20px);
+        pointer-events: none;
+      }
+
+      /* Hidden by default in cold start */
+      #library-sidebar.sidebar-hidden {
+        opacity: 0;
+      }
+      body.chat-active #library-sidebar:not(.sidebar-hidden) {
+        opacity: 1;
+      }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body selection:bg-secondary-fixed selection:text-on-secondary-fixed overflow-hidden">
+<div class="fixed inset-0 pointer-events-none z-0 overflow-hidden opacity-20">
+<svg class="absolute top-0 right-0 w-full h-full" viewbox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
+<path d="M-100,200 C150,150 300,450 600,350 S850,50 1100,100" fill="none" stroke="#e9c176" stroke-width="0.3"></path>
+<path d="M-50,800 C200,750 400,950 700,800 S950,550 1150,600" fill="none" stroke="#775a19" stroke-width="0.2"></path>
+<path d="M200,-50 C250,200 50,400 200,700 S450,950 400,1150" fill="none" opacity="0.3" stroke="#182544" stroke-width="0.1"></path>
+</svg>
+</div>
+<!-- Initial State Overlay Title -->
+<div class="fixed inset-0 flex items-center justify-center pointer-events-none z-40 pb-48" id="initial-welcome-title">
+<h3 class="font-headline text-4xl text-primary leading-relaxed">欢迎来到您的思想殿堂。</h3>
+</div>
+<div class="flex h-screen overflow-hidden relative z-10">
+<!-- Left Sidebar -->
+<aside class="sidebar-hidden flex flex-col py-8 bg-surface-container-low transition-all duration-500 ease-in-out border-r border-outline-variant/10 px-6 relative shrink-0 overflow-hidden" id="library-sidebar">
+<button class="absolute top-10 w-10 h-10 rounded-full border flex items-center justify-center shadow-lg hover:bg-white/90 transition-all duration-300 group bg-white/70 backdrop-blur-md border-outline-variant/40 -right-5 z-[101]" id="sidebar-collapse-btn" onclick="document.getElementById('library-sidebar').classList.add('sidebar-hidden')">
+<span class="material-symbols-outlined text-secondary text-xl group-hover:scale-110 transition-transform">chevron_left</span>
+</button>
+<div class="mb-8 min-w-[15rem]">
+<h1 class="font-headline text-xl text-[#182544] font-bold">藏书阁</h1>
+<p class="font-body font-medium text-xs tracking-[0.3em] uppercase opacity-50 mt-1">思想之源</p>
+</div>
+<button class="flex items-center justify-center gap-2 w-full py-4 glass-panel rounded-full border border-outline-variant/10 shadow-sm mb-6 min-w-[15rem]">
+<span class="material-symbols-outlined text-secondary">add</span>
+<span class="font-body font-bold text-sm text-[#182544]">开启新思</span>
+</button>
+<nav class="flex-1 space-y-1 min-w-[15rem]">
+<div class="flex items-center gap-3 px-4 py-3 text-[#182544] font-bold bg-white rounded-lg cursor-pointer">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">chat_bubble</span>
+<span class="font-body font-medium text-sm">谈话室</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 text-on-surface-variant/60 hover:bg-white/50 rounded-lg cursor-pointer transition-colors">
+<span class="material-symbols-outlined">history</span>
+<span class="font-body font-medium text-sm">回响</span>
+</div>
+</nav>
+</aside>
+<!-- Central Conversation Area -->
+<main class="flex-1 flex flex-col h-full relative transition-all duration-500 overflow-hidden">
+<header class="w-full max-w-5xl mx-auto flex justify-between items-center px-8 md:px-16 h-24 z-10 shrink-0">
+<button class="group flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors" onclick="document.getElementById('library-sidebar').classList.remove('sidebar-hidden')">
+<span class="material-symbols-outlined">menu</span>
+<span class="text-[10px] font-bold uppercase tracking-[0.2em] opacity-0 group-hover:opacity-100 transition-opacity">开启藏书阁</span>
+</button>
+<div class="text-center">
+<h2 class="font-headline text-2xl tracking-tight text-primary opacity-80">洞察的建构</h2>
+</div>
+<div class="flex items-center gap-6">
+<button class="flex items-center gap-2 text-secondary group" onclick="document.getElementById('synthesis-sidebar').classList.remove('sidebar-right-hidden')">
+<span class="text-[10px] font-bold uppercase tracking-[0.2em] opacity-0 group-hover:opacity-100 transition-opacity">综合思考</span>
+<span class="material-symbols-outlined">auto_awesome</span>
+</button>
+</div>
+</header>
+<section class="flex-1 overflow-y-auto no-scrollbar px-8 md:px-16 pb-32">
+<div class="max-w-4xl mx-auto w-full space-y-16 pt-4">
+<!-- Welcome Section -->
+<div class="flex flex-col items-center text-center space-y-6" id="welcome-header">
+<div class="w-12 h-12 rounded-full border border-secondary/20 flex items-center justify-center opacity-40">
+<span class="material-symbols-outlined text-secondary text-xl" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+</div>
+<div class="space-y-6">
+<h3 class="font-headline text-3xl text-primary leading-relaxed">欢迎来到您的思想殿堂。</h3>
+<div class="font-body text-on-surface-variant/80 leading-relaxed text-lg max-w-2xl mx-auto space-y-4">
+<p>今天，我们应当如何跨越信息与智慧之间的鸿沟？我已经为您整理了关于<span class="text-secondary font-medium underline underline-offset-4 decoration-secondary/30 cursor-pointer">存在现象学</span>的上次研讨摘要。</p>
+</div>
+</div>
+</div>
+<!-- Chat Container for Dynamic Insertion -->
+<div class="space-y-16" id="chat-history">
+<!-- User Question -->
+<div class="max-w-3xl mx-auto w-full" id="dynamic-user-message" style="display: none;">
+<div class="border-l-2 border-secondary/20 pl-8 py-2">
+<p class="font-body text-primary/70 text-lg leading-relaxed italic" id="inserted-message-text"></p>
+</div>
+</div>
+<!-- Original Content (Static for Demo) -->
+<div class="max-w-3xl mx-auto w-full">
+<div class="border-l-2 border-secondary/20 pl-8 py-2">
+<p class="font-body text-primary/70 text-lg leading-relaxed italic">
+                                    我想更深入地探讨海德格尔关于“促迫”（Enframing）的概念。它与我们现代与人工智能的交互有何关联？
+                                </p>
+</div>
+</div>
+<!-- AI Response -->
+<div class="space-y-10">
+<div class="text-center space-y-4">
+<h3 class="font-headline text-3xl text-primary leading-relaxed">集置：作为“常备军”的人工智能</h3>
+<div class="h-[1px] w-24 bg-secondary-fixed-dim mx-auto opacity-30"></div>
+</div>
+<div class="font-body text-on-surface-variant leading-relaxed text-lg space-y-6 text-center max-w-3xl mx-auto">
+<p>海德格尔的<span class="font-bold">促迫</span>（Gestell）概念指出，现代技术不仅仅是一套工具，而是一种揭示世界的方式。在这种方式下，万物——包括人类本身——都沦为了为了优化而存在的“常备军”。</p>
+<p>在 AI 的语境下，我们或许可以问：算法是在照亮真理，还是仅仅为了迎合预设的结果而重新排列数据？</p>
+</div>
+<div class="max-w-2xl mx-auto py-12 border-y border-outline-variant/10">
+<p class="font-headline text-2xl text-secondary text-center font-light leading-relaxed px-4">
+                                    “技术并不等同于技术的本质。当我们仅将其视为工具时，便无法察觉它构建我们生存状态的力量。”
+                                </p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Input Footer -->
+<footer id="footer-input-container">
+<div class="px-8 md:px-16 pb-12 pt-6 bg-gradient-to-t from-background via-background/95 to-transparent">
+<div class="max-w-3xl mx-auto relative group">
+<div class="absolute -inset-4 bg-secondary/5 blur-2xl rounded-full opacity-0 group-focus-within:opacity-100 transition-opacity pointer-events-none"></div>
+<div class="flex items-center gap-6 relative z-10 border-b border-outline-variant/30 focus-within:border-secondary/40 transition-colors py-4 px-2">
+<span class="material-symbols-outlined text-on-surface-variant/40">attachment</span>
+<input class="flex-1 bg-transparent border-none focus:ring-0 placeholder:text-on-surface-variant/30 font-body text-xl italic" id="main-chat-input" placeholder="向虚空提出一个问题..." type="text"/>
+<button class="text-on-surface-variant/40 hover:text-primary transition-colors" id="send-button">
+<span class="material-symbols-outlined">arrow_upward</span>
+</button>
+</div>
+</div>
+</div>
+</footer>
+</main>
+<!-- Right Sidebar -->
+<aside class="sidebar-right-hidden fixed right-0 top-0 h-full w-96 bg-surface-container-low border-l border-outline-variant/10 p-8 flex flex-col gap-8 z-50 transition-all duration-500 ease-in-out shadow-2xl" id="synthesis-sidebar">
+<div class="flex items-center justify-between">
+<h3 class="font-headline text-xl text-primary font-bold">知识综合</h3>
+<button class="material-symbols-outlined text-on-surface-variant/40 hover:text-primary" onclick="document.getElementById('synthesis-sidebar').classList.add('sidebar-right-hidden')">close</button>
+</div>
+<div class="h-64 rounded-xl bg-white border border-outline-variant/10 relative overflow-hidden">
+<img alt="概念图" class="w-full h-full object-cover opacity-10 grayscale" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC9cw5OW8XAoVwsAdz7uIPDqYnUy0HFjxGwjb1USXSv98_E77r4r3vClZuD0xEWHkjlr7O9jQ6tv5f_jhnV7J4-vyHmQ6Pk-zWIXoYG_L_Efu7A5-twzmlydha3eztqCayAXx5owANfEINCDzf02YvdxRrTD0Bq42esERVQv-KmpMnNGEJ6nrUnvpPvC_YLspsHudlBc0ZwtISp1OUsqFBdq4Aacf2aC8W6pL9xpLu68hg1ZTNhBhLzzES_JJFNgIZ5xAy545bL0Fg"/>
+<div class="absolute inset-0 flex items-center justify-center">
+<svg class="w-full h-full p-4" viewbox="0 0 200 100">
+<circle cx="100" cy="50" fill="#182544" r="6"></circle>
+<line stroke="#775a19" stroke-width="0.5" x1="100" x2="60" y1="50" y2="30"></line>
+<line stroke="#775a19" stroke-width="0.5" x1="100" x2="140" y1="50" y2="30"></line>
+<line stroke="#775a19" stroke-width="0.5" x1="100" x2="100" y1="50" y2="80"></line>
+<circle cx="60" cy="30" fill="#e9c176" r="3"></circle>
+<circle cx="140" cy="30" fill="#e9c176" r="3"></circle>
+<circle cx="100" cy="80" fill="#e9c176" r="3"></circle>
+</svg>
+</div>
+</div>
+<div class="space-y-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-sm">lightbulb</span>
+<h4 class="font-body font-bold text-[10px] uppercase tracking-widest text-on-surface-variant">启发时刻</h4>
+</div>
+<div class="space-y-3">
+<div class="p-4 bg-white rounded-lg border-l-2 border-secondary shadow-sm">
+<p class="font-body text-sm text-primary font-medium leading-relaxed italic">机器学习中的“思考”与“计算”。</p>
+</div>
+</div>
+</div>
+<div class="flex-1 flex flex-col gap-4">
+<h4 class="font-body font-bold text-[10px] uppercase tracking-widest text-on-surface-variant">基石</h4>
+<div class="grid grid-cols-2 gap-3">
+<div class="bg-primary text-surface p-4 rounded-xl flex flex-col justify-between aspect-square">
+<span class="material-symbols-outlined text-sm">book</span>
+<p class="font-headline text-xs leading-tight font-medium">《关于技术的追问》</p>
+</div>
+<div class="bg-surface-container-highest p-4 rounded-xl flex flex-col justify-between aspect-square">
+<span class="material-symbols-outlined text-primary text-sm">article</span>
+<p class="font-body font-bold text-[8px] text-primary">PDF: 作为镜像的 AI</p>
+</div>
+</div>
+</div>
+<div class="mt-auto pt-6 border-t border-outline-variant/10">
+<div class="flex justify-between text-[10px] font-bold uppercase tracking-widest text-on-surface-variant/50 mb-2">
+<span>正在生成综合报告...</span>
+<span>84%</span>
+</div>
+<div class="h-[1px] w-full bg-outline-variant/20 relative">
+<div class="absolute left-0 top-0 h-full bg-secondary w-[84%]"></div>
+</div>
+</div>
+</aside>
+</div>
+<script>
+        const input = document.getElementById('main-chat-input');
+        const sendBtn = document.getElementById('send-button');
+        const body = document.body;
+        const dynamicMsg = document.getElementById('dynamic-user-message');
+        const dynamicMsgText = document.getElementById('inserted-message-text');
+
+        function activateChat() {
+            const text = input.value.trim();
+            if (text === "" && !body.classList.contains('chat-active')) return;
+            
+            if (!body.classList.contains('chat-active')) {
+                // Set the dynamic message
+                dynamicMsgText.textContent = text;
+                dynamicMsg.style.display = 'block';
+                
+                // Trigger transition
+                body.classList.add('chat-active');
+                
+                // Optional: Clear input after a small delay to feel like "sent"
+                setTimeout(() => {
+                    input.value = "";
+                }, 400);
+            }
+        }
+
+        input.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                activateChat();
+            }
+        });
+
+        sendBtn.addEventListener('click', activateChat);
+
+        // Sidebar logic preserved
+        window.toggleSidebar = function(id) {
+            const el = document.getElementById(id);
+            if (id === 'library-sidebar') {
+                el.classList.toggle('sidebar-hidden');
+            } else {
+                el.classList.toggle('sidebar-right-hidden');
+            }
+        };
+    </script>
+</body></html>
