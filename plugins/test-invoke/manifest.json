@@ -1,0 +1,17 @@
+{
+  "id": "test-invoke",
+  "version": "1.0.0",
+  "subject": "test",
+  "name": "测试 Invoke 插件",
+  "keywords": ["test"],
+  "entry": {
+    "js": "dist/index.esm.js",
+    "python_module": "plugins.test_invoke.backend"
+  },
+  "backend": {
+    "kind": "hosted-plugin-service",
+    "capabilities": ["echo", "add"]
+  },
+  "sharedDependencies": [],
+  "capabilities": []
+}

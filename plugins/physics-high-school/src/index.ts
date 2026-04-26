@@ -1,4 +1,4 @@
-import { PhysicsOscillator } from './PhysicsOscillator'
+import PhysicsOscillator from './PhysicsOscillator'
 
 export default {
   components: {

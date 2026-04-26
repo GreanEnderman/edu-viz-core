@@ -1,0 +1,29 @@
+{
+  "name": "aha-tutor-workspace",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "packages/*",
+    "plugins/*"
+  ],
+  "scripts": {
+    "build:plugins": "npm run build --workspace plugin-template --workspace plugin-chemistry-molecule-3d --workspace plugin-chemistry-orbital-3d --workspace plugin-physics-high-school",
+    "typecheck:plugins": "npm run typecheck --workspace plugin-template --workspace plugin-chemistry-molecule-3d --workspace plugin-chemistry-orbital-3d --workspace plugin-physics-high-school"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.1",
+    "typescript": "~5.9.3",
+    "vite": "^8.0.1"
+  },
+  "overrides": {
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.1",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "typescript": "~5.9.3",
+    "vite": "^8.0.1"
+  }
+}

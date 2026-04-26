@@ -6,6 +6,12 @@ from pydantic import BaseModel
 class PluginEntry(BaseModel):
     js: str
     vector_db: str | None = None
+    python_module: str | None = None
+
+
+class PluginBackend(BaseModel):
+    kind: str
+    capabilities: list[str] = []
 
 
 class Capability(BaseModel):
@@ -26,4 +32,6 @@ class PluginManifest(BaseModel):
     name: str
     keywords: list[str]
     entry: PluginEntry
+    backend: PluginBackend | None = None
+    sharedDependencies: list[str] = []
     capabilities: list[Capability]

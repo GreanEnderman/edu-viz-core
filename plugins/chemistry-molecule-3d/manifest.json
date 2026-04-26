@@ -5,8 +5,14 @@
   "name": "3D分子可视化插件",
   "keywords": ["分子", "3D", "结构", "化学键", "SMILES", "分子式", "球棍模型", "空间填充"],
   "entry": {
-    "js": "dist/index.esm.js"
+    "js": "dist/index.esm.js",
+    "python_module": "plugins.chemistry_molecule_3d.backend"
   },
+  "backend": {
+    "kind": "hosted-plugin-service",
+    "capabilities": ["parse_structure", "get_info", "validate"]
+  },
+  "sharedDependencies": ["react", "react-dom", "@a2ui/react"],
   "capabilities": [
     {
       "component_id": "MoleculeDisplay",
@@ -17,9 +23,19 @@
           "type": "string",
           "default": "",
           "description": "分子的 SMILES 表示，如 'CCO'(乙醇)、'O'(水)、'c1ccccc1'(苯)"
+        },
+        "moleculeData": {
+          "type": "object",
+          "default": null,
+          "description": "由插件后端生成的分子结构数据（atoms, bonds, formula 等）。宿主应先调用后端 parse_structure action，将结果注入此属性。"
+        },
+        "displayMode": {
+          "type": "string",
+          "default": "ball-stick",
+          "description": "展示模式：'ball-stick'(球棍模型) 或 'space-filling'(空间填充)"
         }
       },
-      "a2ui_hint": "MoleculeDisplay 组件已内置样式切换按钮（球棍模型/空间填充）和重置视图按钮，不需要额外生成按钮控件。只需通过 properties 传入 SMILES 字符串即可。组件会自动展示分子式、分子量、原子数等信息。",
+      "a2ui_hint": "适合展示单个分子的三维结构。若需要真实结构数据，应先通过插件后端 parse_structure action 生成，将结果通过 moleculeData 属性注入组件。组件内部已支持鼠标拖动旋转和滚轮缩放，不需要额外生成这些控制按钮。LLM 只需传入 SMILES 或 moleculeData 即可。",
       "expresses": ["3D分子结构", "球棍模型与空间填充模型", "分子式和分子量信息", "原子和化学键的空间排布"],
       "educational_use": "帮助学生直观理解分子的三维空间结构，观察原子间的化学键连接方式，比较不同分子的结构特征",
       "cannot_express": ["化学反应过程动画", "电子轨道", "分子间作用力", "晶体结构"]

@@ -250,10 +250,19 @@ def build_system_prompt(
         "{plugin_components_section}", plugin_section
     )
 
+    plugin_runtime_rules = """\
+## Plugin Runtime Rules
+- Treat plugin components as host platform extensions, not standalone apps.
+- The host provides react, react-dom, and @a2ui/react as shared runtime dependencies.
+- Do not describe plugin components as if they own their own app shell, routing, or dependency runtime.
+- When plugin capabilities mention built-in controls, prefer passing initial properties only and avoid generating duplicate A2UI controls around them.
+"""
+
     parts = [
         _A2UI_OUTPUT_RULES,
         _MERMAID_RULES,
         _VISUALIZATION_DECISION_RULES,
+        plugin_runtime_rules,
         capability_table,
         f"\n可用组件：{', '.join(available_components)}\n",
         _COMPONENT_EXAMPLES,

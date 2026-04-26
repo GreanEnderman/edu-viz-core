@@ -1,0 +1,32 @@
+{
+  "hash": "5e1c61a4",
+  "configHash": "8ad588ed",
+  "lockfileHash": "4abf77ff",
+  "browserHash": "fe8de744",
+  "optimized": {
+    "react-dom/client": {
+      "src": "../../../../node_modules/react-dom/client.js",
+      "file": "react-dom_client.js",
+      "fileHash": "0fc96e42",
+      "needsInterop": true
+    },
+    "react": {
+      "src": "../../../../node_modules/react/index.js",
+      "file": "react.js",
+      "fileHash": "cb16c3d2",
+      "needsInterop": true
+    },
+    "react/jsx-dev-runtime": {
+      "src": "../../../../node_modules/react/jsx-dev-runtime.js",
+      "file": "react_jsx-dev-runtime.js",
+      "fileHash": "16fe6728",
+      "needsInterop": true
+    }
+  },
+  "chunks": {
+    "react-nLLpGeQP": {
+      "file": "react-nLLpGeQP.js",
+      "isDynamicEntry": false
+    }
+  }
+}

@@ -5,16 +5,15 @@
   "type": "module",
   "scripts": {
     "build": "vite build",
-    "dev": "vite build --watch"
+    "dev": "vite build --watch",
+    "typecheck": "tsc -p tsconfig.json"
   },
   "devDependencies": {
-    "@types/react": "^19.0.0",
-    "@vitejs/plugin-react": "^4.3.4",
-    "react": "^19.0.0",
-    "typescript": "^5.7.2",
-    "vite": "^6.0.5"
+    "@aha/plugin-runtime": "file:../../packages/plugin-runtime"
   },
   "peerDependencies": {
-    "react": "^19.0.0"
+    "@a2ui/react": "*",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
   }
 }

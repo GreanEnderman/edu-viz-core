@@ -8,56 +8,103 @@
     body { margin: 0; padding: 24px; background: #f0f0f0; font-family: sans-serif; }
     #root { max-width: 480px; margin: 0 auto; }
     h2 { color: #333; margin-bottom: 8px; }
-    .controls { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+    .controls { display: flex; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
     .controls button {
       padding: 8px 14px; border: 1px solid #ccc; border-radius: 6px;
       background: #fff; cursor: pointer; font-size: 14px;
     }
     .controls button:hover { background: #e8e8e8; }
-    .status { font-size: 13px; color: #888; margin-bottom: 16px; }
+    .status { font-size: 13px; color: #888; margin-bottom: 8px; }
+    .input-row { display: flex; gap: 8px; margin-bottom: 16px; }
+    .input-row input {
+      flex: 1; padding: 8px 12px; border: 1px solid #ccc; border-radius: 6px;
+      font-size: 14px;
+    }
+    .input-row button {
+      padding: 8px 16px; background: #182544; color: #fff; border: none;
+      border-radius: 6px; cursor: pointer; font-size: 14px;
+    }
+    .input-row button:hover { background: #243355; }
+    .input-row button:disabled { opacity: 0.5; cursor: not-allowed; }
+    .error-msg { color: #ef4444; font-size: 13px; margin-bottom: 8px; }
   </style>
 </head>
 <body>
   <div id="root">
     <h2>MoleculeDisplay 插件测试</h2>
-    <div class="status" id="status">点击下方按钮测试不同分子</div>
+    <div class="status" id="status">点击预设按钮或输入 SMILES 测试</div>
     <div class="controls">
-      <button onclick="showMolecule('CCO', '乙醇')">乙醇 CCO</button>
-      <button onclick="showMolecule('O', '水')">水 O</button>
-      <button onclick="showMolecule('c1ccccc1', '苯')">苯</button>
-      <button onclick="showMolecule('CC(=O)O', '乙酸')">乙酸</button>
-      <button onclick="showMolecule('CC(=O)OC', '乙酸甲酯')">乙酸甲酯</button>
-      <button onclick="showMolecule('C1CCCCC1', '环己烷')">环己烷</button>
+      <button onclick="showMolecule('water', '水')">水 H₂O</button>
+      <button onclick="showMolecule('ethanol', '乙醇')">乙醇 C₂H₅OH</button>
+      <button onclick="showMolecule('benzene', '苯')">苯 C₆H₆</button>
+      <button onclick="showMolecule('co2', '二氧化碳')">CO₂</button>
+      <button onclick="showMolecule('methane', '甲烷')">甲烷 CH₄</button>
     </div>
+    <div class="input-row">
+      <input id="smilesInput" placeholder="输入 SMILES，如 CCO、c1ccccc1、O" />
+      <button id="searchBtn" onclick="searchSMILES()">解析</button>
+    </div>
+    <div id="errorMsg" class="error-msg"></div>
     <div id="component-mount"></div>
   </div>
 
   <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://3dmol.org/build/3Dmol-min.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
   <script type="text/babel">
-    function parseStr(val, fallback) {
-      return typeof val === 'string' ? val : fallback
-    }
-
-    function loadScript(src) {
-      return new Promise((resolve, reject) => {
-        if (document.querySelector(`script[src="${src}"]`)) { resolve(); return }
-        const s = document.createElement('script')
-        s.src = src
-        s.onload = () => resolve()
-        s.onerror = () => reject(new Error('Failed to load ' + src))
-        document.head.appendChild(s)
-      })
-    }
-
     const API_BASE = 'http://localhost:8001'
-    const THREE_DMOL_CDN = 'https://3dmol.org/build/3Dmol-min.js'
+
+    function buildSDF(data) {
+      const atomLines = data.atoms.map(a =>
+        `${a.x.toFixed(4).padStart(10)}${a.y.toFixed(4).padStart(10)}${a.z.toFixed(4).padStart(10)} ${a.element.padEnd(3)} 0  0  0  0  0  0  0  0  0  0 0 0`
+      )
+      const bondLines = data.bonds.map(b =>
+        `${(b.atom1+1).toString().padStart(3)}${(b.atom2+1).toString().padStart(3)}${b.order}  0  0 0`
+      )
+      const nA=data.atoms.length, nB=data.bonds.length
+      let sdf='\n     RDKit          3D\n\n'
+      sdf+=`${nA.toString().padStart(3)}${nB.toString().padStart(3)}  0  0  0  0  0  0  0  1 V2000\n`
+      atomLines.forEach(l=>sdf+=l+'\n')
+      bondLines.forEach(l=>sdf+=l+'\n')
+      sdf+='M  END\n$$$$\n'
+      return sdf
+    }
+
+    // Pre-built molecules (fallback when server is not running)
+    const MOLECULES = {
+      water: {
+        atoms:[{element:'O',x:0,y:0,z:0.1173,index:0},{element:'H',x:0.7572,y:0,z:-0.4692,index:1},{element:'H',x:-0.7572,y:0,z:-0.4692,index:2}],
+        bonds:[{atom1:0,atom2:1,order:1},{atom1:0,atom2:2,order:1}],
+        formula:'O',molecular_weight:18.0153,num_atoms:3,num_bonds:2,
+      },
+      ethanol: {
+        atoms:[{element:'C',x:-0.75,y:0,z:0,index:0},{element:'C',x:0.75,y:0,z:0,index:1},{element:'O',x:1.15,y:1.04,z:0,index:2},{element:'H',x:-1.15,y:-0.52,z:0.89,index:3},{element:'H',x:-1.15,y:-0.52,z:-0.89,index:4},{element:'H',x:-1.15,y:1.04,z:0,index:5},{element:'H',x:1.15,y:-0.52,z:0.89,index:6},{element:'H',x:1.15,y:-0.52,z:-0.89,index:7},{element:'H',x:2.07,y:1.30,z:0,index:8}],
+        bonds:[{atom1:0,atom2:1,order:1},{atom1:1,atom2:2,order:1},{atom1:0,atom2:3,order:1},{atom1:0,atom2:4,order:1},{atom1:0,atom2:5,order:1},{atom1:1,atom2:6,order:1},{atom1:1,atom2:7,order:1},{atom1:2,atom2:8,order:1}],
+        formula:'CCO',molecular_weight:46.0684,num_atoms:9,num_bonds:8,
+      },
+      benzene: {
+        atoms:[{element:'C',x:1.40,y:0,z:0,index:0},{element:'C',x:0.70,y:1.21,z:0,index:1},{element:'C',x:-0.70,y:1.21,z:0,index:2},{element:'C',x:-1.40,y:0,z:0,index:3},{element:'C',x:-0.70,y:-1.21,z:0,index:4},{element:'C',x:0.70,y:-1.21,z:0,index:5},{element:'H',x:2.48,y:0,z:0,index:6},{element:'H',x:1.24,y:2.15,z:0,index:7},{element:'H',x:-1.24,y:2.15,z:0,index:8},{element:'H',x:-2.48,y:0,z:0,index:9},{element:'H',x:-1.24,y:-2.15,z:0,index:10},{element:'H',x:1.24,y:-2.15,z:0,index:11}],
+        bonds:[{atom1:0,atom2:1,order:1},{atom1:1,atom2:2,order:2},{atom1:2,atom2:3,order:1},{atom1:3,atom2:4,order:2},{atom1:4,atom2:5,order:1},{atom1:5,atom2:0,order:2},{atom1:0,atom2:6,order:1},{atom1:1,atom2:7,order:1},{atom1:2,atom2:8,order:1},{atom1:3,atom2:9,order:1},{atom1:4,atom2:10,order:1},{atom1:5,atom2:11,order:1}],
+        formula:'c1ccccc1',molecular_weight:78.1118,num_atoms:12,num_bonds:12,
+      },
+      co2: {
+        atoms:[{element:'C',x:0,y:0,z:0,index:0},{element:'O',x:0,y:0,z:1.16,index:1},{element:'O',x:0,y:0,z:-1.16,index:2}],
+        bonds:[{atom1:0,atom2:1,order:2},{atom1:0,atom2:2,order:2}],
+        formula:'CO2',molecular_weight:44.0095,num_atoms:3,num_bonds:2,
+      },
+      methane: {
+        atoms:[{element:'C',x:0,y:0,z:0,index:0},{element:'H',x:0.629,y:0.629,z:0.629,index:1},{element:'H',x:-0.629,y:-0.629,z:0.629,index:2},{element:'H',x:-0.629,y:0.629,z:-0.629,index:3},{element:'H',x:0.629,y:-0.629,z:-0.629,index:4}],
+        bonds:[{atom1:0,atom2:1,order:1},{atom1:0,atom2:2,order:1},{atom1:0,atom2:3,order:1},{atom1:0,atom2:4,order:1}],
+        formula:'C',molecular_weight:16.0425,num_atoms:5,num_bonds:4,
+      },
+    }
 
     function MoleculeDisplay({ node }) {
       const props = node.properties || {}
-      const smiles = parseStr(props.smiles, '')
+      const smiles = typeof props.smiles === 'string' ? props.smiles : ''
+      const rawMoleculeData = props.moleculeData
 
       const containerRef = React.useRef(null)
       const viewerRef = React.useRef(null)
@@ -66,197 +113,132 @@
       const [loading, setLoading] = React.useState(false)
       const [error, setError] = React.useState('')
       const [info, setInfo] = React.useState(null)
-      const [scriptReady, setScriptReady] = React.useState(false)
 
-      // Load 3Dmol.js CDN
-      React.useEffect(() => {
-        loadScript(THREE_DMOL_CDN).then(() => setScriptReady(true))
-      }, [])
+      React.useEffect(()=>{
+        if(!containerRef.current||viewerRef.current)return
+        try{const viewer=$3Dmol.createViewer(containerRef.current,{backgroundColor:'#f8fafc'});viewer.setBackgroundColor('#f8fafc');viewerRef.current=viewer}catch(e){}
+      },[])
 
-      // Init viewer — container is always in DOM now
-      React.useEffect(() => {
-        if (!scriptReady || !containerRef.current || viewerRef.current) return
-        try {
-          const viewer = $3Dmol.createViewer(containerRef.current, { backgroundColor: '#f8fafc' })
-          viewer.setBackgroundColor('#f8fafc')
-          viewerRef.current = viewer
-        } catch (e) {
-          console.error('3Dmol init failed', e)
-        }
-      }, [scriptReady])
-
-      // Apply current style to viewer
-      const applyViewerStyle = React.useCallback((viewer, s) => {
-        if (!viewer) return
-        if (s === 'stick') {
-          viewer.setStyle({}, { sphere: { scale: 0.25, colorscheme: 'Jmol' }, stick: { radius: 0.12, colorscheme: 'Jmol' } })
-        } else {
-          viewer.setStyle({}, { sphere: { scale: 0.8, colorscheme: 'Jmol' } })
-        }
+      const applyStyle = React.useCallback((s)=>{
+        const viewer=viewerRef.current;if(!viewer)return
+        if(s==='stick'){viewer.setStyle({},{sphere:{scale:0.25,colorscheme:'Jmol'},stick:{radius:0.12,colorscheme:'Jmol'}})}
+        else{viewer.setStyle({},{sphere:{scale:0.8,colorscheme:'Jmol'}})}
         viewer.render()
-      }, [])
+      },[])
 
-      // When smiles changes, fetch and render molecule
-      React.useEffect(() => {
-        if (!smiles) {
-          setCurrentSmiles('')
-          setInfo(null)
-          setError('')
+      // Load molecule from data
+      React.useEffect(()=>{
+        if(rawMoleculeData){
+          setLoading(true)
+          let attempts=0
+          const wait=()=>{
+            if(viewerRef.current){
+              const viewer=viewerRef.current;viewer.clear()
+              const sdf=buildSDF(rawMoleculeData)
+              viewer.addModel(sdf,'sdf');applyStyle(style);viewer.zoomTo();viewer.render()
+              setCurrentSmiles(smiles)
+              setInfo({formula:rawMoleculeData.formula,molecular_weight:rawMoleculeData.molecular_weight,num_atoms:rawMoleculeData.num_atoms,num_bonds:rawMoleculeData.num_bonds})
+              setLoading(false);setError('')
+            }else if(attempts<50){attempts++;setTimeout(wait,100)}
+            else{setError('Viewer init failed');setLoading(false)}
+          }
+          wait()
           return
         }
-        if (smiles === currentSmiles) return
+        if(!smiles){setCurrentSmiles('');setInfo(null);setLoading(false);setError('')}
+        else{setLoading(true);setError('')}
+      },[smiles,rawMoleculeData,style,applyStyle])
 
-        let cancelled = false
+      const handleStyleChange=(s)=>{setStyle(s);setTimeout(()=>applyStyle(s),0)}
+      const handleReset=()=>{viewerRef.current?.zoomTo()}
 
-        async function visualize() {
-          // Wait for viewer to be ready
-          let attempts = 0
-          while (!viewerRef.current && attempts < 50) {
-            await new Promise(r => setTimeout(r, 100))
-            attempts++
-          }
-          const viewer = viewerRef.current
-          if (!viewer) {
-            setError('3D viewer not initialized')
-            return
-          }
-
-          setLoading(true)
-          setError('')
-          try {
-            const parseRes = await fetch(API_BASE + '/parse', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ smiles }),
-            })
-            if (!parseRes.ok) {
-              const err = await parseRes.json()
-              throw new Error(err.detail || 'Failed to parse SMILES')
-            }
-            const result = await parseRes.json()
-            if (!result.success || !result.sdf) throw new Error('Unable to generate 3D structure')
-            if (cancelled) return
-
-            viewer.clear()
-            viewer.addModel(result.sdf, 'sdf')
-            applyViewerStyle(viewer, style)
-            viewer.zoomTo()
-            setCurrentSmiles(smiles)
-
-            try {
-              const infoRes = await fetch(API_BASE + '/info', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ smiles }),
-              })
-              if (infoRes.ok) { const moleculeInfo = await infoRes.json(); if (!cancelled) setInfo(moleculeInfo) }
-            } catch {}
-          } catch (e) {
-            if (!cancelled) setError(e.message || 'Unable to display molecule')
-          } finally {
-            setLoading(false)
-          }
-        }
-        visualize()
-        return () => { cancelled = true }
-      }, [smiles, scriptReady, style, applyViewerStyle])
-
-      const handleStyleChange = (s) => {
-        setStyle(s)
-        applyViewerStyle(viewerRef.current, s)
-      }
-
-      const handleReset = () => { viewerRef.current?.zoomTo() }
-
-      const btnBase = {
-        flex: 1, padding: '6px 8px', background: '#f1f5f9',
-        border: '1px solid #e2e8f0', borderRadius: 8, fontSize: 12,
-        fontFamily: 'Manrope, sans-serif', color: '#64748b', cursor: 'pointer',
-      }
-
-      const hasContent = currentSmiles || loading
+      const btnBase={flex:1,padding:'6px 8px',background:'#f1f5f9',border:'1px solid #e2e8f0',borderRadius:8,fontSize:12,fontFamily:'Manrope, sans-serif',color:'#64748b',cursor:'pointer'}
 
       return (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 10, background: '#faf9f5', borderRadius: 12, padding: 12, fontFamily: 'Manrope, sans-serif', color: '#1b1c1a' }}>
-          {/* 3D Canvas — always rendered so viewer can initialize */}
-          <div style={{
-            position: 'relative', height: 280, background: '#f8fafc',
-            borderRadius: 12, overflow: 'hidden',
-            visibility: hasContent ? 'visible' : 'hidden',
-            position: 'relative',
-          }}>
-            <div ref={containerRef} style={{ width: '100%', height: '100%' }} />
+        <div style={{display:'flex',flexDirection:'column',gap:10,background:'#faf9f5',borderRadius:12,padding:12,fontFamily:'Manrope, sans-serif',color:'#1b1c1a'}}>
+          {loading&&<div style={{display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',gap:12,padding:32}}>
+            <div style={{width:36,height:36,border:'3px solid #e2e8f0',borderTopColor:'#182544',borderRadius:'50%',animation:'spin 1s linear infinite'}}/>
+            <div style={{fontSize:13,color:'#64748b'}}>正在加载分子...</div>
+            <style>{`@keyframes spin{to{transform:rotate(360deg)}}`}</style>
+          </div>}
+          {error&&<div style={{padding:10,background:'rgba(239,68,68,0.1)',border:'1px solid #ef4444',borderRadius:8,fontSize:13,color:'#ef4444'}}>{error}</div>}
+          <div style={{position:'relative',height:280,background:'#f8fafc',borderRadius:12,overflow:'hidden'}}>
+            <div ref={containerRef} style={{width:'100%',height:'100%'}}/>
           </div>
-
-          {/* Loading overlay */}
-          {loading && (
-            <div style={{
-              position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
-              display: 'flex', flexDirection: 'column', alignItems: 'center',
-              justifyContent: 'center', gap: 12, background: 'rgba(248,250,252,0.9)',
-              borderRadius: 12, zIndex: 1,
-            }}>
-              <div style={{ width: 36, height: 36, border: '3px solid #e2e8f0', borderTopColor: '#182544', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
-              <div style={{ fontSize: 13, color: '#64748b' }}>正在生成分子结构...</div>
-              <style>{`@keyframes spin { to { transform: rotate(360deg) } }`}</style>
-            </div>
-          )}
-
-          {/* Empty state */}
-          {!hasContent && !error && (
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 12, padding: 48, textAlign: 'center' }}>
-              <div style={{ fontSize: 36, opacity: 0.5 }}>&#x1f52c;</div>
-              <div style={{ fontSize: 13, color: '#94a3b8' }}>等待分子数据...</div>
-            </div>
-          )}
-
-          {/* Error */}
-          {error && (
-            <div style={{ padding: 10, background: 'rgba(239,68,68,0.1)', border: '1px solid #ef4444', borderRadius: 8, fontSize: 13, color: '#ef4444' }}>{error}</div>
-          )}
-
-          {/* Molecule Info */}
-          {currentSmiles && !loading && !error && info && (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-              {[['分子式', info.formula], ['分子量', info.molecular_weight ? info.molecular_weight + ' Da' : '-'], ['原子数', String(info.num_atoms)]].map(([label, value]) => (
-                <div key={label} style={{ display: 'flex', justifyContent: 'space-between', padding: '6px 10px', background: '#f8fafc', borderRadius: 6 }}>
-                  <span style={{ fontSize: 12, color: '#64748b' }}>{label}</span>
-                  <span style={{ fontSize: 13, color: '#1e293b', fontWeight: 500, fontFamily: 'monospace' }}>{value}</span>
-                </div>
-              ))}
-            </div>
-          )}
-
-          {/* Style Controls */}
-          {currentSmiles && !loading && !error && (
-            <div style={{ display: 'flex', gap: 8 }}>
-              <button onClick={() => handleStyleChange('stick')} style={{ ...btnBase, background: style === 'stick' ? '#182544' : '#f1f5f9', borderColor: style === 'stick' ? '#182544' : '#e2e8f0', color: style === 'stick' ? '#fff' : '#64748b' }}>球棍模型</button>
-              <button onClick={() => handleStyleChange('sphere')} style={{ ...btnBase, background: style === 'sphere' ? '#182544' : '#f1f5f9', borderColor: style === 'sphere' ? '#182544' : '#e2e8f0', color: style === 'sphere' ? '#fff' : '#64748b' }}>空间填充</button>
-              <button onClick={handleReset} style={btnBase}>重置视图</button>
-            </div>
-          )}
+          {currentSmiles&&!loading&&!error&&info&&<div style={{display:'flex',flexDirection:'column',gap:6}}>
+            {[['分子式',info.formula],['分子量',info.molecular_weight?info.molecular_weight+' Da':'-'],['原子数',String(info.num_atoms)],['化学键数',String(info.num_bonds)]].map(([label,value])=>(
+              <div key={label} style={{display:'flex',justifyContent:'space-between',padding:'6px 10px',background:'#f8fafc',borderRadius:6}}>
+                <span style={{fontSize:12,color:'#64748b'}}>{label}</span>
+                <span style={{fontSize:13,color:'#1e293b',fontWeight:500,fontFamily:'monospace'}}>{value}</span>
+              </div>
+            ))}
+          </div>}
+          {currentSmiles&&!loading&&!error&&<div style={{display:'flex',gap:8}}>
+            <button onClick={()=>handleStyleChange('stick')} style={{...btnBase,background:style==='stick'?'#182544':'#f1f5f9',borderColor:style==='stick'?'#182544':'#e2e8f0',color:style==='stick'?'#fff':'#64748b'}}>球棍模型</button>
+            <button onClick={()=>handleStyleChange('sphere')} style={{...btnBase,background:style==='sphere'?'#182544':'#f1f5f9',borderColor:style==='sphere'?'#182544':'#e2e8f0',color:style==='sphere'?'#fff':'#64748b'}}>空间填充</button>
+            <button onClick={handleReset} style={btnBase}>重置视图</button>
+          </div>}
         </div>
       )
     }
 
-    // ===== 测试页面逻辑 =====
-
     let currentNode = { properties: {} }
 
-    function showMolecule(smiles, name) {
-      currentNode = { properties: { smiles } }
-      document.getElementById('status').textContent = '当前: ' + name + ' (' + smiles + ')'
+    function showMolecule(key, name) {
+      currentNode = { properties: { smiles: name, moleculeData: MOLECULES[key] } }
+      document.getElementById('status').textContent = '当前(预设): ' + name
+      document.getElementById('errorMsg').textContent = ''
       renderApp()
     }
 
-    function renderApp() {
-      ReactDOM.render(
-        React.createElement(MoleculeDisplay, { node: currentNode }),
-        document.getElementById('component-mount')
-      )
+    async function searchSMILES() {
+      const input = document.getElementById('smilesInput').value.trim()
+      if (!input) return
+
+      const btn = document.getElementById('searchBtn')
+      btn.disabled = true
+      btn.textContent = '解析中...'
+      document.getElementById('errorMsg').textContent = ''
+
+      // Try API first
+      try {
+        const res = await fetch(API_BASE + '/parse', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ smiles: input }),
+        })
+        if (res.ok) {
+          const data = await res.json()
+          if (data.success) {
+            currentNode = { properties: { smiles: input, moleculeData: data } }
+            document.getElementById('status').textContent = '当前(API): ' + input
+            document.getElementById('errorMsg').textContent = ''
+            renderApp()
+            btn.disabled = false; btn.textContent = '解析'
+            return
+          }
+        }
+      } catch (e) {
+        // API not available, try as hardcoded
+      }
+
+      // Fallback to hardcoded
+      const mol = MOLECULES[input]
+      if (mol) {
+        currentNode = { properties: { smiles: input, moleculeData: mol } }
+        document.getElementById('status').textContent = '当前(预设): ' + input
+        document.getElementById('errorMsg').textContent = ''
+        renderApp()
+      } else {
+        document.getElementById('errorMsg').textContent = '无法解析: ' + input + '（后端服务未启动且无预设数据）'
+      }
+      btn.disabled = false; btn.textContent = '解析'
     }
 
-    window.showMolecule = showMolecule
+    function renderApp() {
+      ReactDOM.render(React.createElement(MoleculeDisplay, { node: currentNode }), document.getElementById('component-mount'))
+    }
+    window.searchSMILES = searchSMILES
     renderApp()
   </script>
 </body>

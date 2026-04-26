@@ -1,5 +1,9 @@
 import { initializeDefaultCatalog, ComponentRegistry, CheckBox } from '@a2ui/react'
 import type { ComponentType } from 'react'
+import {
+  SHARED_RUNTIME_DEPENDENCIES,
+  isSharedRuntimeDependency,
+} from '../../../packages/plugin-runtime/src'
 import { buildPluginGalleryExamples } from '../gallery/pluginGalleryRegistry'
 
 export function setupDefaultCatalog(): void {
@@ -14,15 +18,26 @@ interface PluginListItem {
   id: string
   name: string
   enabled: boolean
+  sharedDependencies?: string[]
   capabilities: Array<{ component_id: string; name: string; props_schema?: Record<string, any> }>
   entry?: { js?: string }
 }
 
 type PluginComponentModule = { default: ComponentType }
+type PluginIndexModule = {
+  default?: {
+    components?: Record<string, ComponentType>
+  }
+}
 
 const pluginComponentModules = import.meta.glob<PluginComponentModule>(
   '../../../plugins/*/src/*.{ts,tsx}',
 )
+const pluginIndexModules = import.meta.glob<PluginIndexModule>(
+  '../../../plugins/*/src/index.ts',
+)
+
+const supportedSharedDependencies = new Set<string>(SHARED_RUNTIME_DEPENDENCIES)
 
 function getPluginComponentLoader(
   pluginId: string,
@@ -32,6 +47,23 @@ function getPluginComponentLoader(
   const fallbackPath = `../../../plugins/${pluginId}/src/${componentId}.ts`
 
   return pluginComponentModules[preferredPath] ?? pluginComponentModules[fallbackPath]
+}
+
+function getPluginIndexLoader(pluginId: string): (() => Promise<PluginIndexModule>) | undefined {
+  return pluginIndexModules[`../../../plugins/${pluginId}/src/index.ts`]
+}
+
+function validateSharedDependencies(plugin: PluginListItem): boolean {
+  for (const dependency of plugin.sharedDependencies ?? []) {
+    if (!supportedSharedDependencies.has(dependency) || !isSharedRuntimeDependency(dependency)) {
+      console.warn(
+        `[CatalogRegistry] Plugin '${plugin.id}' requested unsupported shared dependency '${dependency}'`,
+      )
+      return false
+    }
+  }
+
+  return true
 }
 
 /**
@@ -57,18 +89,33 @@ export async function loadPluginComponents(): Promise<void> {
   const enabled = plugins.filter((p) => p.enabled)
 
   for (const plugin of enabled) {
+    if (!validateSharedDependencies(plugin)) {
+      continue
+    }
+
+    const pluginIndexLoader = getPluginIndexLoader(plugin.id)
+    const pluginIndex = pluginIndexLoader ? await pluginIndexLoader() : undefined
+    const exportedComponents = pluginIndex?.default?.components ?? {}
     let registeredAnyCapability = false
 
     for (const cap of plugin.capabilities) {
-      const loader = getPluginComponentLoader(plugin.id, cap.component_id)
-      if (!loader) {
+      const exportedComponent = exportedComponents[cap.component_id]
+      if (exportedComponent) {
+        registry.register(cap.component_id, { component: exportedComponent as any })
+        console.info(`[CatalogRegistry] Registered plugin component: ${cap.component_id}`)
+        registeredAnyCapability = true
+        continue
+      }
+
+      const directLoader = getPluginComponentLoader(plugin.id, cap.component_id)
+      if (!directLoader) {
         console.warn(
           `[CatalogRegistry] No module for plugin '${plugin.id}' capability '${cap.component_id}'`
         )
         continue
       }
 
-      const mod = await loader()
+      const mod = await directLoader()
       const component = mod.default
       registry.register(cap.component_id, { component: component as any })
       console.info(`[CatalogRegistry] Registered plugin component: ${cap.component_id}`)
@@ -77,10 +124,15 @@ export async function loadPluginComponents(): Promise<void> {
 
     const primaryCapabilityId = plugin.capabilities[0]?.component_id
     if (registeredAnyCapability && primaryCapabilityId) {
-      const loader = getPluginComponentLoader(plugin.id, primaryCapabilityId)
-      if (loader) {
-        const mod = await loader()
-        registry.register(plugin.id, { component: mod.default as any })
+      const primaryExportedComponent = exportedComponents[primaryCapabilityId]
+      if (primaryExportedComponent) {
+        registry.register(plugin.id, { component: primaryExportedComponent as any })
+      } else {
+        const loader = getPluginComponentLoader(plugin.id, primaryCapabilityId)
+        if (loader) {
+          const mod = await loader()
+          registry.register(plugin.id, { component: mod.default as any })
+        }
       }
     } else {
       console.warn(`[CatalogRegistry] No usable component modules for plugin '${plugin.id}'`)

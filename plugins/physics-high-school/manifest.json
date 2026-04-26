@@ -8,6 +8,11 @@
     "js": "dist/index.esm.js",
     "vector_db": "knowledge/vector.db"
   },
+  "sharedDependencies": [
+    "react",
+    "react-dom",
+    "@a2ui/react"
+  ],
   "capabilities": [
     {
       "component_id": "PhysicsOscillator",

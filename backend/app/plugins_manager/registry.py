@@ -32,6 +32,7 @@ class PluginRegistry:
                 continue
             for cap in plugin.capabilities:
                 capabilities.append({
+                    "plugin_id": plugin.id,
                     "component_id": cap.component_id,
                     "name": cap.name,
                     "tags": cap.tags,
@@ -40,5 +41,7 @@ class PluginRegistry:
                     "expresses": cap.expresses,
                     "educational_use": cap.educational_use,
                     "cannot_express": cap.cannot_express,
+                    "shared_dependencies": plugin.sharedDependencies,
+                    "runtime_model": "host-platform-extension",
                 })
         return capabilities

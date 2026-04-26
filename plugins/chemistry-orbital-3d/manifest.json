@@ -7,6 +7,7 @@
   "entry": {
     "js": "dist/index.esm.js"
   },
+  "sharedDependencies": ["react", "react-dom", "@a2ui/react"],
   "capabilities": [
     {
       "component_id": "OrbitalViewer",

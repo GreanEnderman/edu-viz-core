@@ -23,6 +23,7 @@ function AppShell() {
   const [leftOpen, setLeftOpen] = useState(false)
   const [rightOpen, setRightOpen] = useState(false)
   const [pluginsOpen, setPluginsOpen] = useState(false)
+  const [hasLoadedInitialConversations, setHasLoadedInitialConversations] = useState(false)
   const isFirstVisit = !hasVisited()
   const hasAppliedInitialSidebarState = useRef(false)
 
@@ -39,22 +40,29 @@ function AppShell() {
   const loadConversations = useChatStore((s) => s.loadConversations)
 
   useEffect(() => {
-    loadConversations()
+    let isMounted = true
+
+    loadConversations().finally(() => {
+      if (isMounted) {
+        setHasLoadedInitialConversations(true)
+      }
+    })
+
+    return () => {
+      isMounted = false
+    }
   }, [loadConversations])
 
   useEffect(() => {
     if (hasAppliedInitialSidebarState.current) return
+    if (!hasLoadedInitialConversations) return
 
-    if (!isFirstVisit) {
-      hasAppliedInitialSidebarState.current = true
-      return
-    }
-
-    if (conversations.length > 0) {
+    if (isFirstVisit && conversations.length > 0) {
       setLeftOpen(true)
-      hasAppliedInitialSidebarState.current = true
     }
-  }, [conversations.length, isFirstVisit])
+
+    hasAppliedInitialSidebarState.current = true
+  }, [conversations.length, hasLoadedInitialConversations, isFirstVisit])
 
   // 首次发送消息后标记已访问
   useEffect(() => {
@@ -65,9 +73,10 @@ function AppShell() {
 
   // 非首次访问时直接跳过动画，元素已在最终位置
   const skipIntro = !isFirstVisit
+  const showChrome = Boolean(currentId) || (hasLoadedInitialConversations && conversations.length > 0)
 
   return (
-    <div className={`h-screen overflow-hidden bg-background text-on-surface${currentId ? ' chat-active' : ''}${skipIntro ? ' skip-intro' : ''}`}>
+    <div className={`h-screen overflow-hidden bg-background text-on-surface${showChrome ? ' chat-active' : ''}${skipIntro ? ' skip-intro' : ''}`}>
       {/* Background SVG decoration */}
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden opacity-20">
         <svg className="absolute top-0 right-0 w-full h-full" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">

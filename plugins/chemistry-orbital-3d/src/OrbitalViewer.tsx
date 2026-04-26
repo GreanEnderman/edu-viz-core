@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState, useCallback } from 'react'
+import * as THREE from 'three'
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 
 interface A2UINode {
   properties?: Record<string, unknown>
 }
-
-declare const THREE: any
 
 function parseStr(val: unknown, fallback: string): string {
   return typeof val === 'string' ? val : fallback
@@ -14,23 +14,19 @@ function parseNum(val: unknown, fallback: number): number {
   return Number.isFinite(n) ? n : fallback
 }
 
-function loadScript(src: string): Promise<void> {
-  return new Promise((resolve, reject) => {
-    if (document.querySelector(`script[src="${src}"]`)) { resolve(); return }
-    const s = document.createElement('script')
-    s.src = src
-    s.onload = () => resolve()
-    s.onerror = () => reject(new Error('Failed to load ' + src))
-    document.head.appendChild(s)
-  })
-}
-
-// ===== Quantum mechanics math =====
+// ===== Math functions (from original Vue) =====
 
 function factorial(n: number): number {
   if (n <= 1) return 1
   let r = 1
   for (let i = 2; i <= n; i++) r *= i
+  return r
+}
+
+function doubleFactorial(n: number): number {
+  if (n <= 0) return 1
+  let r = 1
+  for (let i = n; i > 0; i -= 2) r *= i
   return r
 }
 
@@ -104,7 +100,7 @@ function getSphericalHarmonic(l: number, m: number, type: string | undefined, th
   return m > 0 ? norm * Plm * Math.cos(m * phi) * Math.sqrt(2) : norm * Plm * Math.sin(absM * phi) * Math.sqrt(2)
 }
 
-// ===== Orbital data =====
+// ===== Full orbital list (1s ~ 7p) =====
 
 interface OrbitalDef {
   value: string; label: string; n: number; l: number; m: number; type?: string
@@ -142,41 +138,163 @@ const orbitals: OrbitalDef[] = [
   { value: '4f_z(x2-y2)', label: '4f_z(x²-y²)', n: 4, l: 3, m: 2, type: 'z(x2-y2)', color1: '#1e90ff', color2: '#ff1493' },
   { value: '4f_x(x2-3y2)', label: '4f_x(x²-3y²)', n: 4, l: 3, m: 3, type: 'x(x2-3y2)', color1: '#ff00ff', color2: '#00ffff' },
   { value: '4f_y(3x2-y2)', label: '4f_y(3x²-y²)', n: 4, l: 3, m: 3, type: 'y(3x2-y2)', color1: '#ffff00', color2: '#0000ff' },
+  { value: '5s', label: '5s', n: 5, l: 0, m: 0, color1: '#00ffff', color2: '#ff00ff' },
+  { value: '5p_x', label: '5p_x', n: 5, l: 1, m: 1, type: 'x', color1: '#ff6b6b', color2: '#4ecdc4' },
+  { value: '5p_y', label: '5p_y', n: 5, l: 1, m: 1, type: 'y', color1: '#ffe66d', color2: '#a8e6cf' },
+  { value: '5p_z', label: '5p_z', n: 5, l: 1, m: 0, type: 'z', color1: '#ff6b9d', color2: '#c44569' },
+  { value: '5d_xy', label: '5d_xy', n: 5, l: 2, m: 2, type: 'xy', color1: '#ffa502', color2: '#ff6348' },
+  { value: '5d_xz', label: '5d_xz', n: 5, l: 2, m: 1, type: 'xz', color1: '#1e90ff', color2: '#ff1493' },
+  { value: '5d_yz', label: '5d_yz', n: 5, l: 2, m: 1, type: 'yz', color1: '#32cd32', color2: '#ff4500' },
+  { value: '5d_x2-y2', label: '5d_x²-y²', n: 5, l: 2, m: 2, type: 'x2-y2', color1: '#9370db', color2: '#ffd700' },
+  { value: '5d_z2', label: '5d_z²', n: 5, l: 2, m: 0, type: 'z2', color1: '#00ced1', color2: '#ff69b4' },
+  { value: '5f_z3', label: '5f_z³', n: 5, l: 3, m: 0, type: 'z3', color1: '#ff1493', color2: '#00ced1' },
+  { value: '5f_xz2', label: '5f_xz²', n: 5, l: 3, m: 1, type: 'xz2', color1: '#ff6347', color2: '#4169e1' },
+  { value: '5f_yz2', label: '5f_yz²', n: 5, l: 3, m: 1, type: 'yz2', color1: '#ffa500', color2: '#9370db' },
+  { value: '5f_xyz', label: '5f_xyz', n: 5, l: 3, m: 1, type: 'xyz', color1: '#32cd32', color2: '#ff4500' },
+  { value: '5f_z(x2-y2)', label: '5f_z(x²-y²)', n: 5, l: 3, m: 2, type: 'z(x2-y2)', color1: '#1e90ff', color2: '#ff1493' },
+  { value: '5f_x(x2-3y2)', label: '5f_x(x²-3y²)', n: 5, l: 3, m: 3, type: 'x(x2-3y2)', color1: '#ff00ff', color2: '#00ffff' },
+  { value: '5f_y(3x2-y2)', label: '5f_y(3x²-y²)', n: 5, l: 3, m: 3, type: 'y(3x2-y2)', color1: '#ffff00', color2: '#0000ff' },
+  { value: '6s', label: '6s', n: 6, l: 0, m: 0, color1: '#00ffff', color2: '#ff00ff' },
+  { value: '6p_x', label: '6p_x', n: 6, l: 1, m: 1, type: 'x', color1: '#ff6b6b', color2: '#4ecdc4' },
+  { value: '6p_y', label: '6p_y', n: 6, l: 1, m: 1, type: 'y', color1: '#ffe66d', color2: '#a8e6cf' },
+  { value: '6p_z', label: '6p_z', n: 6, l: 1, m: 0, type: 'z', color1: '#ff6b9d', color2: '#c44569' },
+  { value: '6d_xy', label: '6d_xy', n: 6, l: 2, m: 2, type: 'xy', color1: '#ffa502', color2: '#ff6348' },
+  { value: '6d_xz', label: '6d_xz', n: 6, l: 2, m: 1, type: 'xz', color1: '#1e90ff', color2: '#ff1493' },
+  { value: '6d_yz', label: '6d_yz', n: 6, l: 2, m: 1, type: 'yz', color1: '#32cd32', color2: '#ff4500' },
+  { value: '6d_x2-y2', label: '6d_x²-y²', n: 6, l: 2, m: 2, type: 'x2-y2', color1: '#9370db', color2: '#ffd700' },
+  { value: '6d_z2', label: '6d_z²', n: 6, l: 2, m: 0, type: 'z2', color1: '#00ced1', color2: '#ff69b4' },
+  { value: '7s', label: '7s', n: 7, l: 0, m: 0, color1: '#00ffff', color2: '#ff00ff' },
+  { value: '7p_x', label: '7p_x', n: 7, l: 1, m: 1, type: 'x', color1: '#ff6b6b', color2: '#4ecdc4' },
+  { value: '7p_y', label: '7p_y', n: 7, l: 1, m: 1, type: 'y', color1: '#ffe66d', color2: '#a8e6cf' },
+  { value: '7p_z', label: '7p_z', n: 7, l: 1, m: 0, type: 'z', color1: '#ff6b9d', color2: '#c44569' },
 ]
+
+// ===== Create text sprite for axis labels =====
+
+function createTextSprite(text: string, color: string): THREE.Sprite {
+  const canvas = document.createElement('canvas')
+  const ctx = canvas.getContext('2d')!
+  canvas.width = 128
+  canvas.height = 128
+  ctx.clearRect(0, 0, 128, 128)
+  ctx.font = 'Bold 80px Arial'
+  ctx.fillStyle = color
+  ctx.textAlign = 'center'
+  ctx.textBaseline = 'middle'
+  ctx.fillText(text, 64, 64)
+  const texture = new THREE.CanvasTexture(canvas)
+  const mat = new THREE.SpriteMaterial({ map: texture })
+  const sprite = new THREE.Sprite(mat)
+  sprite.scale.set(1.5, 1.5, 1)
+  return sprite
+}
+
+// ===== Create glow texture =====
+
+function createGlowTexture(): THREE.CanvasTexture {
+  const canvas = document.createElement('canvas')
+  canvas.width = 64
+  canvas.height = 64
+  const ctx = canvas.getContext('2d')!
+  const gradient = ctx.createRadialGradient(32, 32, 0, 32, 32, 32)
+  gradient.addColorStop(0, 'rgba(255,255,255,1)')
+  gradient.addColorStop(0.4, 'rgba(255,255,255,0.9)')
+  gradient.addColorStop(0.7, 'rgba(255,255,255,0.4)')
+  gradient.addColorStop(0.9, 'rgba(255,255,255,0.1)')
+  gradient.addColorStop(1, 'rgba(255,255,255,0)')
+  ctx.fillStyle = gradient
+  ctx.fillRect(0, 0, 64, 64)
+  return new THREE.CanvasTexture(canvas)
+}
+
+// ===== Engine state =====
+
+interface EngineState {
+  scene: THREE.Scene
+  camera: THREE.PerspectiveCamera
+  renderer: THREE.WebGLRenderer
+  controls: OrbitControls
+  animId: number
+  particleSystem: THREE.Points | null
+}
+
+// ===== Shared styles (matching design spec) =====
+
+const labelStyle: React.CSSProperties = {
+  fontFamily: 'Manrope, sans-serif',
+  fontSize: 12,
+  color: '#1b1c1a',
+  display: 'flex',
+  alignItems: 'center',
+  gap: 8,
+}
+
+const sliderStyle: React.CSSProperties = {
+  WebkitAppearance: 'none' as any,
+  appearance: 'none' as any,
+  width: '100%',
+  height: 4,
+  borderRadius: 2,
+  background: 'rgba(24, 37, 68, 0.1)',
+  outline: 'none',
+  cursor: 'pointer',
+}
+
+const selectStyle: React.CSSProperties = {
+  width: '100%',
+  padding: '6px 10px',
+  background: '#ffffff',
+  borderRadius: 8,
+  border: 'none',
+  outline: 'none',
+  color: '#1b1c1a',
+  fontSize: 13,
+  fontFamily: 'Manrope, sans-serif',
+  cursor: 'pointer',
+  boxShadow: '0px 1px 3px rgba(27, 28, 26, 0.08)',
+}
+
+const infoRowStyle: React.CSSProperties = {
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  padding: '4px 10px',
+  background: '#f8fafc',
+  borderRadius: 6,
+  fontSize: 12,
+}
 
 // ===== Component =====
 
 export default function OrbitalViewer({ node }: { node: A2UINode }) {
   const props = node.properties ?? {}
   const orbitalType = parseStr(props.orbital, '2p_z')
-  const particleCountProp = parseNum(props.particleCount, 30000)
+  const particleCountProp = parseNum(props.particleCount, 50000)
 
   const containerRef = useRef<HTMLDivElement>(null)
-  const canvasRef = useRef<HTMLCanvasElement>(null)
-  const engineRef = useRef<any>(null)
+  const engineRef = useRef<EngineState | null>(null)
 
-  const [ready, setReady] = useState(false)
   const [engineReady, setEngineReady] = useState(false)
   const [loading, setLoading] = useState(false)
   const [selectedOrbital, setSelectedOrbital] = useState(orbitalType)
-  const [orbitalInfo, setOrbitalInfo] = useState<any>(null)
+  const [orbitalInfo, setOrbitalInfo] = useState<{
+    name: string; n: number; l: number; m: number;
+    radialNodes: number; angularNodes: number; totalNodes: number;
+    shellName: string; subshellName: string;
+  } | null>(null)
+  const [infoCollapsed, setInfoCollapsed] = useState(true)
 
-  // Load Three.js CDN
-  useEffect(() => {
-    loadScript('https://cdn.bootcdn.net/ajax/libs/three.js/r128/three.min.js')
-      .then(() => loadScript('https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js'))
-      .then(() => setReady(true))
-  }, [])
+  const [particleCount, setParticleCount] = useState(particleCountProp)
+  const [particleSize, setParticleSize] = useState(0.06)
+  const [particleOpacity, setParticleOpacity] = useState(0.6)
+  const [glowIntensity, setGlowIntensity] = useState(1.5)
 
   // Init Three.js scene
-  const initScene = useCallback(() => {
-    const canvas = canvasRef.current
+  useEffect(() => {
     const container = containerRef.current
-    if (!canvas || !container || engineRef.current) return
+    if (!container || engineRef.current) return
 
-    const W = container.clientWidth
-    const H = container.clientHeight
-
+    const W = container.clientWidth, H = container.clientHeight
     const scene = new THREE.Scene()
     scene.background = new THREE.Color(0x0a0a0a)
     scene.fog = new THREE.Fog(0x0a0a0a, 10, 50)
@@ -184,13 +302,15 @@ export default function OrbitalViewer({ node }: { node: A2UINode }) {
     const camera = new THREE.PerspectiveCamera(75, W / H, 0.1, 1000)
     camera.position.set(0, 0, 15)
 
-    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true })
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
     renderer.setSize(W, H)
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+    container.appendChild(renderer.domElement)
 
-    const controls = new THREE.OrbitControls(camera, renderer.domElement)
+    const controls = new OrbitControls(camera, renderer.domElement)
     controls.enableDamping = true
     controls.dampingFactor = 0.05
+    controls.autoRotate = false
 
     scene.add(new THREE.AmbientLight(0xffffff, 0.3))
     const pointLight = new THREE.PointLight(0xffffff, 1, 100)
@@ -198,23 +318,45 @@ export default function OrbitalViewer({ node }: { node: A2UINode }) {
     scene.add(pointLight)
 
     // Nucleus
-    const atom = new THREE.Mesh(
-      new THREE.SphereGeometry(0.3, 32, 32),
-      new THREE.MeshPhongMaterial({ color: 0xffffff, emissive: 0x444444, shininess: 100 })
-    )
-    scene.add(atom)
+    const atomGeo = new THREE.SphereGeometry(0.3, 32, 32)
+    const atomMat = new THREE.MeshPhongMaterial({ color: 0xffffff, emissive: 0x444444, shininess: 100 })
+    scene.add(new THREE.Mesh(atomGeo, atomMat))
 
     // Axes
     const axisLen = 10, axisR = 0.01
     const makeAxis = (color: number, rx: number, ry: number) => {
-      const m = new THREE.Mesh(new THREE.CylinderGeometry(axisR, axisR, axisLen, 8), new THREE.MeshBasicMaterial({ color }))
-      if (rx) m.rotation.x = rx
-      if (ry) m.rotation.z = ry
-      scene.add(m)
+      const geo = new THREE.CylinderGeometry(axisR, axisR, axisLen, 8)
+      const mat = new THREE.MeshBasicMaterial({ color })
+      const mesh = new THREE.Mesh(geo, mat)
+      if (rx) mesh.rotation.x = rx
+      if (ry) mesh.rotation.z = ry
+      scene.add(mesh)
     }
-    makeAxis(0xff0000, 0, Math.PI / 2)  // X
-    makeAxis(0x00ff00, 0, 0)            // Y
-    makeAxis(0x0000ff, Math.PI / 2, 0)  // Z
+    makeAxis(0xff0000, 0, Math.PI / 2)
+    makeAxis(0x00ff00, 0, 0)
+    makeAxis(0x0000ff, Math.PI / 2, 0)
+
+    // Axis labels
+    const xLabel = createTextSprite('X', '#ff0000')
+    xLabel.position.set(axisLen / 2 + 1, 0, 0)
+    scene.add(xLabel)
+    const yLabel = createTextSprite('Y', '#00ff00')
+    yLabel.position.set(0, axisLen / 2 + 1, 0)
+    scene.add(yLabel)
+    const zLabel = createTextSprite('Z', '#0000ff')
+    zLabel.position.set(0, 0, axisLen / 2 + 1)
+    scene.add(zLabel)
+
+    const onResize = () => {
+      if (!container) return
+      const w = container.clientWidth, h = container.clientHeight
+      if (w === 0 || h === 0) return
+      camera.aspect = w / h
+      camera.updateProjectionMatrix()
+      renderer.setSize(w, h)
+    }
+    const ro = new ResizeObserver(onResize)
+    ro.observe(container)
 
     let animId = 0
     const animate = () => {
@@ -224,55 +366,43 @@ export default function OrbitalViewer({ node }: { node: A2UINode }) {
     }
     animId = requestAnimationFrame(animate)
 
-    engineRef.current = { scene, camera, renderer, controls, animId }
+    engineRef.current = { scene, camera, renderer, controls, animId, particleSystem: null }
     setEngineReady(true)
-  }, [])
 
-  // Init when ready
-  useEffect(() => {
-    if (!ready || !containerRef.current) return
-    // Small delay to ensure container has dimensions
-    const t = setTimeout(() => initScene(), 50)
-    return () => clearTimeout(t)
-  }, [ready, initScene])
-
-  // Cleanup
-  useEffect(() => {
     return () => {
-      const e = engineRef.current
-      if (e) {
-        cancelAnimationFrame(e.animId)
-        e.renderer.dispose()
-        e.controls.dispose()
+      cancelAnimationFrame(animId)
+      ro.disconnect()
+      controls.dispose()
+      renderer.dispose()
+      if (container.contains(renderer.domElement)) {
+        container.removeChild(renderer.domElement)
       }
+      engineRef.current = null
     }
   }, [])
 
   // Generate orbital particles
   const generateOrbital = useCallback((orbitalValue: string, count: number) => {
-    const e = engineRef.current
-    if (!e) return
+    const engine = engineRef.current
+    if (!engine) return
 
     setLoading(true)
-
-    // Use setTimeout to not block UI
     setTimeout(() => {
       const orbital = orbitals.find(o => o.value === orbitalValue)
       if (!orbital) { setLoading(false); return }
 
-      const { n, l, m, type, color1: c1, color2: c2 } = orbital
-      const color1 = new THREE.Color(c1)
-      const color2 = new THREE.Color(c2)
+      const { n, l, m, type, color1: c1Hex, color2: c2Hex } = orbital
+      const color1 = new THREE.Color(c1Hex)
+      const color2 = new THREE.Color(c2Hex)
       const Z = 1, searchRadius = 8, scaleFactor = 1.0 / n
 
       const radialNodes = n - l - 1
-      const angularNodes = l
-
       setOrbitalInfo({
-        name: orbital.label,
         n, l, m,
-        radialNodes, angularNodes,
-        totalNodes: radialNodes + angularNodes,
+        name: orbital.label,
+        radialNodes,
+        angularNodes: l,
+        totalNodes: radialNodes + l,
         shellName: ['K', 'L', 'M', 'N', 'O', 'P', 'Q'][n - 1] || `n=${n}`,
         subshellName: ['s', 'p', 'd', 'f', 'g', 'h'][l] || `l=${l}`,
       })
@@ -281,31 +411,29 @@ export default function OrbitalViewer({ node }: { node: A2UINode }) {
       const colors: number[] = []
       const sizes: number[] = []
 
-      // Find max probability for rejection sampling
       let maxProb = 0
       for (let i = 0; i < 2000; i++) {
         const tr = Math.random() * searchRadius
-        const tTheta = Math.acos(2 * Math.random() - 1)
-        const tPhi = Math.random() * 2 * Math.PI
+        const tT = Math.acos(2 * Math.random() - 1)
+        const tP = Math.random() * 2 * Math.PI
         const R = getRadialWavefunction(n, l, tr / scaleFactor, Z)
-        const Y = getSphericalHarmonic(l, m, type, tTheta, tPhi)
-        const prob = R * R * Y * Y * tr * tr
-        if (prob > maxProb) maxProb = prob
+        const Y = getSphericalHarmonic(l, m, type, tT, tP)
+        const p = R * R * Y * Y * tr * tr
+        if (p > maxProb) maxProb = p
       }
 
       let generated = 0, attempts = 0
-      const maxAttempts = count * 1000
-
-      while (generated < count && attempts < maxAttempts) {
+      while (generated < count && attempts < count * 1000) {
         attempts++
         const r = Math.random() * searchRadius
-        const theta = Math.acos(2 * Math.random() - 1)
+        const cosTheta = 2 * Math.random() - 1
+        const theta = Math.acos(cosTheta)
         const phi = Math.random() * 2 * Math.PI
-        const R = getRadialWavefunction(n, l, r / scaleFactor, Z)
+        const physicalR = r / scaleFactor
+        const R = getRadialWavefunction(n, l, physicalR, Z)
         const Y = getSphericalHarmonic(l, m, type, theta, phi)
         const psi = R * Y
         const prob = psi * psi * r * r
-
         if (Math.random() * maxProb < prob) {
           positions.push(r * Math.sin(theta) * Math.cos(phi), r * Math.sin(theta) * Math.sin(phi), r * Math.cos(theta))
           const c = psi > 0 ? color1 : color2
@@ -315,165 +443,190 @@ export default function OrbitalViewer({ node }: { node: A2UINode }) {
         }
       }
 
-      // Remove old particle system
-      if (e.particleSystem) {
-        e.scene.remove(e.particleSystem)
-        e.particleSystem.geometry.dispose()
-        e.particleSystem.material.dispose()
+      if (engine.particleSystem) {
+        engine.scene.remove(engine.particleSystem)
+        engine.particleSystem.geometry.dispose()
+        ;(engine.particleSystem.material as THREE.PointsMaterial).dispose()
       }
 
-      // Create glow texture
-      const texCanvas = document.createElement('canvas')
-      texCanvas.width = 64; texCanvas.height = 64
-      const ctx = texCanvas.getContext('2d')!
-      const grad = ctx.createRadialGradient(32, 32, 0, 32, 32, 32)
-      grad.addColorStop(0, 'rgba(255,255,255,1)')
-      grad.addColorStop(0.4, 'rgba(255,255,255,0.9)')
-      grad.addColorStop(0.7, 'rgba(255,255,255,0.4)')
-      grad.addColorStop(0.9, 'rgba(255,255,255,0.1)')
-      grad.addColorStop(1, 'rgba(255,255,255,0)')
-      ctx.fillStyle = grad
-      ctx.fillRect(0, 0, 64, 64)
-      const glowTexture = new THREE.CanvasTexture(texCanvas)
+      const geo = new THREE.BufferGeometry()
+      geo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3))
+      geo.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3))
+      geo.setAttribute('size', new THREE.Float32BufferAttribute(sizes, 1))
 
-      const geometry = new THREE.BufferGeometry()
-      geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3))
-      geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3))
-      geometry.setAttribute('size', new THREE.Float32BufferAttribute(sizes, 1))
-
-      const material = new THREE.PointsMaterial({
-        size: 0.06,
+      const mat = new THREE.PointsMaterial({
+        size: particleSizeRef.current,
         vertexColors: true,
         transparent: true,
-        opacity: 0.6,
+        opacity: particleOpacityRef.current * (glowIntensityRef.current / 1.5),
         blending: THREE.AdditiveBlending,
         depthWrite: false,
         sizeAttenuation: true,
-        map: glowTexture,
+        map: createGlowTexture(),
       })
 
-      const ps = new THREE.Points(geometry, material)
-      e.scene.add(ps)
-      e.particleSystem = ps
+      const ps = new THREE.Points(geo, mat)
+      engine.scene.add(ps)
+      engine.particleSystem = ps
 
       setLoading(false)
-    }, 30)
+    }, 50)
   }, [])
 
-  // When orbital changes (from LLM or user selection)
-  useEffect(() => {
-    if (!engineReady || !selectedOrbital) return
-    generateOrbital(selectedOrbital, particleCountProp)
-  }, [selectedOrbital, engineReady, particleCountProp, generateOrbital])
+  // Refs for latest slider values
+  const particleSizeRef = useRef(particleSize)
+  const particleOpacityRef = useRef(particleOpacity)
+  const glowIntensityRef = useRef(glowIntensity)
+  particleSizeRef.current = particleSize
+  particleOpacityRef.current = particleOpacity
+  glowIntensityRef.current = glowIntensity
 
-  // Sync from LLM props
   useEffect(() => {
-    if (orbitalType && orbitalType !== selectedOrbital) {
-      setSelectedOrbital(orbitalType)
+    const ps = engineRef.current?.particleSystem
+    if (!ps) return
+    const mat = ps.material as THREE.PointsMaterial
+    mat.size = particleSize
+    mat.opacity = particleOpacity * (glowIntensity / 1.5)
+  }, [particleSize, particleOpacity, glowIntensity])
+
+  useEffect(() => {
+    if (engineReady && selectedOrbital) {
+      generateOrbital(selectedOrbital, particleCount)
     }
-  }, [orbitalType]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [selectedOrbital, engineReady, particleCount, generateOrbital])
 
-  const handleOrbitalChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedOrbital(e.target.value)
-  }
-
-  const selectStyle: React.CSSProperties = {
-    width: '100%', padding: '6px 8px', background: 'rgba(255,255,255,0.1)',
-    border: '1px solid rgba(255,255,255,0.2)', borderRadius: 6,
-    color: '#fff', fontSize: 13, fontFamily: 'Manrope, sans-serif', cursor: 'pointer',
-  }
-
-  const infoLabel: React.CSSProperties = { fontSize: 12, color: '#aaa' }
-  const infoValue: React.CSSProperties = {
-    fontSize: 12, color: '#fff', fontFamily: 'monospace',
-    background: 'rgba(0,255,255,0.1)', padding: '2px 6px', borderRadius: 4,
-  }
+  useEffect(() => {
+    if (orbitalType && orbitalType !== selectedOrbital) setSelectedOrbital(orbitalType)
+  }, [orbitalType])
 
   return (
     <div style={{
-      display: 'flex', gap: 0, borderRadius: 12, overflow: 'hidden',
-      fontFamily: 'Manrope, sans-serif', color: '#1b1c1a',
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 10,
+      background: '#faf9f5',
+      borderRadius: 12,
+      padding: 12,
+      fontFamily: 'Manrope, sans-serif',
+      color: '#1b1c1a',
+      width: '100%',
+      minWidth: 480,
     }}>
-      {/* Controls sidebar */}
+      {/* Orbital selector */}
+      <select value={selectedOrbital} onChange={(e) => setSelectedOrbital(e.target.value)} style={selectStyle}>
+        {orbitals.map(o => (
+          <option key={o.value} value={o.value}>{o.label}</option>
+        ))}
+      </select>
+
+      {/* 3D Canvas */}
       <div style={{
-        width: 200, background: 'rgba(20,20,20,0.95)', padding: 16,
-        display: 'flex', flexDirection: 'column', gap: 12,
-        borderRight: '1px solid rgba(255,255,255,0.1)',
+        position: 'relative',
+        height: 400,
+        background: '#0a0a0a',
+        borderRadius: 12,
+        overflow: 'hidden',
       }}>
-        <div style={{
-          fontSize: 15, fontWeight: 600,
-          background: 'linear-gradient(135deg, #00ffff 0%, #ff00ff 100%)',
-          backgroundClip: 'text', WebkitBackgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
-        }}>
-          原子轨道
-        </div>
-
-        <div>
-          <div style={{ fontSize: 12, color: '#aaa', marginBottom: 4 }}>轨道类型</div>
-          <select value={selectedOrbital} onChange={handleOrbitalChange} style={selectStyle}>
-            {orbitals.map(o => (
-              <option key={o.value} value={o.value} style={{ background: '#1a1a1a' }}>{o.label}</option>
-            ))}
-          </select>
-        </div>
-
-        {/* Orbital info */}
-        {orbitalInfo && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginTop: 4 }}>
-            {[
-              ['名称', orbitalInfo.name],
-              ['能层', `${orbitalInfo.shellName} (n=${orbitalInfo.n})`],
-              ['能级', `${orbitalInfo.subshellName} (l=${orbitalInfo.l})`],
-              ['径向节点', String(orbitalInfo.radialNodes)],
-              ['角节点', String(orbitalInfo.angularNodes)],
-              ['总节点', String(orbitalInfo.totalNodes)],
-            ].map(([label, value]) => (
-              <div key={label} style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span style={infoLabel}>{label}</span>
-                <span style={infoValue}>{value}</span>
-              </div>
-            ))}
+        <div ref={containerRef} style={{ width: '100%', height: '100%' }} />
+        {loading && (
+          <div style={{
+            position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)',
+            fontSize: 13, color: '#94a3b8', fontFamily: 'Manrope, sans-serif',
+          }}>
+            生成中...
           </div>
         )}
 
-        <div style={{ marginTop: 'auto', fontSize: 11, color: '#555' }}>
-          <div>拖动旋转 / 滚轮缩放</div>
+        {/* Orbital info overlay */}
+        {orbitalInfo && (
+          <div style={{
+            position: 'absolute', top: 8, right: 8,
+            background: 'rgba(250, 249, 245, 0.92)',
+            backdropFilter: 'blur(10px)',
+            borderRadius: 8,
+            padding: infoCollapsed ? '8px 12px' : 12,
+            minWidth: infoCollapsed ? 'auto' : 200,
+            boxShadow: '0px 4px 12px rgba(27, 28, 26, 0.08)',
+            zIndex: 10,
+          }}>
+            <div
+              style={{
+                display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                cursor: 'pointer', userSelect: 'none', gap: 8,
+              }}
+              onClick={() => setInfoCollapsed(!infoCollapsed)}
+            >
+              <span style={{ fontSize: 13, fontWeight: 600, color: '#182544' }}>
+                {orbitalInfo.name}
+              </span>
+              <span style={{ fontSize: 11, color: '#94a3b8' }}>{infoCollapsed ? '▼' : '▲'}</span>
+            </div>
+            {!infoCollapsed && (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 4, marginTop: 8 }}>
+                {[
+                  ['能层', `${orbitalInfo.shellName} (n=${orbitalInfo.n})`],
+                  ['能级', `${orbitalInfo.subshellName} (l=${orbitalInfo.l})`],
+                  ['磁量子数', `m=${orbitalInfo.m}`],
+                  ['径向节点', String(orbitalInfo.radialNodes)],
+                  ['角节点', String(orbitalInfo.angularNodes)],
+                  ['总节点数', String(orbitalInfo.totalNodes)],
+                ].map(([label, value]) => (
+                  <div key={label} style={infoRowStyle}>
+                    <span style={{ color: '#64748b', fontWeight: 500 }}>{label}</span>
+                    <span style={{
+                      color: '#1e293b', fontFamily: 'monospace', fontWeight: 500,
+                    }}>{value}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Interaction hint */}
+        <div style={{
+          position: 'absolute', bottom: 8, right: 12,
+          fontSize: 11, color: '#64748b', pointerEvents: 'none',
+          fontFamily: 'Manrope, sans-serif',
+        }}>
+          拖动旋转 / 滚轮缩放
         </div>
       </div>
 
-      {/* 3D Canvas */}
-      <div ref={containerRef} style={{
-        flex: 1, position: 'relative', minWidth: 300, height: 360,
-        background: '#0a0a0a',
-      }}>
-        <canvas ref={canvasRef} style={{ width: '100%', height: '100%', display: 'block' }} />
-
-        {/* Loading overlay */}
-        {loading && (
-          <div style={{
-            position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            background: 'rgba(10,10,10,0.8)', zIndex: 1,
-          }}>
-            <div style={{
-              width: 36, height: 36,
-              border: '3px solid rgba(255,255,255,0.1)', borderTopColor: '#00ffff',
-              borderRadius: '50%', animation: 'spin 1s linear infinite',
-            }} />
-            <style>{`@keyframes spin { to { transform: rotate(360deg) } }`}</style>
-          </div>
-        )}
-
-        {!ready && (
-          <div style={{
-            position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: 13, color: '#666',
-          }}>
-            加载 3D 引擎...
-          </div>
-        )}
+      {/* Controls */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+        <div style={labelStyle}>
+          <span style={{ minWidth: 70 }}>粒子数量</span>
+          <input type="range" min={10000} max={100000} step={5000} value={particleCount}
+            onChange={e => setParticleCount(Number(e.target.value))} style={sliderStyle} />
+          <span style={{ minWidth: 40, textAlign: 'right', color: 'rgba(24,37,68,0.6)', fontSize: 12 }}>
+            {particleCount}
+          </span>
+        </div>
+        <div style={labelStyle}>
+          <span style={{ minWidth: 70 }}>粒子大小</span>
+          <input type="range" min={0.01} max={0.2} step={0.01} value={particleSize}
+            onChange={e => setParticleSize(Number(e.target.value))} style={sliderStyle} />
+          <span style={{ minWidth: 40, textAlign: 'right', color: 'rgba(24,37,68,0.6)', fontSize: 12 }}>
+            {particleSize.toFixed(2)}
+          </span>
+        </div>
+        <div style={labelStyle}>
+          <span style={{ minWidth: 70 }}>粒子透明度</span>
+          <input type="range" min={0.1} max={1.0} step={0.05} value={particleOpacity}
+            onChange={e => setParticleOpacity(Number(e.target.value))} style={sliderStyle} />
+          <span style={{ minWidth: 40, textAlign: 'right', color: 'rgba(24,37,68,0.6)', fontSize: 12 }}>
+            {particleOpacity.toFixed(2)}
+          </span>
+        </div>
+        <div style={labelStyle}>
+          <span style={{ minWidth: 70 }}>发光强度</span>
+          <input type="range" min={0.5} max={3.0} step={0.1} value={glowIntensity}
+            onChange={e => setGlowIntensity(Number(e.target.value))} style={sliderStyle} />
+          <span style={{ minWidth: 40, textAlign: 'right', color: 'rgba(24,37,68,0.6)', fontSize: 12 }}>
+            {glowIntensity.toFixed(1)}
+          </span>
+        </div>
       </div>
     </div>
   )
