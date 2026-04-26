@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MoleculeDisplay 插件测试</title>
+  <style>
+    body { margin: 0; padding: 24px; background: #f0f0f0; font-family: sans-serif; }
+    #root { max-width: 480px; margin: 0 auto; }
+    h2 { color: #333; margin-bottom: 8px; }
+    .controls { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+    .controls button {
+      padding: 8px 14px; border: 1px solid #ccc; border-radius: 6px;
+      background: #fff; cursor: pointer; font-size: 14px;
+    }
+    .controls button:hover { background: #e8e8e8; }
+    .status { font-size: 13px; color: #888; margin-bottom: 16px; }
+  </style>
+</head>
+<body>
+  <div id="root">
+    <h2>MoleculeDisplay 插件测试</h2>
+    <div class="status" id="status">点击下方按钮测试不同分子</div>
+    <div class="controls">
+      <button onclick="showMolecule('CCO', '乙醇')">乙醇 CCO</button>
+      <button onclick="showMolecule('O', '水')">水 O</button>
+      <button onclick="showMolecule('c1ccccc1', '苯')">苯</button>
+      <button onclick="showMolecule('CC(=O)O', '乙酸')">乙酸</button>
+      <button onclick="showMolecule('CC(=O)OC', '乙酸甲酯')">乙酸甲酯</button>
+      <button onclick="showMolecule('C1CCCCC1', '环己烷')">环己烷</button>
+    </div>
+    <div id="component-mount"></div>
+  </div>
+
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <script type="text/babel">
+    function parseStr(val, fallback) {
+      return typeof val === 'string' ? val : fallback
+    }
+
+    function loadScript(src) {
+      return new Promise((resolve, reject) => {
+        if (document.querySelector(`script[src="${src}"]`)) { resolve(); return }
+        const s = document.createElement('script')
+        s.src = src
+        s.onload = () => resolve()
+        s.onerror = () => reject(new Error('Failed to load ' + src))
+        document.head.appendChild(s)
+      })
+    }
+
+    const API_BASE = 'http://localhost:8001'
+    const THREE_DMOL_CDN = 'https://3dmol.org/build/3Dmol-min.js'
+
+    function MoleculeDisplay({ node }) {
+      const props = node.properties || {}
+      const smiles = parseStr(props.smiles, '')
+
+      const containerRef = React.useRef(null)
+      const viewerRef = React.useRef(null)
+      const [currentSmiles, setCurrentSmiles] = React.useState('')
+      const [style, setStyle] = React.useState('stick')
+      const [loading, setLoading] = React.useState(false)
+      const [error, setError] = React.useState('')
+      const [info, setInfo] = React.useState(null)
+      const [scriptReady, setScriptReady] = React.useState(false)
+
+      // Load 3Dmol.js CDN
+      React.useEffect(() => {
+        loadScript(THREE_DMOL_CDN).then(() => setScriptReady(true))
+      }, [])
+
+      // Init viewer — container is always in DOM now
+      React.useEffect(() => {
+        if (!scriptReady || !containerRef.current || viewerRef.current) return
+        try {
+          const viewer = $3Dmol.createViewer(containerRef.current, { backgroundColor: '#f8fafc' })
+          viewer.setBackgroundColor('#f8fafc')
+          viewerRef.current = viewer
+        } catch (e) {
+          console.error('3Dmol init failed', e)
+        }
+      }, [scriptReady])
+
+      // Apply current style to viewer
+      const applyViewerStyle = React.useCallback((viewer, s) => {
+        if (!viewer) return
+        if (s === 'stick') {
+          viewer.setStyle({}, { sphere: { scale: 0.25, colorscheme: 'Jmol' }, stick: { radius: 0.12, colorscheme: 'Jmol' } })
+        } else {
+          viewer.setStyle({}, { sphere: { scale: 0.8, colorscheme: 'Jmol' } })
+        }
+        viewer.render()
+      }, [])
+
+      // When smiles changes, fetch and render molecule
+      React.useEffect(() => {
+        if (!smiles) {
+          setCurrentSmiles('')
+          setInfo(null)
+          setError('')
+          return
+        }
+        if (smiles === currentSmiles) return
+
+        let cancelled = false
+
+        async function visualize() {
+          // Wait for viewer to be ready
+          let attempts = 0
+          while (!viewerRef.current && attempts < 50) {
+            await new Promise(r => setTimeout(r, 100))
+            attempts++
+          }
+          const viewer = viewerRef.current
+          if (!viewer) {
+            setError('3D viewer not initialized')
+            return
+          }
+
+          setLoading(true)
+          setError('')
+          try {
+            const parseRes = await fetch(API_BASE + '/parse', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ smiles }),
+            })
+            if (!parseRes.ok) {
+              const err = await parseRes.json()
+              throw new Error(err.detail || 'Failed to parse SMILES')
+            }
+            const result = await parseRes.json()
+            if (!result.success || !result.sdf) throw new Error('Unable to generate 3D structure')
+            if (cancelled) return
+
+            viewer.clear()
+            viewer.addModel(result.sdf, 'sdf')
+            applyViewerStyle(viewer, style)
+            viewer.zoomTo()
+            setCurrentSmiles(smiles)
+
+            try {
+              const infoRes = await fetch(API_BASE + '/info', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ smiles }),
+              })
+              if (infoRes.ok) { const moleculeInfo = await infoRes.json(); if (!cancelled) setInfo(moleculeInfo) }
+            } catch {}
+          } catch (e) {
+            if (!cancelled) setError(e.message || 'Unable to display molecule')
+          } finally {
+            setLoading(false)
+          }
+        }
+        visualize()
+        return () => { cancelled = true }
+      }, [smiles, scriptReady, style, applyViewerStyle])
+
+      const handleStyleChange = (s) => {
+        setStyle(s)
+        applyViewerStyle(viewerRef.current, s)
+      }
+
+      const handleReset = () => { viewerRef.current?.zoomTo() }
+
+      const btnBase = {
+        flex: 1, padding: '6px 8px', background: '#f1f5f9',
+        border: '1px solid #e2e8f0', borderRadius: 8, fontSize: 12,
+        fontFamily: 'Manrope, sans-serif', color: '#64748b', cursor: 'pointer',
+      }
+
+      const hasContent = currentSmiles || loading
+
+      return (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 10, background: '#faf9f5', borderRadius: 12, padding: 12, fontFamily: 'Manrope, sans-serif', color: '#1b1c1a' }}>
+          {/* 3D Canvas — always rendered so viewer can initialize */}
+          <div style={{
+            position: 'relative', height: 280, background: '#f8fafc',
+            borderRadius: 12, overflow: 'hidden',
+            visibility: hasContent ? 'visible' : 'hidden',
+            position: 'relative',
+          }}>
+            <div ref={containerRef} style={{ width: '100%', height: '100%' }} />
+          </div>
+
+          {/* Loading overlay */}
+          {loading && (
+            <div style={{
+              position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
+              display: 'flex', flexDirection: 'column', alignItems: 'center',
+              justifyContent: 'center', gap: 12, background: 'rgba(248,250,252,0.9)',
+              borderRadius: 12, zIndex: 1,
+            }}>
+              <div style={{ width: 36, height: 36, border: '3px solid #e2e8f0', borderTopColor: '#182544', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
+              <div style={{ fontSize: 13, color: '#64748b' }}>正在生成分子结构...</div>
+              <style>{`@keyframes spin { to { transform: rotate(360deg) } }`}</style>
+            </div>
+          )}
+
+          {/* Empty state */}
+          {!hasContent && !error && (
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 12, padding: 48, textAlign: 'center' }}>
+              <div style={{ fontSize: 36, opacity: 0.5 }}>&#x1f52c;</div>
+              <div style={{ fontSize: 13, color: '#94a3b8' }}>等待分子数据...</div>
+            </div>
+          )}
+
+          {/* Error */}
+          {error && (
+            <div style={{ padding: 10, background: 'rgba(239,68,68,0.1)', border: '1px solid #ef4444', borderRadius: 8, fontSize: 13, color: '#ef4444' }}>{error}</div>
+          )}
+
+          {/* Molecule Info */}
+          {currentSmiles && !loading && !error && info && (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+              {[['分子式', info.formula], ['分子量', info.molecular_weight ? info.molecular_weight + ' Da' : '-'], ['原子数', String(info.num_atoms)]].map(([label, value]) => (
+                <div key={label} style={{ display: 'flex', justifyContent: 'space-between', padding: '6px 10px', background: '#f8fafc', borderRadius: 6 }}>
+                  <span style={{ fontSize: 12, color: '#64748b' }}>{label}</span>
+                  <span style={{ fontSize: 13, color: '#1e293b', fontWeight: 500, fontFamily: 'monospace' }}>{value}</span>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Style Controls */}
+          {currentSmiles && !loading && !error && (
+            <div style={{ display: 'flex', gap: 8 }}>
+              <button onClick={() => handleStyleChange('stick')} style={{ ...btnBase, background: style === 'stick' ? '#182544' : '#f1f5f9', borderColor: style === 'stick' ? '#182544' : '#e2e8f0', color: style === 'stick' ? '#fff' : '#64748b' }}>球棍模型</button>
+              <button onClick={() => handleStyleChange('sphere')} style={{ ...btnBase, background: style === 'sphere' ? '#182544' : '#f1f5f9', borderColor: style === 'sphere' ? '#182544' : '#e2e8f0', color: style === 'sphere' ? '#fff' : '#64748b' }}>空间填充</button>
+              <button onClick={handleReset} style={btnBase}>重置视图</button>
+            </div>
+          )}
+        </div>
+      )
+    }
+
+    // ===== 测试页面逻辑 =====
+
+    let currentNode = { properties: {} }
+
+    function showMolecule(smiles, name) {
+      currentNode = { properties: { smiles } }
+      document.getElementById('status').textContent = '当前: ' + name + ' (' + smiles + ')'
+      renderApp()
+    }
+
+    function renderApp() {
+      ReactDOM.render(
+        React.createElement(MoleculeDisplay, { node: currentNode }),
+        document.getElementById('component-mount')
+      )
+    }
+
+    window.showMolecule = showMolecule
+    renderApp()
+  </script>
+</body>
+</html>

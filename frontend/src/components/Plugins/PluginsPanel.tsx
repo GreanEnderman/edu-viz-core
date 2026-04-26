@@ -29,7 +29,7 @@ export function PluginsPanel({ open, onClose }: PluginsPanelProps) {
     if (open) load()
   }, [open, load])
 
-  const handleToggle = async (pluginId: string, currentEnabled: boolean) => {
+  const handleToggle = async (pluginId: string) => {
     setToggling(pluginId)
     try {
       const result = await togglePlugin(pluginId)
@@ -103,7 +103,7 @@ export function PluginsPanel({ open, onClose }: PluginsPanelProps) {
 interface PluginCardProps {
   plugin: Plugin
   toggling: boolean
-  onToggle: (id: string, enabled: boolean) => void
+  onToggle: (id: string) => void
 }
 
 function PluginCard({ plugin, toggling, onToggle }: PluginCardProps) {
@@ -124,7 +124,7 @@ function PluginCard({ plugin, toggling, onToggle }: PluginCardProps) {
 
         {/* Toggle */}
         <button
-          onClick={() => onToggle(plugin.id, plugin.enabled)}
+          onClick={() => onToggle(plugin.id)}
           disabled={toggling}
           className={`relative shrink-0 w-11 h-6 rounded-full transition-colors duration-200 ${
             plugin.enabled ? 'bg-primary' : 'bg-on-surface-variant/20'

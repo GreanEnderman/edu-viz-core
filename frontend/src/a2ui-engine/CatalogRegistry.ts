@@ -18,17 +18,25 @@ interface PluginListItem {
   entry?: { js?: string }
 }
 
-// Static imports for plugin components (Phase B: bundled with host)
-// Each plugin module exports its component as default
-// @ts-expect-error -- React type mismatch between plugin and host (shared instance at runtime)
-const pluginModules: Record<string, { default: ComponentType }> = {
-  'physics-high-school': await import('@plugins/physics-high-school/src/PhysicsOscillator'),
+type PluginComponentModule = { default: ComponentType }
+
+const pluginComponentModules = import.meta.glob<PluginComponentModule>(
+  '../../../plugins/*/src/*.{ts,tsx}',
+)
+
+function getPluginComponentLoader(
+  pluginId: string,
+  componentId: string,
+): (() => Promise<PluginComponentModule>) | undefined {
+  const preferredPath = `../../../plugins/${pluginId}/src/${componentId}.tsx`
+  const fallbackPath = `../../../plugins/${pluginId}/src/${componentId}.ts`
+
+  return pluginComponentModules[preferredPath] ?? pluginComponentModules[fallbackPath]
 }
 
 /**
  * Register plugin components based on user's enabled plugins.
- * Phase B: uses static imports (all plugins bundled with frontend).
- * Phase A (future): Vite plugin virtual module for dynamic loading.
+ * Plugin component modules are discovered from the plugins directory and matched by capability.component_id.
  */
 export async function loadPluginComponents(): Promise<void> {
   const apiBase = import.meta.env.VITE_API_BASE ?? '/api'
@@ -49,19 +57,36 @@ export async function loadPluginComponents(): Promise<void> {
   const enabled = plugins.filter((p) => p.enabled)
 
   for (const plugin of enabled) {
-    const mod = pluginModules[plugin.id]
-    if (!mod) {
-      console.warn(`[CatalogRegistry] No module for plugin '${plugin.id}'`)
-      continue
-    }
-    const component = mod.default
-    // Register by plugin id
-    registry.register(plugin.id, { component: component as any })
-    // Register by each capability's component_id (this is what LLM uses in A2UI JSONL)
+    let registeredAnyCapability = false
+
     for (const cap of plugin.capabilities) {
+      const loader = getPluginComponentLoader(plugin.id, cap.component_id)
+      if (!loader) {
+        console.warn(
+          `[CatalogRegistry] No module for plugin '${plugin.id}' capability '${cap.component_id}'`
+        )
+        continue
+      }
+
+      const mod = await loader()
+      const component = mod.default
       registry.register(cap.component_id, { component: component as any })
       console.info(`[CatalogRegistry] Registered plugin component: ${cap.component_id}`)
+      registeredAnyCapability = true
     }
+
+    const primaryCapabilityId = plugin.capabilities[0]?.component_id
+    if (registeredAnyCapability && primaryCapabilityId) {
+      const loader = getPluginComponentLoader(plugin.id, primaryCapabilityId)
+      if (loader) {
+        const mod = await loader()
+        registry.register(plugin.id, { component: mod.default as any })
+      }
+    } else {
+      console.warn(`[CatalogRegistry] No usable component modules for plugin '${plugin.id}'`)
+      continue
+    }
+
     // Auto-register gallery preview for this plugin
     buildPluginGalleryExamples(plugin.id, plugin.name, plugin.capabilities)
   }

@@ -1,0 +1,35 @@
+{
+  "id": "chemistry-orbital-3d",
+  "version": "1.0.0",
+  "subject": "chemistry",
+  "name": "原子轨道3D可视化插件",
+  "keywords": ["轨道", "电子云", "波函数", "s轨道", "p轨道", "d轨道", "f轨道", "量子数", "原子结构"],
+  "entry": {
+    "js": "dist/index.esm.js"
+  },
+  "capabilities": [
+    {
+      "component_id": "OrbitalViewer",
+      "name": "原子轨道3D可视化",
+      "tags": ["轨道", "电子云", "波函数", "s轨道", "p轨道", "d轨道"],
+      "props_schema": {
+        "orbital": {
+          "type": "string",
+          "default": "2p_z",
+          "description": "轨道类型标识，如 '1s'、'2p_x'、'2p_z'、'3d_xy'、'3d_z2'、'4f_z3' 等，支持 1s 到 4f 的所有轨道"
+        },
+        "particleCount": {
+          "type": "number",
+          "default": 30000,
+          "min": 10000,
+          "max": 80000,
+          "description": "粒子数量，越大越精细但生成越慢"
+        }
+      },
+      "a2ui_hint": "OrbitalViewer 组件已内置轨道类型选择下拉框，支持从 1s 到 4f 的所有原子轨道。不需要额外生成轨道选择控件。只需通过 properties 传入初始 orbital 值即可，如 orbital='2p_z' 表示展示 2p_z 轨道。组件会自动显示轨道量子数信息（能层、能级、节点数等）。",
+      "expresses": ["s/p/d/f 轨道电子云形状", "波函数概率密度分布", "轨道节点结构", "量子数与轨道形态的关系"],
+      "educational_use": "帮助学生直观理解原子轨道的三维形状和电子概率密度分布，观察不同量子数对轨道形态的影响",
+      "cannot_express": ["分子轨道", "杂化轨道", "电子排布", "化学键"]
+    }
+  ]
+}

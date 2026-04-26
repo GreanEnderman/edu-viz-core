@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo, useRef } from 'react'
 import { LeftSidebar } from './components/Layout/LeftSidebar'
 import { RightSidebar } from './components/Layout/RightSidebar'
 import { TopNav } from './components/Layout/TopNav'
@@ -14,6 +14,7 @@ import { ComponentGallery } from './gallery/ComponentGallery'
 function hasVisited(): boolean {
   return sessionStorage.getItem('aha_visited') === '1'
 }
+
 function markVisited(): void {
   sessionStorage.setItem('aha_visited', '1')
 }
@@ -23,6 +24,7 @@ function AppShell() {
   const [rightOpen, setRightOpen] = useState(false)
   const [pluginsOpen, setPluginsOpen] = useState(false)
   const isFirstVisit = !hasVisited()
+  const hasAppliedInitialSidebarState = useRef(false)
 
   const conversations = useChatStore((s) => s.conversations)
   const currentId = useChatStore((s) => s.currentId)
@@ -39,6 +41,20 @@ function AppShell() {
   useEffect(() => {
     loadConversations()
   }, [loadConversations])
+
+  useEffect(() => {
+    if (hasAppliedInitialSidebarState.current) return
+
+    if (!isFirstVisit) {
+      hasAppliedInitialSidebarState.current = true
+      return
+    }
+
+    if (conversations.length > 0) {
+      setLeftOpen(true)
+      hasAppliedInitialSidebarState.current = true
+    }
+  }, [conversations.length, isFirstVisit])
 
   // 首次发送消息后标记已访问
   useEffect(() => {
@@ -61,7 +77,7 @@ function AppShell() {
         </svg>
       </div>
 
-      {/* Welcome overlay title (fades out on chat-active) — 无对话时显示 */}
+      {/* Welcome overlay title (fades out on chat-active) - 无对话时显示 */}
       {!currentId && (
         <div className="fixed inset-0 flex items-center justify-center pointer-events-none z-40 pb-48 welcome-overlay">
           <h3 className="font-serif text-4xl text-primary leading-relaxed">欢迎来到您的思想殿堂。</h3>
@@ -70,7 +86,15 @@ function AppShell() {
 
       {/* Main layout */}
       <div className="flex h-screen overflow-hidden relative z-10">
-        <LeftSidebar open={leftOpen} onOpen={() => setLeftOpen(true)} onClose={() => setLeftOpen(false)} onPlugins={() => { setLeftOpen(false); setPluginsOpen(true) }} />
+        <LeftSidebar
+          open={leftOpen}
+          onOpen={() => setLeftOpen(true)}
+          onClose={() => setLeftOpen(false)}
+          onPlugins={() => {
+            setLeftOpen(false)
+            setPluginsOpen(true)
+          }}
+        />
 
         <main className="flex-1 flex flex-col h-full relative transition-all duration-500 overflow-hidden">
           <TopNav
@@ -94,7 +118,7 @@ function AppShell() {
             </div>
           </section>
 
-          {/* Footer input — absolutely positioned, animates from center to bottom */}
+          {/* Footer input - absolutely positioned, animates from center to bottom */}
           <footer id="footer-input-container">
             <div className="px-8 md:px-16 pb-12 pt-6" style={{ background: 'linear-gradient(to top, transparent 0%, var(--color-background) 25%, var(--color-background) 75%, transparent 100%)' }}>
               <ChatInput onSend={handleSend} disabled={isLoading} />
