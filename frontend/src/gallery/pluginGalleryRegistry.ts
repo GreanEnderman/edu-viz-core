@@ -1,42 +1,36 @@
 import type { ServerToClientMessage } from '@a2ui/react'
+import type { PluginCapability } from '../types/plugin'
 import type { ComponentExample } from './showcaseData'
 
-/** Gallery examples registered by plugins */
 export const pluginGalleryExamples: ComponentExample[] = []
 
-/**
- * Register a plugin component's gallery preview.
- * Called by CatalogRegistry after loading plugin capabilities.
- */
 export function registerPluginGalleryExample(example: ComponentExample): void {
-  // Avoid duplicates
-  if (pluginGalleryExamples.some(e => e.id === example.id)) return
+  if (pluginGalleryExamples.some((item) => item.id === example.id)) return
   pluginGalleryExamples.push(example)
 }
 
-/**
- * Build gallery examples from a plugin's capability data.
- * Called during plugin loading in CatalogRegistry.
- */
 export function buildPluginGalleryExamples(
   pluginId: string,
   pluginName: string,
-  capabilities: Array<{
-    component_id: string
-    name: string
-    props_schema?: Record<string, any>
-  }>,
+  capabilities: PluginCapability[],
 ): void {
-  const pluginsCategory = { id: 'plugins' as const, name: '插件组件', description: '自定义插件组件' }
+  const pluginsCategory = {
+    id: 'plugins' as const,
+    name: '插件组件',
+    description: '自定义插件组件',
+  }
 
-  for (const cap of capabilities) {
-    const surfaceId = `gallery-plugin-${pluginId}-${cap.component_id}`
-    const props: Record<string, any> = {}
+  for (const capability of capabilities) {
+    const surfaceId = `gallery-plugin-${pluginId}-${capability.component_id}`
+    const props: Record<string, unknown> = {}
 
-    // Extract default values from props_schema
-    if (cap.props_schema) {
-      for (const [key, schema] of Object.entries(cap.props_schema)) {
-        if (schema && typeof schema === 'object' && 'default' in schema) {
+    if (capability.props_schema) {
+      for (const [key, schema] of Object.entries(capability.props_schema)) {
+        if (
+          schema &&
+          typeof schema === 'object' &&
+          'default' in schema
+        ) {
           props[key] = schema.default
         }
       }
@@ -46,21 +40,23 @@ export function buildPluginGalleryExamples(
       {
         surfaceUpdate: {
           surfaceId,
-          components: [{
-            id: 'root',
-            component: {
-              [cap.component_id]: props,
+          components: [
+            {
+              id: 'root',
+              component: {
+                [capability.component_id]: props,
+              },
             },
-          }],
+          ],
         },
       },
       { beginRendering: { surfaceId, root: 'root' } },
     ]
 
     registerPluginGalleryExample({
-      id: `plugin-${pluginId}-${cap.component_id}`,
-      name: cap.name || cap.component_id,
-      description: `${pluginName} — ${cap.name || cap.component_id}`,
+      id: `plugin-${pluginId}-${capability.component_id}`,
+      name: capability.name || capability.component_id,
+      description: `${pluginName} - ${capability.name || capability.component_id}`,
       category: pluginsCategory,
       surfaceId,
       messages,

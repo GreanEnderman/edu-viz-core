@@ -1,84 +1,80 @@
 import { useEffect } from 'react'
 import { useA2UI, type ServerToClientMessage } from '@a2ui/react'
-import { useChatStore, genId } from '../store/chatStore'
 import { remapSurfaceId } from '../a2ui-engine/StreamSplitter'
-import { streamChat } from '../api/chat'
+import { streamChat } from '../services/chatService'
+import { useChatStore } from '../store/chatStore'
+import type { TextMessage } from '../types/chat'
+import { genMessageId } from '../utils/chatMessages'
 
 export function useChat() {
   const { processMessages, clearSurfaces } = useA2UI()
-  const { sendMessage, appendChunk, finishMessage, addA2UIMessage, updateConversationTitle, setError } = useChatStore()
+  const { sendMessage, appendChunk, finishMessage, addA2UIMessage, updateConversationTitle, setError } =
+    useChatStore()
 
-  const currentId = useChatStore((s) => s.currentId)
-  const conversations = useChatStore((s) => s.conversations)
+  const currentId = useChatStore((state) => state.currentId)
+  const conversations = useChatStore((state) => state.conversations)
 
-  // 当切换对话时，重放历史 A2UI 消息
   useEffect(() => {
     if (!currentId) return
-    const conv = conversations.find((c) => c.id === currentId)
-    if (!conv) return
 
-    const a2uiMsgs = conv.messages.filter((m) => m.type === 'a2ui')
-    if (a2uiMsgs.length === 0) return
+    const conversation = conversations.find((item) => item.id === currentId)
+    if (!conversation) return
 
-    // 清除旧对话的 surfaces
+    const a2uiMessages = conversation.messages.filter((message) => message.type === 'a2ui')
+    if (a2uiMessages.length === 0) return
+
     clearSurfaces()
 
-    // 重放每条 A2UI 消息（lines 中已包含重映射后的 surfaceId）
-    for (const msg of a2uiMsgs) {
-      if (msg.type !== 'a2ui' || !msg.lines.length) continue
-      for (const line of msg.lines) {
+    for (const message of a2uiMessages) {
+      if (message.type !== 'a2ui' || message.lines.length === 0) continue
+
+      for (const line of message.lines) {
         try {
-          const parsed = JSON.parse(line) as ServerToClientMessage
-          processMessages([parsed])
+          processMessages([JSON.parse(line) as ServerToClientMessage])
         } catch {
-          // malformed a2ui line — ignore
+          // Ignore malformed A2UI payloads from persisted records.
         }
       }
     }
-  }, [currentId]) // 仅在对话切换时触发
+  }, [clearSurfaces, conversations, currentId, processMessages])
 
   const handleSend = async (text: string) => {
     await sendMessage(text)
 
     const state = useChatStore.getState()
-    const conv = state.conversations.find((c) => c.id === state.currentId)
-    const msgs = conv?.messages ?? []
-    const history = msgs
-      .filter((m) => m.type === 'text' && !m.isStreaming)
-      .map((m) => ({ role: m.role, content: m.type === 'text' ? m.content : '' }))
+    const conversation = state.conversations.find((item) => item.id === state.currentId)
+    const history =
+      conversation?.messages
+        .filter((message): message is TextMessage => message.type === 'text' && !message.isStreaming)
+        .map((message) => ({ role: message.role, content: message.content })) ?? []
 
-    const convId = useChatStore.getState().currentId
-
-    // 每次回复使用独立的 surfaceId，避免覆盖之前生成的组件
     let currentSurfaceId: string | null = null
 
     streamChat(
-      [...history, { role: 'user' as const, content: text }],
+      [...history, { role: 'user', content: text }],
       {
-        onChunk: (chunk) => appendChunk(chunk),
+        onChunk: appendChunk,
         onA2UILine: (line) => {
           try {
-            // 首条 A2UI 线到达时，生成唯一 surfaceId 并创建 A2UI 消息
             if (!currentSurfaceId) {
-              currentSurfaceId = genId()
+              currentSurfaceId = genMessageId()
               addA2UIMessage(currentSurfaceId)
             }
-            // 将 "main" 重映射为独立 surfaceId
+
             const remappedLine = remapSurfaceId(line, currentSurfaceId)
-            const msg = JSON.parse(remappedLine) as ServerToClientMessage
-            processMessages([msg])
+            processMessages([JSON.parse(remappedLine) as ServerToClientMessage])
           } catch {
-            // malformed a2ui line — ignore
+            // Ignore malformed A2UI lines.
           }
         },
         onDone: () => {
           currentSurfaceId = null
           finishMessage()
         },
-        onTitle: (title) => updateConversationTitle(title),
-        onError: (err) => setError(err.message),
+        onTitle: updateConversationTitle,
+        onError: (error) => setError(error.message),
       },
-      convId ? { conversationId: convId } : undefined,
+      state.currentId ? { conversationId: state.currentId } : undefined,
     )
   }
 

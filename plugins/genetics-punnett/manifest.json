@@ -1,0 +1,118 @@
+{
+  "id": "genetics-punnett",
+  "version": "1.0.0",
+  "subject": "genetics",
+  "name": "孟德尔方格图插件",
+  "keywords": [
+    "孟德尔",
+    "遗传",
+    "杂交",
+    "基因型",
+    "表型",
+    "显性",
+    "隐性",
+    "杂合",
+    "纯合",
+    "旁氏棋盘",
+    "分离定律",
+    "自由组合",
+    "伴性遗传",
+    "卡方检验",
+    "概率"
+  ],
+  "entry": {
+    "js": "dist/index.esm.js"
+  },
+  "sharedDependencies": ["react", "react-dom", "@a2ui/react"],
+  "capabilities": [
+    {
+      "component_id": "PunnettSquare",
+      "name": "孟德尔方格图（旁氏棋盘）",
+      "tags": ["孟德尔", "方格图", "杂交", "基因型", "表型", "旁氏棋盘", "分离定律", "自由组合"],
+      "props_schema": {
+        "parent1Genotype": {
+          "type": "string",
+          "default": "Aa",
+          "description": "父本（♂）基因型，如 Aa、AaBb、aabb"
+        },
+        "parent2Genotype": {
+          "type": "string",
+          "default": "Aa",
+          "description": "母本（♀）基因型，如 Aa、AaBb、aabb"
+        },
+        "trait": {
+          "type": "string",
+          "default": "",
+          "description": "性状名称，如 豌豆茎高、豌豆颜色"
+        },
+        "fatherLabel": {
+          "type": "string",
+          "default": "父本",
+          "description": "父本显示标签"
+        },
+        "motherLabel": {
+          "type": "string",
+          "default": "母本",
+          "description": "母本显示标签"
+        },
+        "fatherPhenotype": {
+          "type": "string",
+          "default": "",
+          "description": "父本表型描述，如 高茎"
+        },
+        "motherPhenotype": {
+          "type": "string",
+          "default": "",
+          "description": "母本表型描述，如 矮茎"
+        },
+        "showPhenotype": {
+          "type": "boolean",
+          "default": true,
+          "description": "是否显示表型标注、比例统计和颜色区分"
+        },
+        "interactive": {
+          "type": "boolean",
+          "default": true,
+          "description": "是否允许点击格子查看详情"
+        },
+        "traitDefinitions": {
+          "type": "array",
+          "default": [],
+          "description": "性状定义数组。每项包含 name(性状名)、dominantTrait(显性表型)、recessiveTrait(隐性表型)、incompleteDominance(是否不完全显性)、intermediateTrait(中间表型)。如 [{name:'茎高',dominantTrait:'高茎',recessiveTrait:'矮茎'}]"
+        },
+        "incompleteDominance": {
+          "type": "boolean",
+          "default": false,
+          "description": "是否为不完全显性遗传（当未提供 traitDefinitions 时生效）"
+        },
+        "intermediateTrait": {
+          "type": "string",
+          "default": "中间型",
+          "description": "不完全显性时杂合子的表型名称（如 粉花、灰色）"
+        }
+      },
+      "a2ui_hint": "PunnettSquare 组件是完整的孟德尔方格图教学工具，已内置所有交互控件（点击格子在旁边弹出浮动详情卡片），不需要额外生成控件。LLM只需通过 properties 传入 parent1Genotype 和 parent2Genotype（如 Aa x Aa）即可。支持：(1)单因子/双因子杂交；(2)通过 traitDefinitions 定义性状名称（如 [{name:'茎高',dominantTrait:'高茎',recessiveTrait:'矮茎',incompleteDominance:true,intermediateTrait:'中等茎'}]）；(3)通过 incompleteDominance=true 和 intermediateTrait='粉花' 简单启用不完全显性（无需构造 traitDefinitions）；(4)通过 fatherPhenotype/motherPhenotype 标注亲本表型。组件自动计算基因型/表型比例、双基因自由组合拆解。当学生问及孟德尔遗传、杂交、方格图、不完全显性时优先调用。",
+      "expresses": [
+        "杂交后代基因型比例与概率",
+        "杂交后代表型比例与概率",
+        "单因子杂交方格图（2x2）",
+        "双因子杂交方格图（4x4）",
+        "显性与隐性性状分布",
+        "配子概率与乘法原理",
+        "不完全显性/共显性",
+        "双基因自由组合拆解"
+      ],
+      "educational_use": "覆盖初高中遗传学课标：单因子杂交3:1分离比、双因子杂交9:3:3:1自由组合比、概率计算原理。支持性状自定义命名、不完全显性。",
+      "cannot_express": [
+        "卡方检验与统计学验证",
+        "随机受精模拟实验",
+        "伴性遗传标注",
+        "基因连锁的具体重组率计算",
+        "染色体交叉互换的分子机制",
+        "数量性状多基因遗传",
+        "细胞质遗传（母系遗传）",
+        "表观遗传现象"
+      ]
+    }
+  ]
+}

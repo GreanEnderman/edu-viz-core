@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { type Message } from '../../store/chatStore'
+import type { Message } from '../../types/chat'
 import { TextBubble } from './TextBubble'
 import { A2UISurface } from './A2UISurface'
 

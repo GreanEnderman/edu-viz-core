@@ -1,0 +1,3 @@
+{
+  "extends": "../../packages/plugin-runtime/tsconfig.plugin.json"
+}

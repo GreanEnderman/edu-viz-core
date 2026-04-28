@@ -1,0 +1,478 @@
+{
+  "hash": "bd17f974",
+  "configHash": "8818a00f",
+  "lockfileHash": "4abf77ff",
+  "browserHash": "2b387428",
+  "optimized": {
+    "3dmol": {
+      "src": "../../../../plugins/chemistry-molecule-3d/node_modules/3dmol/build/3Dmol.js",
+      "file": "3dmol.js",
+      "fileHash": "c08ff2b6",
+      "needsInterop": true
+    },
+    "@a2ui/web_core/data/model-processor": {
+      "src": "../../../../vendor/A2UI-main/renderers/react/node_modules/@a2ui/web_core/dist/src/v0_8/data/model-processor.js",
+      "file": "@a2ui_web___core_data_model-processor.js",
+      "fileHash": "1b6a0eec",
+      "needsInterop": false
+    },
+    "@a2ui/web_core/styles/index": {
+      "src": "../../../../vendor/A2UI-main/renderers/react/node_modules/@a2ui/web_core/dist/src/v0_8/styles/index.js",
+      "file": "@a2ui_web___core_styles_index.js",
+      "fileHash": "76d7b699",
+      "needsInterop": false
+    },
+    "clsx": {
+      "src": "../../../../node_modules/clsx/dist/clsx.mjs",
+      "file": "clsx.js",
+      "fileHash": "d66e4ee2",
+      "needsInterop": false
+    },
+    "markdown-it": {
+      "src": "../../../../vendor/A2UI-main/renderers/react/node_modules/markdown-it/index.mjs",
+      "file": "markdown-it.js",
+      "fileHash": "a6f2481a",
+      "needsInterop": false
+    },
+    "mermaid": {
+      "src": "../../../node_modules/mermaid/dist/mermaid.core.mjs",
+      "file": "mermaid.js",
+      "fileHash": "eb59ae33",
+      "needsInterop": false
+    },
+    "react-dom": {
+      "src": "../../../../node_modules/react-dom/index.js",
+      "file": "react-dom.js",
+      "fileHash": "5ef59368",
+      "needsInterop": true
+    },
+    "react-dom/client": {
+      "src": "../../../../node_modules/react-dom/client.js",
+      "file": "react-dom_client.js",
+      "fileHash": "e94b9b33",
+      "needsInterop": true
+    },
+    "react-markdown": {
+      "src": "../../../node_modules/react-markdown/index.js",
+      "file": "react-markdown.js",
+      "fileHash": "14c317d4",
+      "needsInterop": false
+    },
+    "react": {
+      "src": "../../../../node_modules/react/index.js",
+      "file": "react.js",
+      "fileHash": "920815f7",
+      "needsInterop": true
+    },
+    "react/jsx-dev-runtime": {
+      "src": "../../../../node_modules/react/jsx-dev-runtime.js",
+      "file": "react_jsx-dev-runtime.js",
+      "fileHash": "6a425fc9",
+      "needsInterop": true
+    },
+    "react/jsx-runtime": {
+      "src": "../../../../node_modules/react/jsx-runtime.js",
+      "file": "react_jsx-runtime.js",
+      "fileHash": "613b0d80",
+      "needsInterop": true
+    },
+    "rehype-katex": {
+      "src": "../../../node_modules/rehype-katex/index.js",
+      "file": "rehype-katex.js",
+      "fileHash": "0e2af9d7",
+      "needsInterop": false
+    },
+    "remark-gfm": {
+      "src": "../../../node_modules/remark-gfm/index.js",
+      "file": "remark-gfm.js",
+      "fileHash": "39e1c3da",
+      "needsInterop": false
+    },
+    "remark-math": {
+      "src": "../../../node_modules/remark-math/index.js",
+      "file": "remark-math.js",
+      "fileHash": "f9668835",
+      "needsInterop": false
+    },
+    "three": {
+      "src": "../../../../plugins/chemistry-orbital-3d/node_modules/three/build/three.module.js",
+      "file": "three.js",
+      "fileHash": "96ccfa54",
+      "needsInterop": false
+    },
+    "three/examples/jsm/controls/OrbitControls.js": {
+      "src": "../../../../plugins/chemistry-orbital-3d/node_modules/three/examples/jsm/controls/OrbitControls.js",
+      "file": "three_examples_jsm_controls_OrbitControls__js.js",
+      "fileHash": "18ca05f3",
+      "needsInterop": false
+    },
+    "zustand": {
+      "src": "../../../node_modules/zustand/esm/index.mjs",
+      "file": "zustand.js",
+      "fileHash": "cc0ec4b5",
+      "needsInterop": false
+    }
+  },
+  "chunks": {
+    "arc-CFuMTnvt": {
+      "file": "arc-CFuMTnvt.js",
+      "isDynamicEntry": false
+    },
+    "architecture-PBZL5I3N-Jo3a_4QF": {
+      "file": "architecture-PBZL5I3N-Jo3a_4QF.js",
+      "isDynamicEntry": true
+    },
+    "architectureDiagram-2XIMDMQ5-BbaNRebX": {
+      "file": "architectureDiagram-2XIMDMQ5-BbaNRebX.js",
+      "isDynamicEntry": true
+    },
+    "array-Bx1vyFe7": {
+      "file": "array-Bx1vyFe7.js",
+      "isDynamicEntry": false
+    },
+    "blockDiagram-WCTKOSBZ-BXBULP-p": {
+      "file": "blockDiagram-WCTKOSBZ-BXBULP-p.js",
+      "isDynamicEntry": true
+    },
+    "c4Diagram-IC4MRINW-jj9R5mxu": {
+      "file": "c4Diagram-IC4MRINW-jj9R5mxu.js",
+      "isDynamicEntry": true
+    },
+    "channel-kmVNzsbA": {
+      "file": "channel-kmVNzsbA.js",
+      "isDynamicEntry": false
+    },
+    "chunk-4BX2VUAB-DmEjqvBz": {
+      "file": "chunk-4BX2VUAB-DmEjqvBz.js",
+      "isDynamicEntry": false
+    },
+    "chunk-55IACEB6-7kJTdeNd": {
+      "file": "chunk-55IACEB6-7kJTdeNd.js",
+      "isDynamicEntry": false
+    },
+    "chunk-7E7YKBS2-Bc7AO8IG": {
+      "file": "chunk-7E7YKBS2-Bc7AO8IG.js",
+      "isDynamicEntry": false
+    },
+    "chunk-7R4GIKGN-cgiuMX66": {
+      "file": "chunk-7R4GIKGN-cgiuMX66.js",
+      "isDynamicEntry": false
+    },
+    "chunk-C72U2L5F-Cn19fGPc": {
+      "file": "chunk-C72U2L5F-Cn19fGPc.js",
+      "isDynamicEntry": false
+    },
+    "chunk-EGIJ26TM-nzOVdiS6": {
+      "file": "chunk-EGIJ26TM-nzOVdiS6.js",
+      "isDynamicEntry": false
+    },
+    "chunk-FMBD7UC4-CzSqoOKs": {
+      "file": "chunk-FMBD7UC4-CzSqoOKs.js",
+      "isDynamicEntry": false
+    },
+    "chunk-GEFDOKGD-MA_ZFFq1": {
+      "file": "chunk-GEFDOKGD-MA_ZFFq1.js",
+      "isDynamicEntry": false
+    },
+    "chunk-GLR3WWYH-CFEAeF3v": {
+      "file": "chunk-GLR3WWYH-CFEAeF3v.js",
+      "isDynamicEntry": false
+    },
+    "chunk-HHEYEP7N-CWWezwyH": {
+      "file": "chunk-HHEYEP7N-CWWezwyH.js",
+      "isDynamicEntry": false
+    },
+    "chunk-JSJVCQXG-BfYHdGkE": {
+      "file": "chunk-JSJVCQXG-BfYHdGkE.js",
+      "isDynamicEntry": false
+    },
+    "chunk-KX2RTZJC-Br_vLs5t": {
+      "file": "chunk-KX2RTZJC-Br_vLs5t.js",
+      "isDynamicEntry": false
+    },
+    "chunk-KYZI473N-CusemBoy": {
+      "file": "chunk-KYZI473N-CusemBoy.js",
+      "isDynamicEntry": false
+    },
+    "chunk-L3YUKLVL-DBApsyDq": {
+      "file": "chunk-L3YUKLVL-DBApsyDq.js",
+      "isDynamicEntry": false
+    },
+    "chunk-MX3YWQON-CHI525MA": {
+      "file": "chunk-MX3YWQON-CHI525MA.js",
+      "isDynamicEntry": false
+    },
+    "chunk-NQ4KR5QH-1usuI_y7": {
+      "file": "chunk-NQ4KR5QH-1usuI_y7.js",
+      "isDynamicEntry": false
+    },
+    "chunk-O4XLMI2P-DJjCwIoc": {
+      "file": "chunk-O4XLMI2P-DJjCwIoc.js",
+      "isDynamicEntry": false
+    },
+    "chunk-OZEHJAEY-kz1wqNh1": {
+      "file": "chunk-OZEHJAEY-kz1wqNh1.js",
+      "isDynamicEntry": false
+    },
+    "chunk-PQ6SQG4A-LlCQzyRr": {
+      "file": "chunk-PQ6SQG4A-LlCQzyRr.js",
+      "isDynamicEntry": false
+    },
+    "chunk-PU5JKC2W-DPiQYZZs": {
+      "file": "chunk-PU5JKC2W-DPiQYZZs.js",
+      "isDynamicEntry": false
+    },
+    "chunk-QZHKN3VN-BIunecJj": {
+      "file": "chunk-QZHKN3VN-BIunecJj.js",
+      "isDynamicEntry": false
+    },
+    "chunk-R5LLSJPH-UFADFaLV": {
+      "file": "chunk-R5LLSJPH-UFADFaLV.js",
+      "isDynamicEntry": false
+    },
+    "chunk-WL4C6EOR-BE46Q2VV": {
+      "file": "chunk-WL4C6EOR-BE46Q2VV.js",
+      "isDynamicEntry": false
+    },
+    "chunk-XIRO2GV7-BOfuSf8v": {
+      "file": "chunk-XIRO2GV7-BOfuSf8v.js",
+      "isDynamicEntry": false
+    },
+    "chunk-XPW4576I-AywH7d0s": {
+      "file": "chunk-XPW4576I-AywH7d0s.js",
+      "isDynamicEntry": false
+    },
+    "chunk-XZSTWKYB-CzNX4mb5": {
+      "file": "chunk-XZSTWKYB-CzNX4mb5.js",
+      "isDynamicEntry": false
+    },
+    "chunk-YBOYWFTD-Dl2ccZbu": {
+      "file": "chunk-YBOYWFTD-Dl2ccZbu.js",
+      "isDynamicEntry": false
+    },
+    "chunk-y4iZ7GFx": {
+      "file": "chunk-y4iZ7GFx.js",
+      "isDynamicEntry": false
+    },
+    "classDiagram-VBA2DB6C-CLTPYdbg": {
+      "file": "classDiagram-VBA2DB6C-CLTPYdbg.js",
+      "isDynamicEntry": true
+    },
+    "classDiagram-v2-RAHNMMFH-DOKydo0Q": {
+      "file": "classDiagram-v2-RAHNMMFH-DOKydo0Q.js",
+      "isDynamicEntry": true
+    },
+    "cose-bilkent-S5V4N54A-CVihI6c0": {
+      "file": "cose-bilkent-S5V4N54A-CVihI6c0.js",
+      "isDynamicEntry": true
+    },
+    "cytoscape.esm-BM9RxMTJ": {
+      "file": "cytoscape.esm-BM9RxMTJ.js",
+      "isDynamicEntry": false
+    },
+    "dagre-BQ2aJHC-": {
+      "file": "dagre-BQ2aJHC-.js",
+      "isDynamicEntry": false
+    },
+    "dagre-KLK3FWXG-Ltj2RSRx": {
+      "file": "dagre-KLK3FWXG-Ltj2RSRx.js",
+      "isDynamicEntry": true
+    },
+    "dev-CL9sItyh": {
+      "file": "dev-CL9sItyh.js",
+      "isDynamicEntry": false
+    },
+    "diagram-E7M64L7V-CwHgPO2m": {
+      "file": "diagram-E7M64L7V-CwHgPO2m.js",
+      "isDynamicEntry": true
+    },
+    "diagram-IFDJBPK2-CbKUSZRC": {
+      "file": "diagram-IFDJBPK2-CbKUSZRC.js",
+      "isDynamicEntry": true
+    },
+    "diagram-P4PSJMXO-BGOvV14S": {
+      "file": "diagram-P4PSJMXO-BGOvV14S.js",
+      "isDynamicEntry": true
+    },
+    "dist-RlBhuN76": {
+      "file": "dist-RlBhuN76.js",
+      "isDynamicEntry": false
+    },
+    "erDiagram-INFDFZHY-SkETVRaZ": {
+      "file": "erDiagram-INFDFZHY-SkETVRaZ.js",
+      "isDynamicEntry": true
+    },
+    "flowDiagram-PKNHOUZH-DmMa_cj_": {
+      "file": "flowDiagram-PKNHOUZH-DmMa_cj_.js",
+      "isDynamicEntry": true
+    },
+    "ganttDiagram-A5KZAMGK-JAa8qJyz": {
+      "file": "ganttDiagram-A5KZAMGK-JAa8qJyz.js",
+      "isDynamicEntry": true
+    },
+    "gitGraph-HDMCJU4V-Dd9hzi3i": {
+      "file": "gitGraph-HDMCJU4V-Dd9hzi3i.js",
+      "isDynamicEntry": true
+    },
+    "gitGraphDiagram-K3NZZRJ6-Dy9gwpKq": {
+      "file": "gitGraphDiagram-K3NZZRJ6-Dy9gwpKq.js",
+      "isDynamicEntry": true
+    },
+    "graphlib-ZdK7uGAx": {
+      "file": "graphlib-ZdK7uGAx.js",
+      "isDynamicEntry": false
+    },
+    "info-3K5VOQVL-CNX9_feV": {
+      "file": "info-3K5VOQVL-CNX9_feV.js",
+      "isDynamicEntry": true
+    },
+    "infoDiagram-LFFYTUFH-tdoh1SBu": {
+      "file": "infoDiagram-LFFYTUFH-tdoh1SBu.js",
+      "isDynamicEntry": true
+    },
+    "init-bd-3tU6B": {
+      "file": "init-bd-3tU6B.js",
+      "isDynamicEntry": false
+    },
+    "isEmpty-D5Jh_fKj": {
+      "file": "isEmpty-D5Jh_fKj.js",
+      "isDynamicEntry": false
+    },
+    "ishikawaDiagram-PHBUUO56-DTtRm4Dv": {
+      "file": "ishikawaDiagram-PHBUUO56-DTtRm4Dv.js",
+      "isDynamicEntry": true
+    },
+    "journeyDiagram-4ABVD52K-F4-aUR8L": {
+      "file": "journeyDiagram-4ABVD52K-F4-aUR8L.js",
+      "isDynamicEntry": true
+    },
+    "kanban-definition-K7BYSVSG-CCKNBARD": {
+      "file": "kanban-definition-K7BYSVSG-CCKNBARD.js",
+      "isDynamicEntry": true
+    },
+    "katex-CH_Z5nCG": {
+      "file": "katex-CH_Z5nCG.js",
+      "isDynamicEntry": false
+    },
+    "lib-CiBAbEb4": {
+      "file": "lib-CiBAbEb4.js",
+      "isDynamicEntry": false
+    },
+    "lib-DsRc9pc6": {
+      "file": "lib-DsRc9pc6.js",
+      "isDynamicEntry": false
+    },
+    "line-CPsYPy09": {
+      "file": "line-CPsYPy09.js",
+      "isDynamicEntry": false
+    },
+    "linear-Bk3ewiX4": {
+      "file": "linear-Bk3ewiX4.js",
+      "isDynamicEntry": false
+    },
+    "lodash-BWBUQRyg": {
+      "file": "lodash-BWBUQRyg.js",
+      "isDynamicEntry": false
+    },
+    "longest-streak-C-UMOIL3": {
+      "file": "longest-streak-C-UMOIL3.js",
+      "isDynamicEntry": false
+    },
+    "math-Dt8RRwGe": {
+      "file": "math-Dt8RRwGe.js",
+      "isDynamicEntry": false
+    },
+    "merge-Cs0X8daU": {
+      "file": "merge-Cs0X8daU.js",
+      "isDynamicEntry": false
+    },
+    "mermaid-parser.core-Na-Khl-m": {
+      "file": "mermaid-parser.core-Na-Khl-m.js",
+      "isDynamicEntry": false
+    },
+    "mindmap-definition-YRQLILUH-DVCbe04o": {
+      "file": "mindmap-definition-YRQLILUH-DVCbe04o.js",
+      "isDynamicEntry": true
+    },
+    "ordinal-CR5LXDBv": {
+      "file": "ordinal-CR5LXDBv.js",
+      "isDynamicEntry": false
+    },
+    "packet-RMMSAZCW-j3dfcYbQ": {
+      "file": "packet-RMMSAZCW-j3dfcYbQ.js",
+      "isDynamicEntry": true
+    },
+    "path-BTVHdJoC": {
+      "file": "path-BTVHdJoC.js",
+      "isDynamicEntry": false
+    },
+    "pie-UPGHQEXC-BqvK5v6f": {
+      "file": "pie-UPGHQEXC-BqvK5v6f.js",
+      "isDynamicEntry": true
+    },
+    "pieDiagram-SKSYHLDU-H6KVBMwW": {
+      "file": "pieDiagram-SKSYHLDU-H6KVBMwW.js",
+      "isDynamicEntry": true
+    },
+    "quadrantDiagram-337W2JSQ-wH5vHtje": {
+      "file": "quadrantDiagram-337W2JSQ-wH5vHtje.js",
+      "isDynamicEntry": true
+    },
+    "radar-KQ55EAFF-B7Y_3bVT": {
+      "file": "radar-KQ55EAFF-B7Y_3bVT.js",
+      "isDynamicEntry": true
+    },
+    "requirementDiagram-Z7DCOOCP-CGWoEpPv": {
+      "file": "requirementDiagram-Z7DCOOCP-CGWoEpPv.js",
+      "isDynamicEntry": true
+    },
+    "rough.esm-c17O1dcs": {
+      "file": "rough.esm-c17O1dcs.js",
+      "isDynamicEntry": false
+    },
+    "sankeyDiagram-WA2Y5GQK-NRIxYLhV": {
+      "file": "sankeyDiagram-WA2Y5GQK-NRIxYLhV.js",
+      "isDynamicEntry": true
+    },
+    "sequenceDiagram-2WXFIKYE-C2tBSqt_": {
+      "file": "sequenceDiagram-2WXFIKYE-C2tBSqt_.js",
+      "isDynamicEntry": true
+    },
+    "space-separated-tokens-CZHnX19q": {
+      "file": "space-separated-tokens-CZHnX19q.js",
+      "isDynamicEntry": false
+    },
+    "src-CXzfqqM4": {
+      "file": "src-CXzfqqM4.js",
+      "isDynamicEntry": false
+    },
+    "stateDiagram-RAJIS63D-D640nW4S": {
+      "file": "stateDiagram-RAJIS63D-D640nW4S.js",
+      "isDynamicEntry": true
+    },
+    "stateDiagram-v2-FVOUBMTO-DxO0UQYZ": {
+      "file": "stateDiagram-v2-FVOUBMTO-DxO0UQYZ.js",
+      "isDynamicEntry": true
+    },
+    "three.module-BBbSYAwy": {
+      "file": "three.module-BBbSYAwy.js",
+      "isDynamicEntry": false
+    },
+    "timeline-definition-YZTLITO2-oganoatI": {
+      "file": "timeline-definition-YZTLITO2-oganoatI.js",
+      "isDynamicEntry": true
+    },
+    "treemap-KZPCXAKY-jutrbN_D": {
+      "file": "treemap-KZPCXAKY-jutrbN_D.js",
+      "isDynamicEntry": true
+    },
+    "vennDiagram-LZ73GAT5-BPEU2zio": {
+      "file": "vennDiagram-LZ73GAT5-BPEU2zio.js",
+      "isDynamicEntry": true
+    },
+    "xychartDiagram-JWTSCODW-Cxj4q953": {
+      "file": "xychartDiagram-JWTSCODW-Cxj4q953.js",
+      "isDynamicEntry": true
+    }
+  }
+}

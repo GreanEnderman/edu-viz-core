@@ -1,0 +1,85 @@
+{
+  "id": "genetics-volcano",
+  "version": "1.0.0",
+  "subject": "genetics",
+  "name": "火山图插件",
+  "keywords": ["火山图", "差异表达", "基因", "RNA-seq", "显著性", "统计分析", "生物信息学"],
+  "entry": {
+    "js": "dist/index.esm.js"
+  },
+  "sharedDependencies": ["react", "react-dom", "@a2ui/react"],
+  "capabilities": [
+    {
+      "component_id": "VolcanoPlot",
+      "name": "火山图可视化",
+      "tags": ["火山图", "差异表达", "基因分析", "显著性检验", "fold change"],
+      "props_schema": {
+        "geneNames": {
+          "type": "string",
+          "default": "",
+          "description": "基因名称列表，逗号分隔"
+        },
+        "log2FCs": {
+          "type": "string",
+          "default": "",
+          "description": "log2(Fold Change)值列表，逗号分隔，正值表示上调，负值表示下调"
+        },
+        "pValues": {
+          "type": "string",
+          "default": "",
+          "description": "P值列表，逗号分隔，范围0-1"
+        },
+        "fcThreshold": {
+          "type": "number",
+          "default": 1,
+          "min": 0.5,
+          "max": 3,
+          "description": "log2(Fold Change)阈值，|log2FC| > 此值视为差异显著（默认1表示2倍变化）"
+        },
+        "pThreshold": {
+          "type": "number",
+          "default": 0.05,
+          "description": "P值阈值，P < 此值视为统计显著（常用0.05或0.01）"
+        },
+        "title": {
+          "type": "string",
+          "default": "差异表达基因火山图",
+          "description": "图表标题"
+        },
+        "comparison": {
+          "type": "string",
+          "default": "",
+          "description": "对比组说明，如'处理组 vs 对照组'"
+        },
+        "showLabels": {
+          "type": "boolean",
+          "default": true,
+          "description": "是否显示Top基因标签"
+        },
+        "topN": {
+          "type": "number",
+          "default": 5,
+          "min": 1,
+          "max": 20,
+          "description": "标注Top N个最显著的基因"
+        }
+      },
+      "a2ui_hint": "用于展示差异表达基因的火山图。\n\n**必需参数**：\n- geneNames: 基因名称，逗号分隔，如 \"TP53,BRCA1,EGFR\"\n- log2FCs: log2 倍数变化值，逗号分隔，如 \"2.5,-1.8,3.2\"\n- pValues: p 值，逗号分隔，如 \"0.001,0.05,0.0001\"\n\n**数据要求**：\n- 三个参数的长度必须一致\n- log2FCs 可以是正数（上调）或负数（下调）\n- pValues 必须在 0-1 之间\n\n**使用场景**：\n- 学生询问\"哪些基因在肿瘤中表达上调？\"\n- 学生提供差异分析结果需要可视化\n- 教学中需要展示统计显著性与生物学意义的关系\n\n**示例**：\n当学生问\"比较治疗组和对照组的基因表达差异\"时，传入实际的差异分析数据。组件已内置阈值调节滑块、P值选择器和标签开关，不需要额外生成控件。",
+      "expresses": [
+        "差异表达基因的全局分布景观",
+        "生物学意义（log2FC）与统计学意义（P值）的双重维度",
+        "显著上调/下调基因的数量和位置",
+        "阈值线划分的六个区域（左上/左中/左下/右上/右中/右下）",
+        "Top基因的标注和悬停详情"
+      ],
+      "educational_use": "帮助学生理解差异表达分析的核心概念：(1) log2FC表示差异幅度，(2) P值表示统计可靠性，(3) 双阈值筛选显著基因，(4) 红蓝配色区分上调下调。适用于高中生物竞赛、大学生物信息学课程和科研训练。",
+      "cannot_express": [
+        "三组及以上的多组比较（需用热图或Upset图）",
+        "时间序列的动态变化（需用折线图）",
+        "基因之间的相关性或网络关系",
+        "具体的生物学功能或通路富集",
+        "批次效应或技术重复的质控信息"
+      ]
+    }
+  ]
+}
