@@ -60,9 +60,61 @@
 
 ---
 
-## 阶段 1：欢迎屏重构（待开始）
+## 阶段 1：欢迎屏重构（2026-05-07）✅
 
-待完成...
+### 完成的工作
+
+1. **欢迎屏组件**
+   - 创建 `WelcomeScreen.tsx` - 欢迎标题 + 项目卡片网格
+   - 创建 `ProjectCard.tsx` - 单个项目卡片（图标 + 标题 + 标签 + 描述）
+   - 创建 `welcomeProjects.ts` - 6个示例项目数据
+
+2. **基础应用结构**
+   - 创建 `App.tsx` - 集成 A2UISetup + 背景装饰 SVG
+   - 创建 `main.tsx` - React 根组件挂载
+   - 创建 `index.css` - Material Design 3 色彩系统 + 全局样式
+   - 创建 `tailwind.config.js` - Tailwind CSS 配置
+
+3. **配置文件修复**
+   - 添加 `tsconfig.app.json` 和 `tsconfig.node.json`
+   - 复制 `gallery/` 目录（CatalogRegistry 依赖）
+
+4. **设计实现**
+   - 3列响应式网格布局（`grid-cols-1 md:grid-cols-2 lg:grid-cols-3`）
+   - 项目卡片 hover 效果（`shadow-xl + border-secondary/20`）
+   - 背景装饰 SVG 曲线（金色和靛蓝）
+   - 玻璃态效果和阴影系统
+   - Newsreader (serif) + Manrope (sans-serif) 字体
+
+### 验证结果
+
+- ✅ 新前端成功启动（npm run dev:v2）
+- ✅ 新前端在 http://localhost:5174 正常访问
+- ✅ 欢迎屏显示 6 个项目建议卡片
+- ✅ 卡片 hover 效果符合设计规范
+- ✅ 背景装饰 SVG 正常显示
+- ✅ A2UI 引擎正常初始化
+- ✅ TypeScript 编译正常
+- ✅ 无控制台错误
+
+### 文件清单
+
+**新建文件**：
+- `frontend/src/components/Welcome/WelcomeScreen.tsx`
+- `frontend/src/components/Welcome/ProjectCard.tsx`
+- `frontend/src/constants/welcomeProjects.ts`
+- `frontend/src/App.tsx`
+- `frontend/src/main.tsx`
+- `frontend/src/index.css`
+- `frontend/tailwind.config.js`
+- `frontend/tsconfig.app.json`
+
+**复制文件**：
+- `frontend/src/gallery/*` - 从 v1 复制
+
+### 下一步
+
+阶段 2：输入框增强（Pill 形状 + Start/Plan/Ask 模式切换）
 
 ---
 
