@@ -19,7 +19,7 @@ export function BottomInput({ onSend }: BottomInputProps) {
 
           {/* 中央：输入框 */}
           <input
-            className="flex-1 bg-transparent border-none focus:ring-0 text-[15px] text-on-surface placeholder:text-outline-variant/60 px-4 py-4"
+            className="flex-1 bg-transparent border-none focus:ring-0 focus:outline-none text-[15px] text-on-surface placeholder:text-outline-variant/60 px-4 py-4"
             placeholder="描述一个你想尝试的项目，或者问问我的建议..."
             type="text"
           />
