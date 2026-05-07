@@ -4,16 +4,21 @@ import { LeftSidebarPlaceholder } from './components/Layout/LeftSidebarPlacehold
 import { RightSidebarPlaceholder } from './components/Layout/RightSidebarPlaceholder'
 import { WelcomeScreen } from './components/Welcome/WelcomeScreen'
 import { BottomInput } from './components/Welcome/BottomInput'
+import { useChatStore } from './store/chatStore'
+import { useChat } from './hooks/useChat'
 
 function AppShell() {
+  const currentId = useChatStore((state) => state.currentId)
+  const { handleSend } = useChat()
+
   const handleSelectProject = (projectPrompt: string) => {
     console.log('Selected project:', projectPrompt)
-    // TODO: 创建新对话并发送消息
+    handleSend(projectPrompt)
   }
 
-  const handleSend = (message: string) => {
+  const handleSendMessage = (message: string) => {
     console.log('Send message:', message)
-    // TODO: 发送消息
+    handleSend(message)
   }
 
   return (
@@ -32,7 +37,7 @@ function AppShell() {
           <WelcomeScreen onSelectProject={handleSelectProject} />
 
           {/* 底部输入框 */}
-          <BottomInput onSend={handleSend} />
+          <BottomInput onSend={handleSendMessage} />
         </main>
 
         {/* 右侧边栏占位 */}
