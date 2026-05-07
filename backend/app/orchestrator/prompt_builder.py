@@ -207,6 +207,12 @@ def _build_plugin_section(plugin_capabilities: list[dict] | None) -> str:
     lines.append("")
     for cap in plugin_capabilities:
         lines.append(f"#### {cap['component_id']} 使用说明")
+        runtime_model = cap.get("runtime_model")
+        shared_dependencies = cap.get("shared_dependencies", [])
+        if runtime_model == "host-platform-extension":
+            lines.append("运行模型：宿主平台扩展组件，由宿主提供共享运行时，插件只提供领域组件能力。")
+        if shared_dependencies:
+            lines.append("共享运行时依赖：" + "、".join(shared_dependencies))
         props = cap.get("props_schema", {})
         if props:
             lines.append("Props 参数：")

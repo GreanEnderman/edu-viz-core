@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+
+<html class="light" lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&amp;family=Manrope:wght@200..800&amp;family=Noto+Serif+SC:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "secondary": "#775a19",
+                    "surface-container-low": "#f4f4f0",
+                    "secondary-fixed": "#ffdea5",
+                    "on-tertiary-container": "#bda36b",
+                    "on-secondary": "#ffffff",
+                    "error": "#ba1a1a",
+                    "primary-fixed-dim": "#b9c6ed",
+                    "on-primary-fixed-variant": "#394667",
+                    "surface-container-lowest": "#ffffff",
+                    "on-surface-variant": "#45464e",
+                    "on-tertiary-fixed": "#251a00",
+                    "background": "#faf9f5",
+                    "on-primary-fixed": "#0c1a39",
+                    "on-secondary-fixed": "#261900",
+                    "surface-container-high": "#e9e8e4",
+                    "surface-tint": "#515e80",
+                    "on-background": "#1b1c1a",
+                    "on-error": "#ffffff",
+                    "tertiary-fixed-dim": "#dfc389",
+                    "surface-variant": "#e3e2df",
+                    "surface-dim": "#dbdad6",
+                    "on-secondary-fixed-variant": "#5d4201",
+                    "surface-container-highest": "#e3e2df",
+                    "error-container": "#ffdad6",
+                    "tertiary-fixed": "#fddfa2",
+                    "secondary-container": "#fed488",
+                    "secondary-fixed-dim": "#e9c176",
+                    "primary": "#182544",
+                    "on-primary": "#ffffff",
+                    "on-tertiary": "#ffffff",
+                    "surface-bright": "#faf9f5",
+                    "inverse-on-surface": "#f2f1ed",
+                    "surface-container": "#efeeea",
+                    "outline-variant": "#c5c6cf",
+                    "primary-fixed": "#d9e2ff",
+                    "on-tertiary-fixed-variant": "#574416",
+                    "on-error-container": "#93000a",
+                    "on-primary-container": "#98a5cb",
+                    "tertiary-container": "#4b390b",
+                    "inverse-primary": "#b9c6ed",
+                    "tertiary": "#322400",
+                    "outline": "#75777e",
+                    "on-secondary-container": "#785a1a",
+                    "primary-container": "#2e3b5b",
+                    "inverse-surface": "#2f312e",
+                    "on-surface": "#1b1c1a",
+                    "surface": "#faf9f5"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "fontFamily": {
+                    "headline": ["Newsreader", "Noto Serif SC", "serif"],
+                    "display": ["Newsreader", "Noto Serif SC", "serif"],
+                    "body": ["Manrope", "sans-serif"],
+                    "label": ["Manrope", "sans-serif"]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .perspective-1000 { perspective: 1000px; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .lifted-card {
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.05);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body selection:bg-secondary-fixed selection:text-secondary antialiased">
+<!-- TopNavBar -->
+<header class="flex justify-between items-center w-full px-8 py-4 sticky top-0 z-50 bg-[#faf9f5] dark:bg-stone-950 shadow-[0px_20px_40px_rgba(27,28,26,0.06)] backdrop-blur-md">
+<div class="flex items-center gap-12">
+<h1 class="font-['Newsreader'] text-2xl font-bold text-[#182544] dark:text-[#f4f4f0]">AhaTutor v2.0</h1>
+<nav class="hidden md:flex items-center gap-8">
+<a class="font-['Newsreader'] italic text-2xl font-medium tracking-tight text-stone-500 hover:text-[#182544] transition-colors" href="#">Curriculum</a>
+<a class="font-['Newsreader'] italic text-2xl font-medium tracking-tight text-stone-500 hover:text-[#182544] transition-colors" href="#">Archive</a>
+<a class="font-['Newsreader'] italic text-2xl font-medium tracking-tight text-stone-500 hover:text-[#182544] transition-colors" href="#">Mentors</a>
+</nav>
+</div>
+<div class="flex-1 max-w-md mx-8 relative opacity-0 pointer-events-none">
+<div class="flex items-center gap-4">
+<span class="text-sm font-medium text-secondary truncate">新会话</span>
+<div class="flex-1 h-px bg-outline-variant/20 relative"></div>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<button class="material-symbols-outlined text-primary hover:bg-white/50 p-2 rounded-full transition-all" data-icon="history_edu">history_edu</button>
+<button class="material-symbols-outlined text-primary hover:bg-white/50 p-2 rounded-full transition-all" data-icon="notifications">notifications</button>
+<div class="w-10 h-10 rounded-full bg-surface-container overflow-hidden">
+<img alt="User Profile" data-alt="close-up portrait of a minimalist user profile avatar with clean aesthetic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC3pUzxE7Si1af4CGZsJqLlrKclO7MeolVN7PNjGP-sHtZ5U5BLTQOzpkOMmB8gw-FsiwjM-CRp-TZDv74EShXxA4rwGxI18jygHM1nS_125kT8Nwgt9vnRrGgEftMFuiRTdRhjj-blStKlaCyfkNBgn05vRsL1pwWQZUSc5Sj2NgpNLByIVZNhIKqm6hBrfjt1zRtJAgauDO3DmD5AQzhhYJn3ubFrceU4D7Qm0ISWTr0prdj9Ckw5hkHGgRveEN6XkGR2EA_6hVw"/>
+</div>
+</div>
+</header>
+<div class="flex h-[calc(100vh-72px)] overflow-hidden bg-[#fffdf9] shadow-sm rounded-[24px] rounded-tr-none">
+<!-- Left Sidebar: Learning Map Layout (Weaked/Collapsed State) -->
+<aside class="w-[300px] flex-shrink-0 bg-[#f4f4f0]/40 opacity-40 grayscale-[0.5] flex flex-col p-6 space-y-6 overflow-y-auto no-scrollbar border-r border-outline-variant/10">
+<!-- Project Card -->
+<div class="bg-white/50 p-6 rounded-[24px] border border-white/20">
+<label class="text-[10px] uppercase tracking-widest text-outline-variant font-bold mb-2 block">上个项目</label>
+<h3 class="font-['Newsreader'] text-xl font-bold text-primary/60 mb-2">弹簧振子模拟器</h3>
+<p class="text-xs text-on-surface-variant/60 leading-relaxed mb-4">
+                完成一个可调节参数的交互模拟网页。
+            </p>
+</div>
+<!-- Knowledge Tree Navigation Simplified -->
+<div class="flex-1 flex flex-col pt-4">
+<div class="space-y-2">
+<div class="bg-white/30 p-3 rounded-xl border border-white/20">
+<div class="flex items-center gap-3">
+<span class="w-2 h-2 rounded-full bg-outline-variant/40"></span>
+<span class="text-xs font-bold text-outline-variant">物理基础</span>
+</div>
+</div>
+<div class="ml-5 pl-4 border-l border-outline-variant/10 space-y-2">
+<div class="text-xs text-on-surface-variant/40">位移速度关系</div>
+<div class="text-xs text-on-surface-variant/40">能量守恒</div>
+</div>
+</div>
+</div>
+<div class="pt-4 border-t border-outline-variant/10 space-y-2">
+<div class="bg-white/20 p-3 rounded-xl flex items-center gap-3">
+<span class="material-symbols-outlined text-sm text-outline-variant" data-icon="history">history</span>
+<span class="text-xs font-medium text-on-surface-variant/40">历史学习会话</span>
+</div>
+</div>
+</aside>
+<!-- Center Stage: Empty/Initial State -->
+<main class="flex-1 bg-surface-container-lowest overflow-y-auto relative no-scrollbar flex flex-col">
+<div class="flex-1 flex flex-col items-center justify-center max-w-4xl mx-auto px-12 text-center">
+<!-- Welcome Composition -->
+<div class="space-y-6 mb-12">
+<h2 class="font-display text-[42px] text-primary leading-tight font-bold">今天，你想完成什么？</h2>
+<p class="font-body text-lg text-on-surface-variant max-w-2xl mx-auto leading-relaxed">
+                    不是“学什么”，而是“你想做成什么”。从一个项目开始，我们会为你拆出知识路径。
+                </p>
+</div>
+<!-- Example Cards -->
+<div class="grid grid-cols-3 gap-6 w-full mb-16">
+<button class="bg-white p-6 rounded-[28px] border border-outline-variant/10 shadow-sm hover:shadow-xl hover:border-secondary/20 transition-all flex flex-col items-start text-left group">
+<div class="w-10 h-10 rounded-xl bg-secondary/10 flex items-center justify-center text-secondary mb-4 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined" data-icon="animation">animation</span>
+</div>
+<h4 class="font-bold text-primary mb-2">做一个弹簧振子模拟器</h4>
+<span class="text-[10px] text-outline-variant font-medium uppercase tracking-widest">物理可视化 • JS基础</span>
+</button>
+<button class="bg-white p-6 rounded-[28px] border border-outline-variant/10 shadow-sm hover:shadow-xl hover:border-secondary/20 transition-all flex flex-col items-start text-left group">
+<div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary mb-4 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined" data-icon="psychology">psychology</span>
+</div>
+<h4 class="font-bold text-primary mb-2">复现一个迷你 Transformer</h4>
+<span class="text-[10px] text-outline-variant font-medium uppercase tracking-widest">人工智能 • 线性代数</span>
+</button>
+<button class="bg-white p-6 rounded-[28px] border border-outline-variant/10 shadow-sm hover:shadow-xl hover:border-secondary/20 transition-all flex flex-col items-start text-left group">
+<div class="w-10 h-10 rounded-xl bg-on-tertiary-container/10 flex items-center justify-center text-on-tertiary-container mb-4 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined" data-icon="account_balance_wallet">account_balance_wallet</span>
+</div>
+<h4 class="font-bold text-primary mb-2">做一个个人财务分析工具</h4>
+<span class="text-[10px] text-outline-variant font-medium uppercase tracking-widest">数据处理 • 前端架构</span>
+</button>
+</div>
+</div>
+<!-- Section 5: Bottom Input Area -->
+<div class="sticky bottom-8 w-full px-12 z-50 mt-auto pb-8">
+<div class="max-w-[800px] mx-auto">
+<div class="bg-white/95 backdrop-blur-xl p-1.5 rounded-full shadow-[0px_4px_24px_rgba(0,0,0,0.06)] border border-outline-variant/20 flex items-center">
+<!-- Left: ASK Dropdown -->
+<div class="flex items-center gap-1.5 pl-5 pr-4 py-3 cursor-pointer hover:bg-black/5 rounded-l-full transition-colors border-r border-outline-variant/10">
+<span class="text-[10px] font-bold text-outline-variant tracking-widest uppercase">Start</span>
+<span class="material-symbols-outlined text-outline-variant text-[18px]">expand_more</span>
+</div>
+<!-- Center: Input Field -->
+<input class="flex-1 bg-transparent border-none focus:ring-0 text-[15px] text-on-surface placeholder:text-outline-variant/60 px-4 py-4" placeholder="描述一个你想尝试的项目，或者问问我的建议..." type="text"/>
+<!-- Right: Icons and Send Button -->
+<div class="flex items-center gap-5 pr-2">
+<div class="flex items-center gap-5 text-outline-variant/80">
+<button class="material-symbols-outlined hover:text-primary transition-colors text-[22px]">attachment</button>
+<button class="material-symbols-outlined hover:text-primary transition-colors text-[22px]">grid_view</button>
+</div>
+<button class="w-12 h-12 flex items-center justify-center bg-[#182544] text-white rounded-xl shadow-sm hover:bg-[#0c1a39] transition-all">
+<span class="material-symbols-outlined text-2xl">arrow_upward</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Right Sidebar: Project Advancement (Silent/Collapsed State) -->
+<aside class="w-[340px] bg-surface-container-low/40 opacity-40 grayscale-[0.5] border-l border-outline-variant/10 flex flex-col p-8 overflow-y-auto no-scrollbar">
+<section class="mb-10">
+<h4 class="text-xs font-bold text-outline-variant mb-6 tracking-[0.2em] uppercase font-display">Capabilities</h4>
+<div class="space-y-4">
+<div class="h-2 w-full bg-outline-variant/10 rounded-full"></div>
+<div class="h-2 w-3/4 bg-outline-variant/10 rounded-full"></div>
+<div class="h-2 w-1/2 bg-outline-variant/10 rounded-full"></div>
+</div>
+</section>
+<section class="mb-10">
+<h4 class="text-xs font-bold text-outline-variant mb-4 tracking-[0.2em] uppercase font-display">System Status</h4>
+<div class="p-4 rounded-xl border border-outline-variant/10 bg-white/20">
+<p class="text-[10px] text-outline-variant italic">准备就绪，待命开始新的学习旅程。</p>
+</div>
+</section>
+<section>
+<h4 class="text-xs font-bold text-outline-variant mb-4 tracking-[0.2em] uppercase font-display">Recent Skills</h4>
+<div class="flex flex-wrap gap-2">
+<span class="px-3 py-1.5 bg-white/30 text-[10px] font-bold rounded-full border border-outline-variant/20 text-outline-variant">物理建模</span>
+<span class="px-3 py-1.5 bg-white/30 text-[10px] font-bold rounded-full border border-outline-variant/20 text-outline-variant">动画实现</span>
+</div>
+</section>
+</aside>
+</div>
+</body></html>

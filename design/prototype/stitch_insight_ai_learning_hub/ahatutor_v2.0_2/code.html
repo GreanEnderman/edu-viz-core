@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+
+<html class="light" lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&amp;family=Manrope:wght@200..800&amp;family=Noto+Serif+SC:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "secondary": "#775a19",
+                    "surface-container-low": "#f4f4f0",
+                    "secondary-fixed": "#ffdea5",
+                    "on-tertiary-container": "#bda36b",
+                    "on-secondary": "#ffffff",
+                    "error": "#ba1a1a",
+                    "primary-fixed-dim": "#b9c6ed",
+                    "on-primary-fixed-variant": "#394667",
+                    "surface-container-lowest": "#ffffff",
+                    "on-surface-variant": "#45464e",
+                    "on-tertiary-fixed": "#251a00",
+                    "background": "#faf9f5",
+                    "on-primary-fixed": "#0c1a39",
+                    "on-secondary-fixed": "#261900",
+                    "surface-container-high": "#e9e8e4",
+                    "surface-tint": "#515e80",
+                    "on-background": "#1b1c1a",
+                    "on-error": "#ffffff",
+                    "tertiary-fixed-dim": "#dfc389",
+                    "surface-variant": "#e3e2df",
+                    "surface-dim": "#dbdad6",
+                    "on-secondary-fixed-variant": "#5d4201",
+                    "surface-container-highest": "#e3e2df",
+                    "error-container": "#ffdad6",
+                    "tertiary-fixed": "#fddfa2",
+                    "secondary-container": "#fed488",
+                    "secondary-fixed-dim": "#e9c176",
+                    "primary": "#182544",
+                    "on-primary": "#ffffff",
+                    "on-tertiary": "#ffffff",
+                    "surface-bright": "#faf9f5",
+                    "inverse-on-surface": "#f2f1ed",
+                    "surface-container": "#efeeea",
+                    "outline-variant": "#c5c6cf",
+                    "primary-fixed": "#d9e2ff",
+                    "on-tertiary-fixed-variant": "#574416",
+                    "on-error-container": "#93000a",
+                    "on-primary-container": "#98a5cb",
+                    "tertiary-container": "#4b390b",
+                    "inverse-primary": "#b9c6ed",
+                    "tertiary": "#322400",
+                    "outline": "#75777e",
+                    "on-secondary-container": "#785a1a",
+                    "primary-container": "#2e3b5b",
+                    "inverse-surface": "#2f312e",
+                    "on-surface": "#1b1c1a",
+                    "surface": "#faf9f5"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "fontFamily": {
+                    "headline": ["Newsreader", "Noto Serif SC", "serif"],
+                    "display": ["Newsreader", "Noto Serif SC", "serif"],
+                    "body": ["Manrope", "sans-serif"],
+                    "label": ["Manrope", "sans-serif"]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .perspective-1000 { perspective: 1000px; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .lifted-card {
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.05);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body selection:bg-secondary-fixed selection:text-secondary antialiased">
+<!-- TopNavBar -->
+<header class="flex justify-between items-center w-full px-8 py-4 sticky top-0 z-50 bg-[#faf9f5] dark:bg-stone-950 shadow-[0px_20px_40px_rgba(27,28,26,0.06)] backdrop-blur-md">
+<div class="flex items-center gap-12">
+<h1 class="font-['Newsreader'] text-2xl font-bold text-[#182544] dark:text-[#f4f4f0]">AhaTutor v2.0</h1>
+<nav class="hidden md:flex items-center gap-8">
+<a class="font-['Newsreader'] italic text-2xl font-medium tracking-tight text-[#775a19] border-b-2 border-[#775a19] pb-1" href="#">Curriculum</a>
+<a class="font-['Newsreader'] italic text-2xl font-medium tracking-tight text-stone-500 hover:text-[#182544] transition-colors" href="#">Archive</a>
+<a class="font-['Newsreader'] italic text-2xl font-medium tracking-tight text-stone-500 hover:text-[#182544] transition-colors" href="#">Mentors</a>
+</nav>
+</div>
+<div class="flex-1 max-w-md mx-8 relative">
+<div class="flex items-center gap-4">
+<span class="text-sm font-medium text-secondary truncate">弹簧振子模拟器</span>
+<div class="flex-1 h-px bg-outline-variant/20 relative">
+<svg class="absolute -top-1 left-0 w-full h-4 overflow-visible" fill="none" viewbox="0 0 400 20">
+<path d="M0 10 C 50 2, 150 18, 280 10" stroke="#775a19" stroke-linecap="round" stroke-width="2"></path>
+<circle class="animate-pulse" cx="280" cy="10" fill="#775a19" r="3"></circle>
+</svg>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<button class="material-symbols-outlined text-primary hover:bg-white/50 p-2 rounded-full transition-all" data-icon="history_edu">history_edu</button>
+<button class="material-symbols-outlined text-primary hover:bg-white/50 p-2 rounded-full transition-all" data-icon="notifications">notifications</button>
+<div class="w-10 h-10 rounded-full bg-surface-container overflow-hidden">
+<img alt="User Profile" data-alt="close-up portrait of a minimalist user profile avatar with clean aesthetic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC3pUzxE7Si1af4CGZsJqLlrKclO7MeolVN7PNjGP-sHtZ5U5BLTQOzpkOMmB8gw-FsiwjM-CRp-TZDv74EShXxA4rwGxI18jygHM1nS_125kT8Nwgt9vnRrGgEftMFuiRTdRhjj-blStKlaCyfkNBgn05vRsL1pwWQZUSc5Sj2NgpNLByIVZNhIKqm6hBrfjt1zRtJAgauDO3DmD5AQzhhYJn3ubFrceU4D7Qm0ISWTr0prdj9Ckw5hkHGgRveEN6XkGR2EA_6hVw"/>
+</div>
+</div>
+</header>
+<div class="flex h-[calc(100vh-72px)] overflow-hidden bg-[#fffdf9] shadow-sm rounded-[24px] rounded-tr-none">
+<!-- Left Sidebar: Learning Map Layout -->
+<aside class="w-[300px] flex-shrink-0 bg-[#f4f4f0] flex flex-col p-6 space-y-6 overflow-y-auto no-scrollbar">
+<!-- Project Card -->
+<div class="bg-white p-6 rounded-[24px] shadow-[0_4px_12px_rgba(0,0,0,0.02)] border-none">
+<label class="text-[10px] uppercase tracking-widest text-outline-variant font-bold mb-2 block">当前项目</label>
+<h3 class="font-['Newsreader'] text-xl font-bold text-primary mb-2">弹簧振子模拟器</h3>
+<div class="flex flex-wrap gap-2 mb-3">
+<span class="px-2 py-0.5 bg-surface-container-low text-[10px] font-medium text-on-surface-variant rounded">物理</span>
+<span class="px-2 py-0.5 bg-surface-container-low text-[10px] font-medium text-on-surface-variant rounded">数学</span>
+<span class="px-2 py-0.5 bg-surface-container-low text-[10px] font-medium text-on-surface-variant rounded">前端</span>
+<span class="px-2 py-0.5 bg-surface-container-low text-[10px] font-medium text-on-surface-variant rounded">可视化</span>
+</div>
+<p class="text-xs text-on-surface-variant leading-relaxed mb-4">
+                完成一个可调节参数、可观察位移曲线的交互模拟网页。
+            </p>
+<div class="flex gap-2">
+<button class="flex-1 py-2 bg-primary text-white text-[11px] font-bold rounded-lg hover:bg-primary/90 transition-colors">继续推进</button>
+<button class="flex-1 py-2 bg-surface-container-high text-on-surface-variant text-[11px] font-bold rounded-lg hover:bg-surface-container-highest transition-colors">重设目标树</button>
+</div>
+</div>
+<!-- Current Node Card -->
+<div class="space-y-3 px-1">
+<div class="flex justify-between items-center">
+<label class="text-[10px] uppercase tracking-widest text-outline-variant font-bold">当前节点</label>
+<span class="px-2 py-0.5 bg-secondary-fixed text-[9px] font-bold text-secondary rounded-full">学习中</span>
+</div>
+<h4 class="text-sm font-bold leading-tight text-primary">简谐运动中的位移、速度、加速度关系</h4>
+<div class="text-[9px] text-outline font-medium">
+                项目目标 / 物理基础 / 简谐运动 / <span class="text-secondary">当前节点</span>
+</div>
+<!-- Status Bar -->
+<div class="py-2">
+<div class="relative h-px bg-outline-variant/30 w-full mb-4">
+<div class="absolute -top-1 left-0 flex justify-between w-full">
+<div class="flex flex-col items-center gap-1">
+<div class="w-2 h-2 rounded-full bg-primary ring-4 ring-primary/10"></div>
+<span class="text-[8px] text-primary font-bold">理解概念</span>
+</div>
+<div class="flex flex-col items-center gap-1">
+<div class="w-2 h-2 rounded-full bg-outline-variant/40"></div>
+<span class="text-[8px] text-outline">完成测评</span>
+</div>
+<div class="flex flex-col items-center gap-1">
+<div class="w-2 h-2 rounded-full bg-outline-variant/40"></div>
+<span class="text-[8px] text-outline">连接项目</span>
+</div>
+</div>
+</div>
+</div>
+<div class="flex gap-3 pt-2">
+<a class="text-[10px] text-secondary border-b border-secondary/20 pb-0.5" href="#">换一个节点</a>
+<a class="text-[10px] text-secondary border-b border-secondary/20 pb-0.5" href="#">查看前置知识</a>
+</div>
+</div>
+<!-- Knowledge Tree Navigation -->
+<div class="flex-1 pt-4 flex flex-col">
+<div class="flex items-center gap-4 text-[10px] font-bold text-outline uppercase tracking-wider mb-4 px-1">
+<a class="text-secondary border-b-2 border-secondary pb-1" href="#">全部</a>
+<a class="hover:text-primary transition-colors pb-1" href="#">只看当前路径</a>
+<a class="hover:text-primary transition-colors pb-1" href="#">只看未掌握</a>
+<a class="hover:text-primary transition-colors pb-1" href="#">只看项目相关</a>
+</div>
+<div class="space-y-2 flex-1">
+<!-- Primary Node Card -->
+<div class="bg-white/60 p-3 rounded-xl border border-white/50">
+<div class="flex items-center gap-3">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+<span class="text-xs font-bold text-primary">物理基础</span>
+</div>
+</div>
+<!-- Secondary Nodes -->
+<div class="ml-5 pl-4 border-l border-outline-variant/20 space-y-1">
+<!-- Mastered -->
+<div class="flex items-center gap-3 py-2 px-2 hover:bg-white/40 rounded-lg transition-colors group">
+<span class="w-2 h-2 rounded-full bg-primary flex-shrink-0"></span>
+<span class="text-xs text-on-surface-variant">恢复力的定义</span>
+</div>
+<!-- Active/Learning -->
+<div class="flex items-center gap-3 py-3 px-3 bg-white rounded-xl shadow-sm border border-white/80 relative -left-2 lifted-card">
+<div class="relative w-3 h-3 flex-shrink-0 flex items-center justify-center">
+<div class="w-full h-full rounded-full border border-primary/40 animate-ping absolute"></div>
+<div class="w-1.5 h-1.5 rounded-full bg-primary relative z-10"></div>
+</div>
+<span class="text-xs font-bold text-primary">位移速度关系</span>
+</div>
+<!-- Quick Review -->
+<div class="flex items-center gap-3 py-2 px-2 hover:bg-white/40 rounded-lg transition-colors">
+<div class="w-2 h-2 rounded-full border border-secondary flex-shrink-0"></div>
+<span class="text-xs text-on-surface-variant">能量守恒模拟</span>
+</div>
+<!-- To be Assessed -->
+<div class="flex items-center gap-3 py-2 px-2 hover:bg-white/40 rounded-lg transition-colors">
+<div class="w-3 h-3 rounded-full bg-outline-variant/30 flex items-center justify-center flex-shrink-0">
+<span class="text-[8px] font-bold text-white">?</span>
+</div>
+<span class="text-xs text-on-surface-variant">阻尼振动初探</span>
+</div>
+<!-- Not Started -->
+<div class="flex items-center gap-3 py-2 px-2 hover:bg-white/40 rounded-lg transition-colors opacity-60">
+<div class="w-2 h-2 rounded-full bg-outline-variant/40 flex-shrink-0"></div>
+<span class="text-xs text-on-surface-variant">受迫振动</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Session/Resources Entries -->
+<div class="pt-4 border-t border-outline-variant/10 space-y-2">
+<div class="bg-white/40 p-3 rounded-xl flex items-center justify-between hover:bg-white/60 transition-colors cursor-pointer group">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-sm text-outline-variant group-hover:text-primary" data-icon="history">history</span>
+<span class="text-xs font-medium text-on-surface-variant">历史学习会话</span>
+</div>
+<span class="material-symbols-outlined text-xs text-outline-variant" data-icon="chevron_right">chevron_right</span>
+</div>
+<div class="bg-white/40 p-3 rounded-xl flex items-center justify-between hover:bg-white/60 transition-colors cursor-pointer group">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-sm text-outline-variant group-hover:text-primary" data-icon="extension">extension</span>
+<span class="text-xs font-medium text-on-surface-variant">插件与组件库</span>
+</div>
+<span class="material-symbols-outlined text-xs text-outline-variant" data-icon="chevron_right">chevron_right</span>
+</div>
+</div>
+</aside>
+<!-- Center Stage -->
+<main class="flex-1 bg-surface-container-lowest overflow-y-auto relative no-scrollbar"><!-- Section 0: Retrospective Integration State Card -->
+<div class="max-w-4xl mx-auto px-12 pt-8">
+<div class="bg-white/60 backdrop-blur-md border border-secondary/20 rounded-[32px] p-8 shadow-[0_8px_32px_rgba(119,90,25,0.05)] flex flex-col md:flex-row items-center justify-between gap-6">
+<div class="flex items-center gap-6">
+<div class="w-14 h-14 rounded-full bg-secondary/10 flex items-center justify-center border border-secondary/20">
+<span class="material-symbols-outlined text-secondary text-3xl">integration_instructions</span>
+</div>
+<div class="space-y-1">
+<p class="text-[10px] uppercase tracking-[0.2em] text-secondary font-bold">回溯整合态</p>
+<h3 class="font-display text-xl text-primary font-bold">
+          你已经完成<span class="italic text-secondary">“胡克定律”</span>。现在把它带回到<span class="italic text-secondary">“简谐运动”</span>。
+        </h3>
+</div>
+</div>
+<div class="flex flex-col sm:flex-row gap-3">
+<button class="px-5 py-2.5 bg-white border border-secondary/30 text-secondary text-xs font-bold rounded-full hover:bg-secondary/5 transition-all shadow-sm">
+        看看它如何作用于上层概念
+      </button>
+<button class="px-5 py-2.5 bg-primary text-white text-xs font-bold rounded-full hover:bg-primary/90 transition-all shadow-md">
+        继续下一个子节点
+      </button>
+</div>
+</div>
+</div><!-- Section 1: Current Node Header -->
+<div class="max-w-4xl mx-auto px-12 pt-10 pb-12 flex justify-between items-start">
+<div class="space-y-4 max-w-xl">
+<span class="text-[10px] uppercase tracking-widest text-secondary font-bold">正在攻克</span>
+<h2 class="font-display text-[42px] text-primary leading-tight font-bold">位移、速度、加速度关系</h2>
+<p class="font-body text-[15px] text-on-surface-variant leading-relaxed">通过圆周投影的视角，洞察简谐运动中三个物理量随时间演化的相位奥秘。</p>
+</div>
+<div class="flex flex-col items-center pt-2">
+<div class="relative w-32 h-40 flex items-center justify-center">
+<!-- SVG for Lines/Edges -->
+<svg class="absolute inset-0 w-full h-full pointer-events-none" viewbox="0 0 128 160">
+<line class="text-outline-variant/30" stroke="currentColor" stroke-width="0.5" x1="64" x2="64" y1="30" y2="130"></line>
+</svg>
+<!-- Pre-requisite Knowledge Node (Top) -->
+<div class="absolute top-4 flex flex-col items-center gap-1.5">
+<div class="w-2.5 h-2.5 rounded-full bg-secondary-fixed-dim border border-secondary/20 shadow-[0_0_8px_rgba(233,193,118,0.3)]"></div>
+<span class="text-[9px] font-bold text-outline uppercase tracking-tighter whitespace-nowrap">前置知识</span>
+</div>
+<!-- Current Node (Center) -->
+<div class="absolute top-1/2 -translate-y-1/2 flex flex-col items-center gap-2">
+<div class="w-5 h-5 rounded-full bg-primary flex items-center justify-center shadow-lg shadow-primary/20 ring-4 ring-primary/5">
+<div class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></div>
+</div>
+<span class="text-[10px] font-bold text-primary tracking-tight whitespace-nowrap bg-background/80 px-2 rounded-full">当前节点</span>
+</div>
+<!-- Project Application Node (Bottom) -->
+<div class="absolute bottom-4 flex flex-col items-center gap-1.5">
+<div class="w-2.5 h-2.5 rounded-full bg-white border border-outline-variant/40"></div>
+<span class="text-[9px] font-bold text-outline-variant uppercase tracking-tighter whitespace-nowrap">项目应用</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Section 2: Mastery Judgment Area -->
+<div class="max-w-[82%] mx-auto mb-16">
+<p class="text-center text-sm font-medium text-on-surface-variant mb-6">在继续之前，我们先判断你对这一部分的熟悉程度。</p>
+<div class="grid grid-cols-4 gap-4">
+<button class="flex flex-col items-center justify-center p-4 bg-white border border-outline-variant/20 rounded-[20px] h-[72px] hover:shadow-lg hover:border-secondary transition-all group">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-lg group-hover:scale-110 transition-transform">verified</span>
+<span class="font-bold text-sm text-primary">我会</span>
+</div>
+<span class="text-[9px] text-outline mt-1">直接跳过并进入应用</span>
+</button>
+<button class="flex flex-col items-center justify-center p-4 bg-white border border-outline-variant/20 rounded-[20px] h-[72px] hover:shadow-lg hover:border-secondary transition-all group">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-lg group-hover:scale-110 transition-transform">update</span>
+<span class="font-bold text-sm text-primary">有点忘</span>
+</div>
+</button>
+<button class="flex flex-col items-center justify-center p-4 bg-white border border-outline-variant/20 rounded-[20px] h-[72px] hover:shadow-lg hover:border-secondary transition-all group">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-lg group-hover:scale-110 transition-transform">quiz</span>
+<span class="font-bold text-sm text-primary">不确定</span>
+</div>
+<span class="text-[9px] text-outline mt-1">先用 3 道题快速判断</span>
+</button>
+<button class="flex flex-col items-center justify-center p-4 bg-white border border-outline-variant/20 rounded-[20px] h-[72px] hover:shadow-lg hover:border-secondary transition-all group">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-lg group-hover:scale-110 transition-transform">help_outline</span>
+<span class="font-bold text-sm text-primary">不会</span>
+</div>
+</button>
+</div>
+</div>
+<!-- Section 3: Teaching Dialogue Area -->
+<div class="max-w-[720px] mx-auto px-6 mb-24 space-y-12 justify-end bg-[#fffdf9] shadow-sm rounded-[24px] rounded-tr-none">
+<!-- System Message -->
+<div class="space-y-6">
+<h3 class="font-display text-3xl italic text-primary leading-tight">
+      设想一个匀速转动的圆周，当我们只看它在水平轴上的投影...
+    </h3>
+<p class="font-body text-lg text-on-surface leading-relaxed">
+      这种视角将抽象的三角函数运动转化为了直观的几何位置变化。你可以看到位移 $x$ 实际上是投影点偏离中心点的距离。那么，当这个点经过中心点（平衡位置）时，它的投影速度会发生什么？
+    </p>
+</div>
+<!-- Action Message -->
+<div class="flex items-center gap-4">
+<div class="flex-1 h-px bg-outline-variant/20"></div>
+<span class="text-[10px] font-bold text-secondary uppercase tracking-[0.2em] px-2 bg-background">已标记为快速复习</span>
+<div class="flex-1 h-px bg-outline-variant/20"></div>
+</div>
+<!-- User Response -->
+<div class="flex justify-end bg-[#fffdf9] shadow-sm rounded-[24px] rounded-tr-none">
+<div class="px-6 py-4 border border-secondary/5 max-w-[85%] text-on-surface-variant text-[15px] leading-relaxed bg-[#fffdf9] shadow-sm rounded-[24px] rounded-tr-none">
+      我觉得在平衡位置速度应该是最大的，因为它不需要再往回拉了，对吗？
+    </div>
+</div>
+</div>
+<!-- Section 4: A2UI Visualization Area -->
+<div class="max-w-4xl mx-auto px-12 mb-32">
+<div class="bg-white rounded-[32px] p-8 border border-outline-variant/10 shadow-sm">
+<div class="flex justify-between items-center mb-6">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-2xl bg-secondary/10 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined" data-icon="animation">animation</span>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<span class="text-[10px] font-bold text-outline uppercase tracking-wider">可视化实验</span>
+<span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+<span class="text-[10px] font-bold text-secondary">状态：已就绪</span>
+</div>
+<h4 class="font-bold text-primary">简谐振子模拟器</h4>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="px-4 py-2 text-xs font-bold text-primary bg-surface-container-low rounded-full hover:bg-surface-container-high transition-colors">全宽查看</button>
+<button class="px-4 py-2 text-xs font-bold text-white bg-primary rounded-full hover:bg-primary/90 transition-colors">展开实验</button>
+</div>
+</div>
+<!-- Preview Grid (Subtle) -->
+<div class="h-40 bg-background rounded-2xl border border-dashed border-outline-variant/30 flex items-center justify-center">
+<span class="text-xs text-outline font-medium italic">点击展开以进行动态参数调节与波形观察</span>
+</div>
+</div>
+</div>
+<!-- Section 5: Bottom Input Area -->
+<div class="fixed bottom-8 left-[300px] right-[340px] px-12 pointer-events-none z-50">
+<div class="max-w-[68%] mx-auto pointer-events-auto">
+<div class="bg-white/95 backdrop-blur-xl p-1.5 rounded-full shadow-[0px_4px_24px_rgba(0,0,0,0.06)] border border-outline-variant/20 flex items-center"><!-- Left: ASK Dropdown -->
+<div class="flex items-center gap-1.5 pl-5 pr-4 py-3 cursor-pointer hover:bg-black/5 rounded-l-full transition-colors border-r border-outline-variant/10">
+<span class="text-[10px] font-bold text-outline-variant tracking-widest">ASK</span>
+<span class="material-symbols-outlined text-outline-variant text-[18px]">expand_more</span>
+</div>
+<!-- Center: Input Field -->
+<input class="flex-1 bg-transparent border-none focus:ring-0 text-[15px] text-on-surface placeholder:text-outline-variant/60 px-4 py-4" placeholder="例如：为什么速度在平衡位置最大？" type="text"/>
+<!-- Right: Icons and Send Button -->
+<div class="flex items-center gap-5 pr-2">
+<div class="flex items-center gap-5 text-outline-variant/80">
+<button class="material-symbols-outlined hover:text-primary transition-colors text-[22px]">attachment</button>
+<button class="material-symbols-outlined hover:text-primary transition-colors text-[22px]">edit_note</button>
+<button class="material-symbols-outlined hover:text-primary transition-colors text-[22px]">grid_view</button>
+</div>
+<button class="w-12 h-12 flex items-center justify-center bg-[#182544] text-white rounded-xl shadow-sm hover:bg-[#0c1a39] transition-all">
+<span class="material-symbols-outlined text-2xl">arrow_upward</span>
+</button>
+</div></div>
+</div>
+</div></main>
+<!-- Right Sidebar: Project Advancement -->
+<aside class="w-[340px] bg-surface-container-low border-l border-outline-variant/10 flex flex-col p-8 overflow-y-auto no-scrollbar">
+<!-- Project Advancement -->
+<section class="mb-10"><h4 class="text-xs font-bold text-outline mb-6 tracking-[0.2em] uppercase font-display">Project Advancement</h4>
+<div class="space-y-8 relative">
+<div class="absolute left-[11px] top-2 bottom-2 w-px bg-outline-variant/30"></div>
+<!-- Milestone 1 -->
+<div class="flex gap-4 relative">
+<div class="w-6 h-6 rounded-full bg-white flex items-center justify-center text-secondary border border-outline-variant">
+<span class="material-symbols-outlined text-xs">check</span>
+</div>
+<div class="flex-1">
+<p class="text-xs font-bold text-on-surface/50">理解核心原理</p>
+</div>
+</div>
+<!-- Milestone 2 - Current -->
+<div class="flex gap-4 relative">
+<div class="w-6 h-6 rounded-full bg-secondary shadow-[0_0_15px_rgba(119,90,25,0.4)] flex items-center justify-center text-white z-10">
+<div class="w-2 h-2 bg-white rounded-full"></div>
+</div>
+<div class="flex-1">
+<p class="text-xs font-bold text-primary">完成基础交互</p>
+<p class="text-[10px] text-on-surface-variant mt-1 italic">正在进行中...</p>
+</div>
+</div>
+<!-- Milestone 3 -->
+<div class="flex gap-4 relative opacity-40">
+<div class="w-6 h-6 rounded-full bg-white flex items-center justify-center text-outline-variant border border-outline-variant"></div>
+<div class="flex-1">
+<p class="text-xs font-bold text-primary">实现动态模拟</p>
+</div>
+</div>
+<!-- Milestone 4 -->
+<div class="flex gap-4 relative opacity-40">
+<div class="w-6 h-6 rounded-full bg-white flex items-center justify-center text-outline-variant border border-outline-variant"></div>
+<div class="flex-1">
+<p class="text-xs font-bold text-primary">形成可展示 Demo</p>
+</div>
+</div>
+</div></section>
+<!-- Connection Card -->
+<div class="mb-10">
+<h4 class="text-xs font-bold text-outline mb-4 tracking-[0.2em] uppercase font-display">它将如何帮助你的项目</h4>
+<div class="space-y-4">
+<div class="space-y-1">
+<div class="w-8 h-0.5 bg-secondary/30 mb-2"></div>
+<p class="text-xs text-on-surface-variant leading-relaxed">将数学公式 $x(t)$ 转化为实时更新的变量状态。</p>
+</div>
+<div class="space-y-1">
+<div class="w-8 h-0.5 bg-secondary/30 mb-2"></div>
+<p class="text-xs text-on-surface-variant leading-relaxed">通过位移与速度的相位差实现自然的物理动画。</p>
+</div>
+<div class="space-y-1">
+<div class="w-8 h-0.5 bg-secondary/30 mb-2"></div>
+<p class="text-xs text-on-surface-variant leading-relaxed">构建可交互的参数面板，实时观察物理常数的影响。</p>
+</div>
+</div>
+</div>
+<!-- Artifact Panel -->
+<section class="mb-8">
+<h4 class="text-xs font-bold text-outline mb-4 tracking-[0.2em] uppercase">Current Artifact</h4>
+<div class="bg-primary text-on-primary-container p-4 rounded-xl font-mono text-[11px] leading-relaxed overflow-hidden"><div class="flex items-center justify-between mb-3 border-b border-white/5 pb-2">
+<div class="flex gap-1.5">
+<div class="w-2.5 h-2.5 rounded-full bg-error/40"></div>
+<div class="w-2.5 h-2.5 rounded-full bg-secondary-fixed/40"></div>
+<div class="w-2.5 h-2.5 rounded-full bg-secondary/40"></div>
+</div>
+<span class="text-[9px] uppercase tracking-widest text-white/30">Logic Sketch</span>
+</div>
+<div class="space-y-1 text-white/90">
+<p><span class="text-secondary-fixed-dim italic font-bold">state</span> = { x, v, t }</p>
+<p><span class="text-primary-fixed-dim">a</span> = -(k/m) * x</p>
+<p><span class="text-primary-fixed-dim">v</span> = v + a * dt</p>
+<p><span class="text-primary-fixed-dim">x</span> = x + v * dt</p>
+</div></div>
+</section>
+<!-- Capability Map -->
+<section class="mb-8">
+<h4 class="text-xs font-bold text-outline mb-4 tracking-[0.2em] uppercase font-display">Reflection 反思</h4>
+<div class="space-y-3">
+<div class="bg-white p-4 rounded-xl border border-outline-variant/10 shadow-sm">
+<p class="text-xs font-bold text-primary mb-3">如果恢复力不是线性的，位移曲线会如何变化？</p>
+<button class="w-full py-1.5 border border-secondary/20 text-[10px] font-bold text-secondary rounded-lg hover:bg-secondary/5 transition-colors uppercase tracking-widest">Answer</button>
+</div>
+<div class="bg-white p-4 rounded-xl border border-outline-variant/10 shadow-sm">
+<p class="text-xs font-bold text-primary mb-3">为什么我们使用欧拉积分 (v + a*dt) 而不是解析解？</p>
+<button class="w-full py-1.5 border border-secondary/20 text-[10px] font-bold text-secondary rounded-lg hover:bg-secondary/5 transition-colors uppercase tracking-widest">Answer</button>
+</div>
+</div>
+</section><section><h4 class="text-xs font-bold text-outline mb-4 tracking-[0.2em] uppercase font-display">你正在形成的能力</h4>
+<div class="flex flex-wrap gap-2">
+<span class="px-3 py-1.5 bg-white text-[10px] font-bold rounded-full border border-secondary/30 text-secondary shadow-[0_0_10px_rgba(119,90,25,0.15)]">物理建模</span>
+<span class="px-3 py-1.5 bg-white text-[10px] font-bold rounded-full border border-outline-variant/20 text-on-surface-variant">数学直觉</span>
+<span class="px-3 py-1.5 bg-white text-[10px] font-bold rounded-full border border-secondary/30 text-secondary shadow-[0_0_10px_rgba(119,90,25,0.15)]">动画实现</span>
+<span class="px-3 py-1.5 bg-white text-[10px] font-bold rounded-full border border-outline-variant/20 text-on-surface-variant opacity-60">参数可视化</span>
+</div></section>
+</aside>
+</div>
+</body></html>

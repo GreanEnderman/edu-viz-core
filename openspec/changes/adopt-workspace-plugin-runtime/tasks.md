@@ -20,8 +20,8 @@
 ## 4. Plugin APIs and Prompt Integration
 
 - [x] 4.1 Update `GET /api/v1/plugins` responses to include each plugin's `sharedDependencies`.
-- [ ] 4.2 Ensure plugin static asset serving remains compatible with shared-runtime plugin bundles.
-- [ ] 4.3 Update plugin capability injection in prompt-building so plugin guidance reflects the “host platform extension” model rather than standalone app assumptions.
+- [x] 4.2 Ensure plugin static asset serving remains compatible with shared-runtime plugin bundles.
+- [x] 4.3 Update plugin capability injection in prompt-building so plugin guidance reflects the “host platform extension” model rather than standalone app assumptions.
 
 ## 5. Developer Tooling and Documentation
 
@@ -34,4 +34,4 @@
 - [x] 6.1 Migrate current plugins under `plugins/*` to the shared workspace and preset-based configuration.
 - [x] 6.2 Add or update manifests for existing plugins to declare required `sharedDependencies`.
 - [x] 6.3 Verify existing plugins still build to `dist/index.esm.js` and load correctly through the host frontend.
-- [ ] 6.4 Verify backend plugin APIs, prompt integration, and Gallery-based previews continue to work after the migration.
+- [x] 6.4 Verify backend plugin APIs, prompt integration, and Gallery-based previews continue to work after the migration.

@@ -7,6 +7,10 @@ import {
 import { buildPluginGalleryExamples } from '../gallery/pluginGalleryRegistry'
 import { fetchPlugins } from '../services/pluginService'
 import type { Plugin } from '../types/plugin'
+import reactSharedRuntimeUrl from '../plugin-runtime/react.shared.js?url'
+import reactDomSharedRuntimeUrl from '../plugin-runtime/react-dom.shared.js?url'
+import reactJsxRuntimeSharedRuntimeUrl from '../plugin-runtime/react-jsx-runtime.shared.js?url'
+import a2uiReactSharedRuntimeUrl from '../plugin-runtime/a2ui-react.shared.js?url'
 
 export function setupDefaultCatalog(): void {
   initializeDefaultCatalog()
@@ -14,7 +18,6 @@ export function setupDefaultCatalog(): void {
   registry.register('Checkbox', { component: CheckBox })
 }
 
-type PluginComponentModule = { default: ComponentType }
 type PluginIndexModule = {
   default?: {
     components?: Record<string, ComponentType>
@@ -23,28 +26,14 @@ type PluginIndexModule = {
 
 type RegistryComponent = Parameters<ComponentRegistry['register']>[1]['component']
 
-const pluginComponentModules = import.meta.glob<PluginComponentModule>(
-  '../../../plugins/*/src/*.{ts,tsx}',
-)
-const pluginIndexModules = import.meta.glob<PluginIndexModule>(
-  '../../../plugins/*/src/index.ts',
-)
-
 const supportedSharedDependencies = new Set<string>(SHARED_RUNTIME_DEPENDENCIES)
-
-function getPluginComponentLoader(
-  pluginId: string,
-  componentId: string,
-): (() => Promise<PluginComponentModule>) | undefined {
-  const preferredPath = `../../../plugins/${pluginId}/src/${componentId}.tsx`
-  const fallbackPath = `../../../plugins/${pluginId}/src/${componentId}.ts`
-
-  return pluginComponentModules[preferredPath] ?? pluginComponentModules[fallbackPath]
+const runtimeModuleUrls: Record<string, string> = {
+  react: reactSharedRuntimeUrl,
+  'react-dom': reactDomSharedRuntimeUrl,
+  'react/jsx-runtime': reactJsxRuntimeSharedRuntimeUrl,
+  '@a2ui/react': a2uiReactSharedRuntimeUrl,
 }
-
-function getPluginIndexLoader(pluginId: string): (() => Promise<PluginIndexModule>) | undefined {
-  return pluginIndexModules[`../../../plugins/${pluginId}/src/index.ts`]
-}
+const pluginModuleCache = new Map<string, Promise<PluginIndexModule>>()
 
 function validateSharedDependencies(plugin: Plugin): boolean {
   for (const dependency of plugin.sharedDependencies ?? []) {
@@ -57,6 +46,59 @@ function validateSharedDependencies(plugin: Plugin): boolean {
   }
 
   return true
+}
+
+function getPluginBundleUrl(plugin: Plugin): string | null {
+  const entryJs = plugin.entry?.js
+  if (!entryJs) return null
+  return `/plugins/${plugin.id}/${entryJs.replace(/^\/+/, '')}`
+}
+
+function rewriteSharedRuntimeImports(source: string): string {
+  return source.replace(
+    /(from\s*["']|import\s*\(\s*["'])(react\/jsx-runtime|react-dom|react|@a2ui\/react)(["']\s*\)?)/g,
+    (match, prefix: string, specifier: string, suffix: string) => {
+      const runtimeUrl = runtimeModuleUrls[specifier]
+      return runtimeUrl ? `${prefix}${runtimeUrl}${suffix}` : match
+    },
+  )
+}
+
+async function importPluginModule(plugin: Plugin): Promise<PluginIndexModule | null> {
+  const bundleUrl = getPluginBundleUrl(plugin)
+  if (!bundleUrl) {
+    console.warn(`[CatalogRegistry] Plugin '${plugin.id}' is missing entry.js metadata`)
+    return null
+  }
+
+  let modulePromise = pluginModuleCache.get(bundleUrl)
+  if (!modulePromise) {
+    modulePromise = (async () => {
+      const response = await fetch(bundleUrl)
+      if (!response.ok) {
+        throw new Error(`Failed to fetch plugin bundle (${response.status}) from ${bundleUrl}`)
+      }
+
+      const rawSource = await response.text()
+      const rewrittenSource = rewriteSharedRuntimeImports(rawSource)
+      const blob = new Blob([rewrittenSource], { type: 'text/javascript' })
+      const blobUrl = URL.createObjectURL(blob)
+
+      try {
+        return await import(/* @vite-ignore */ blobUrl)
+      } finally {
+        URL.revokeObjectURL(blobUrl)
+      }
+    })()
+    pluginModuleCache.set(bundleUrl, modulePromise)
+  }
+
+  try {
+    return await modulePromise
+  } catch (error) {
+    pluginModuleCache.delete(bundleUrl)
+    throw error
+  }
 }
 
 export async function loadPluginComponents(): Promise<void> {
@@ -76,55 +118,56 @@ export async function loadPluginComponents(): Promise<void> {
       continue
     }
 
-    const pluginIndex = (await getPluginIndexLoader(plugin.id)?.())?.default
-    const exportedComponents = pluginIndex?.components ?? {}
+    let pluginModule: PluginIndexModule | null = null
+    try {
+      pluginModule = await importPluginModule(plugin)
+    } catch (error) {
+      console.error(`[CatalogRegistry] Failed to load bundle for plugin '${plugin.id}':`, error)
+      continue
+    }
+
+    const pluginIndex = pluginModule?.default
+    if (!pluginIndex?.components) {
+      console.warn(`[CatalogRegistry] Plugin '${plugin.id}' bundle does not export a components map`)
+      continue
+    }
+
+    const exportedComponents = pluginIndex.components
+    const exportedCapabilityIds = new Set(Object.keys(exportedComponents))
     let hasRegisteredCapability = false
 
     for (const capability of plugin.capabilities) {
       const exportedComponent = exportedComponents[capability.component_id]
-      if (exportedComponent) {
-        registry.register(capability.component_id, {
-          component: exportedComponent as unknown as RegistryComponent,
-        })
-        hasRegisteredCapability = true
-        continue
-      }
-
-      const directLoader = getPluginComponentLoader(plugin.id, capability.component_id)
-      if (!directLoader) {
+      if (!exportedComponent) {
         console.warn(
-          `[CatalogRegistry] No module for plugin '${plugin.id}' capability '${capability.component_id}'`,
+          `[CatalogRegistry] Plugin '${plugin.id}' bundle is missing capability export '${capability.component_id}'`,
         )
         continue
       }
 
-      const module = await directLoader()
       registry.register(capability.component_id, {
-        component: module.default as unknown as RegistryComponent,
+        component: exportedComponent as unknown as RegistryComponent,
       })
       hasRegisteredCapability = true
+      exportedCapabilityIds.delete(capability.component_id)
+    }
+
+    for (const orphanComponentId of exportedCapabilityIds) {
+      console.warn(
+        `[CatalogRegistry] Plugin '${plugin.id}' exported undeclared component '${orphanComponentId}'`,
+      )
     }
 
     const primaryCapabilityId = plugin.capabilities[0]?.component_id
-    if (!hasRegisteredCapability || !primaryCapabilityId) {
+    const primaryComponent = primaryCapabilityId ? exportedComponents[primaryCapabilityId] : undefined
+    if (!hasRegisteredCapability || !primaryCapabilityId || !primaryComponent) {
       console.warn(`[CatalogRegistry] No usable component modules for plugin '${plugin.id}'`)
       continue
     }
 
-    const primaryComponent = exportedComponents[primaryCapabilityId]
-    if (primaryComponent) {
-      registry.register(plugin.id, {
-        component: primaryComponent as unknown as RegistryComponent,
-      })
-    } else {
-      const loader = getPluginComponentLoader(plugin.id, primaryCapabilityId)
-      if (loader) {
-        const module = await loader()
-        registry.register(plugin.id, {
-          component: module.default as unknown as RegistryComponent,
-        })
-      }
-    }
+    registry.register(plugin.id, {
+      component: primaryComponent as unknown as RegistryComponent,
+    })
 
     buildPluginGalleryExamples(plugin.id, plugin.name, plugin.capabilities)
   }
