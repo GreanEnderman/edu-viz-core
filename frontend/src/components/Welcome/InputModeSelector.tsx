@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
-import { InputMode, inputModes } from '../../constants/inputModes'
+import type { InputMode } from '../../constants/inputModes'
+import { inputModes } from '../../constants/inputModes'
 
 interface InputModeSelectorProps {
   mode: InputMode
@@ -53,9 +54,9 @@ export function InputModeSelector({ mode, onModeChange }: InputModeSelectorProps
         </span>
       </button>
 
-      {/* 下拉菜单 */}
+      {/* 下拉菜单 - 向上展开 */}
       {isOpen && (
-        <div className="absolute top-full left-0 mt-2 bg-white rounded-xl shadow-lg border border-outline-variant/10 py-2 z-50 min-w-[120px]">
+        <div className="absolute bottom-full left-0 mb-2 bg-white rounded-xl shadow-lg border border-outline-variant/10 py-2 z-50 min-w-[120px]">
           {inputModes.map((m) => (
             <button
               key={m.id}

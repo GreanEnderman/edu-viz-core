@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { InputMode, inputModes } from '../../constants/inputModes'
+import type { InputMode } from '../../constants/inputModes'
+import { inputModes } from '../../constants/inputModes'
 import { InputModeSelector } from './InputModeSelector'
 
 interface BottomInputProps {

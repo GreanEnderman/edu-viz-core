@@ -1,0 +1,476 @@
+{
+  "hash": "d8df1063",
+  "configHash": "ebd6e9ae",
+  "lockfileHash": "4abf77ff",
+  "browserHash": "3dcded48",
+  "optimized": {
+    "@a2ui/web_core/data/model-processor": {
+      "src": "../../../../vendor/A2UI-main/renderers/react/node_modules/@a2ui/web_core/dist/src/v0_8/data/model-processor.js",
+      "file": "@a2ui_web___core_data_model-processor.js",
+      "fileHash": "e82e77f6",
+      "needsInterop": false
+    },
+    "@a2ui/web_core/styles/index": {
+      "src": "../../../../vendor/A2UI-main/renderers/react/node_modules/@a2ui/web_core/dist/src/v0_8/styles/index.js",
+      "file": "@a2ui_web___core_styles_index.js",
+      "fileHash": "5ff13160",
+      "needsInterop": false
+    },
+    "clsx": {
+      "src": "../../../../node_modules/clsx/dist/clsx.mjs",
+      "file": "clsx.js",
+      "fileHash": "40b2a556",
+      "needsInterop": false
+    },
+    "markdown-it": {
+      "src": "../../../../node_modules/markdown-it/index.mjs",
+      "file": "markdown-it.js",
+      "fileHash": "e49be68f",
+      "needsInterop": false
+    },
+    "mermaid": {
+      "src": "../../../../node_modules/mermaid/dist/mermaid.core.mjs",
+      "file": "mermaid.js",
+      "fileHash": "4dae0fde",
+      "needsInterop": false
+    },
+    "react-dom": {
+      "src": "../../../../node_modules/react-dom/index.js",
+      "file": "react-dom.js",
+      "fileHash": "e163749f",
+      "needsInterop": true
+    },
+    "react-dom/client": {
+      "src": "../../../../node_modules/react-dom/client.js",
+      "file": "react-dom_client.js",
+      "fileHash": "07f640fd",
+      "needsInterop": true
+    },
+    "react-markdown": {
+      "src": "../../../node_modules/react-markdown/index.js",
+      "file": "react-markdown.js",
+      "fileHash": "742f147e",
+      "needsInterop": false
+    },
+    "react": {
+      "src": "../../../../node_modules/react/index.js",
+      "file": "react.js",
+      "fileHash": "67526cc6",
+      "needsInterop": true
+    },
+    "react/jsx-dev-runtime": {
+      "src": "../../../../node_modules/react/jsx-dev-runtime.js",
+      "file": "react_jsx-dev-runtime.js",
+      "fileHash": "3721d051",
+      "needsInterop": true
+    },
+    "react/jsx-runtime": {
+      "src": "../../../../node_modules/react/jsx-runtime.js",
+      "file": "react_jsx-runtime.js",
+      "fileHash": "5f511ab2",
+      "needsInterop": true
+    },
+    "rehype-katex": {
+      "src": "../../../node_modules/rehype-katex/index.js",
+      "file": "rehype-katex.js",
+      "fileHash": "c3f65b64",
+      "needsInterop": false
+    },
+    "remark-gfm": {
+      "src": "../../../node_modules/remark-gfm/index.js",
+      "file": "remark-gfm.js",
+      "fileHash": "a4b62d5c",
+      "needsInterop": false
+    },
+    "remark-math": {
+      "src": "../../../node_modules/remark-math/index.js",
+      "file": "remark-math.js",
+      "fileHash": "ff96bb34",
+      "needsInterop": false
+    },
+    "zustand": {
+      "src": "../../../node_modules/zustand/esm/index.mjs",
+      "file": "zustand.js",
+      "fileHash": "040294c3",
+      "needsInterop": false
+    }
+  },
+  "chunks": {
+    "arc-C2W8m1de": {
+      "file": "arc-C2W8m1de.js",
+      "isDynamicEntry": false
+    },
+    "architecture-YZFGNWBL-DtV9pWjU": {
+      "file": "architecture-YZFGNWBL-DtV9pWjU.js",
+      "isDynamicEntry": true
+    },
+    "architectureDiagram-Q4EWVU46-BlrhS7kd": {
+      "file": "architectureDiagram-Q4EWVU46-BlrhS7kd.js",
+      "isDynamicEntry": true
+    },
+    "array-Bx1vyFe7": {
+      "file": "array-Bx1vyFe7.js",
+      "isDynamicEntry": false
+    },
+    "blockDiagram-DXYQGD6D-B6D7K2yk": {
+      "file": "blockDiagram-DXYQGD6D-B6D7K2yk.js",
+      "isDynamicEntry": true
+    },
+    "c4Diagram-AHTNJAMY-BrrVpOev": {
+      "file": "c4Diagram-AHTNJAMY-BrrVpOev.js",
+      "isDynamicEntry": true
+    },
+    "channel-2Ju-PJzT": {
+      "file": "channel-2Ju-PJzT.js",
+      "isDynamicEntry": false
+    },
+    "chunk-2KRD3SAO-Co4zeHI3": {
+      "file": "chunk-2KRD3SAO-Co4zeHI3.js",
+      "isDynamicEntry": false
+    },
+    "chunk-336JU56O-Cyg-W8ap": {
+      "file": "chunk-336JU56O-Cyg-W8ap.js",
+      "isDynamicEntry": false
+    },
+    "chunk-426QAEUC-CTcb4foH": {
+      "file": "chunk-426QAEUC-CTcb4foH.js",
+      "isDynamicEntry": false
+    },
+    "chunk-4BX2VUAB-Db3X5r8A": {
+      "file": "chunk-4BX2VUAB-Db3X5r8A.js",
+      "isDynamicEntry": false
+    },
+    "chunk-4TB4RGXK-CjTFD3x4": {
+      "file": "chunk-4TB4RGXK-CjTFD3x4.js",
+      "isDynamicEntry": false
+    },
+    "chunk-55IACEB6-BHl-S3Hw": {
+      "file": "chunk-55IACEB6-BHl-S3Hw.js",
+      "isDynamicEntry": false
+    },
+    "chunk-5FUZZQ4R-BGQH4-7A": {
+      "file": "chunk-5FUZZQ4R-BGQH4-7A.js",
+      "isDynamicEntry": false
+    },
+    "chunk-5PVQY5BW-uD9Fgrn4": {
+      "file": "chunk-5PVQY5BW-uD9Fgrn4.js",
+      "isDynamicEntry": false
+    },
+    "chunk-67CJDMHE-Dmkeeok1": {
+      "file": "chunk-67CJDMHE-Dmkeeok1.js",
+      "isDynamicEntry": false
+    },
+    "chunk-7N4EOEYR-B-LI1RID": {
+      "file": "chunk-7N4EOEYR-B-LI1RID.js",
+      "isDynamicEntry": false
+    },
+    "chunk-AA7GKIK3-C1lF4Cov": {
+      "file": "chunk-AA7GKIK3-C1lF4Cov.js",
+      "isDynamicEntry": false
+    },
+    "chunk-BSJP7CBP-BQRf3rbg": {
+      "file": "chunk-BSJP7CBP-BQRf3rbg.js",
+      "isDynamicEntry": false
+    },
+    "chunk-CIAEETIT-C0xSSAw0": {
+      "file": "chunk-CIAEETIT-C0xSSAw0.js",
+      "isDynamicEntry": false
+    },
+    "chunk-EDXVE4YY-CjMJFDyh": {
+      "file": "chunk-EDXVE4YY-CjMJFDyh.js",
+      "isDynamicEntry": false
+    },
+    "chunk-ENJZ2VHE-C5llrVjZ": {
+      "file": "chunk-ENJZ2VHE-C5llrVjZ.js",
+      "isDynamicEntry": false
+    },
+    "chunk-FMBD7UC4-Cpsj8cOe": {
+      "file": "chunk-FMBD7UC4-Cpsj8cOe.js",
+      "isDynamicEntry": false
+    },
+    "chunk-FOC6F5B3-DKQsAbZq": {
+      "file": "chunk-FOC6F5B3-DKQsAbZq.js",
+      "isDynamicEntry": false
+    },
+    "chunk-ICPOFSXX-BwOo0aC0": {
+      "file": "chunk-ICPOFSXX-BwOo0aC0.js",
+      "isDynamicEntry": false
+    },
+    "chunk-K5T4RW27-4f-I-LKV": {
+      "file": "chunk-K5T4RW27-4f-I-LKV.js",
+      "isDynamicEntry": false
+    },
+    "chunk-KGLVRYIC-DpGCB7py": {
+      "file": "chunk-KGLVRYIC-DpGCB7py.js",
+      "isDynamicEntry": false
+    },
+    "chunk-LIHQZDEY-CTEiDKTe": {
+      "file": "chunk-LIHQZDEY-CTEiDKTe.js",
+      "isDynamicEntry": false
+    },
+    "chunk-ORNJ4GCN-BEgrBOJt": {
+      "file": "chunk-ORNJ4GCN-BEgrBOJt.js",
+      "isDynamicEntry": false
+    },
+    "chunk-OYMX7WX6-DWWtD8oX": {
+      "file": "chunk-OYMX7WX6-DWWtD8oX.js",
+      "isDynamicEntry": false
+    },
+    "chunk-QZHKN3VN-DXzYVZqo": {
+      "file": "chunk-QZHKN3VN-DXzYVZqo.js",
+      "isDynamicEntry": false
+    },
+    "chunk-U2HBQHQK--MHI5FdN": {
+      "file": "chunk-U2HBQHQK--MHI5FdN.js",
+      "isDynamicEntry": false
+    },
+    "chunk-X2U36JSP-Dp4b1zsp": {
+      "file": "chunk-X2U36JSP-Dp4b1zsp.js",
+      "isDynamicEntry": false
+    },
+    "chunk-XPW4576I-BHfvO-m5": {
+      "file": "chunk-XPW4576I-BHfvO-m5.js",
+      "isDynamicEntry": false
+    },
+    "chunk-YZCP3GAM-C9CL1cZf": {
+      "file": "chunk-YZCP3GAM-C9CL1cZf.js",
+      "isDynamicEntry": false
+    },
+    "chunk-ZZ45TVLE-CTPGWkLR": {
+      "file": "chunk-ZZ45TVLE-CTPGWkLR.js",
+      "isDynamicEntry": false
+    },
+    "chunk-y4iZ7GFx": {
+      "file": "chunk-y4iZ7GFx.js",
+      "isDynamicEntry": false
+    },
+    "classDiagram-6PBFFD2Q-D4QNM16Y": {
+      "file": "classDiagram-6PBFFD2Q-D4QNM16Y.js",
+      "isDynamicEntry": true
+    },
+    "classDiagram-v2-HSJHXN6E-Bq1_FnY2": {
+      "file": "classDiagram-v2-HSJHXN6E-Bq1_FnY2.js",
+      "isDynamicEntry": true
+    },
+    "cose-bilkent-S5V4N54A-CAaJ8UWV": {
+      "file": "cose-bilkent-S5V4N54A-CAaJ8UWV.js",
+      "isDynamicEntry": true
+    },
+    "cytoscape.esm-Cxz3JEuK": {
+      "file": "cytoscape.esm-Cxz3JEuK.js",
+      "isDynamicEntry": false
+    },
+    "dagre-Bz_hrNO6": {
+      "file": "dagre-Bz_hrNO6.js",
+      "isDynamicEntry": false
+    },
+    "dagre-KV5264BT-Bq0NZZIR": {
+      "file": "dagre-KV5264BT-Bq0NZZIR.js",
+      "isDynamicEntry": true
+    },
+    "dev-juwLPdvV": {
+      "file": "dev-juwLPdvV.js",
+      "isDynamicEntry": false
+    },
+    "diagram-5BDNPKRD-CLHRpC7S": {
+      "file": "diagram-5BDNPKRD-CLHRpC7S.js",
+      "isDynamicEntry": true
+    },
+    "diagram-G4DWMVQ6-CyqFbVU_": {
+      "file": "diagram-G4DWMVQ6-CyqFbVU_.js",
+      "isDynamicEntry": true
+    },
+    "diagram-MMDJMWI5-B22_RqeC": {
+      "file": "diagram-MMDJMWI5-B22_RqeC.js",
+      "isDynamicEntry": true
+    },
+    "diagram-TYMM5635-w0R6zV2F": {
+      "file": "diagram-TYMM5635-w0R6zV2F.js",
+      "isDynamicEntry": true
+    },
+    "dist-Hhn6lPMJ": {
+      "file": "dist-Hhn6lPMJ.js",
+      "isDynamicEntry": false
+    },
+    "erDiagram-SMLLAGMA-DKPLgLwX": {
+      "file": "erDiagram-SMLLAGMA-DKPLgLwX.js",
+      "isDynamicEntry": true
+    },
+    "flowDiagram-DWJPFMVM-CY08phQs": {
+      "file": "flowDiagram-DWJPFMVM-CY08phQs.js",
+      "isDynamicEntry": true
+    },
+    "ganttDiagram-T4ZO3ILL-BrPWaWCr": {
+      "file": "ganttDiagram-T4ZO3ILL-BrPWaWCr.js",
+      "isDynamicEntry": true
+    },
+    "gitGraph-7Q5UKJZL-BIsmbmUK": {
+      "file": "gitGraph-7Q5UKJZL-BIsmbmUK.js",
+      "isDynamicEntry": true
+    },
+    "gitGraphDiagram-UUTBAWPF-CiTQi11Z": {
+      "file": "gitGraphDiagram-UUTBAWPF-CiTQi11Z.js",
+      "isDynamicEntry": true
+    },
+    "graphlib-CstjPykE": {
+      "file": "graphlib-CstjPykE.js",
+      "isDynamicEntry": false
+    },
+    "identity-BL4w39L7": {
+      "file": "identity-BL4w39L7.js",
+      "isDynamicEntry": false
+    },
+    "info-OMHHGYJF-BfmF3HyQ": {
+      "file": "info-OMHHGYJF-BfmF3HyQ.js",
+      "isDynamicEntry": true
+    },
+    "infoDiagram-42DDH7IO-CL_Jr6DS": {
+      "file": "infoDiagram-42DDH7IO-CL_Jr6DS.js",
+      "isDynamicEntry": true
+    },
+    "init-DaqUMEeO": {
+      "file": "init-DaqUMEeO.js",
+      "isDynamicEntry": false
+    },
+    "isEmpty-CxHYTlA3": {
+      "file": "isEmpty-CxHYTlA3.js",
+      "isDynamicEntry": false
+    },
+    "ishikawaDiagram-UXIWVN3A-CgQPfIFy": {
+      "file": "ishikawaDiagram-UXIWVN3A-CgQPfIFy.js",
+      "isDynamicEntry": true
+    },
+    "journeyDiagram-VCZTEJTY-DCkBWPej": {
+      "file": "journeyDiagram-VCZTEJTY-DCkBWPej.js",
+      "isDynamicEntry": true
+    },
+    "kanban-definition-6JOO6SKY-gzuu7aDK": {
+      "file": "kanban-definition-6JOO6SKY-gzuu7aDK.js",
+      "isDynamicEntry": true
+    },
+    "katex-DKQSwV21": {
+      "file": "katex-DKQSwV21.js",
+      "isDynamicEntry": false
+    },
+    "lib-BdF6sKoW": {
+      "file": "lib-BdF6sKoW.js",
+      "isDynamicEntry": false
+    },
+    "lib-CBafVWF-": {
+      "file": "lib-CBafVWF-.js",
+      "isDynamicEntry": false
+    },
+    "line-8KpFNfZ_": {
+      "file": "line-8KpFNfZ_.js",
+      "isDynamicEntry": false
+    },
+    "linear-UfVze079": {
+      "file": "linear-UfVze079.js",
+      "isDynamicEntry": false
+    },
+    "longest-streak-QtMZ0m3h": {
+      "file": "longest-streak-QtMZ0m3h.js",
+      "isDynamicEntry": false
+    },
+    "mermaid-parser.core-naVDQl-H": {
+      "file": "mermaid-parser.core-naVDQl-H.js",
+      "isDynamicEntry": false
+    },
+    "mindmap-definition-QFDTVHPH-gGYATnzh": {
+      "file": "mindmap-definition-QFDTVHPH-gGYATnzh.js",
+      "isDynamicEntry": true
+    },
+    "ordinal-CRqSXlxR": {
+      "file": "ordinal-CRqSXlxR.js",
+      "isDynamicEntry": false
+    },
+    "packet-4T2RLAQJ-BzPMVgnO": {
+      "file": "packet-4T2RLAQJ-BzPMVgnO.js",
+      "isDynamicEntry": true
+    },
+    "path-BQiIuBPh": {
+      "file": "path-BQiIuBPh.js",
+      "isDynamicEntry": false
+    },
+    "pie-ZZUOXDRM-vPzUpkCY": {
+      "file": "pie-ZZUOXDRM-vPzUpkCY.js",
+      "isDynamicEntry": true
+    },
+    "pieDiagram-DEJITSTG-DMOeSR0D": {
+      "file": "pieDiagram-DEJITSTG-DMOeSR0D.js",
+      "isDynamicEntry": true
+    },
+    "quadrantDiagram-34T5L4WZ-Be5YDbD7": {
+      "file": "quadrantDiagram-34T5L4WZ-Be5YDbD7.js",
+      "isDynamicEntry": true
+    },
+    "radar-PYXPWWZC-DQQDjIg0": {
+      "file": "radar-PYXPWWZC-DQQDjIg0.js",
+      "isDynamicEntry": true
+    },
+    "reduce-BfdyWFJM": {
+      "file": "reduce-BfdyWFJM.js",
+      "isDynamicEntry": false
+    },
+    "requirementDiagram-MS252O5E-Do-14mru": {
+      "file": "requirementDiagram-MS252O5E-Do-14mru.js",
+      "isDynamicEntry": true
+    },
+    "rough.esm-0qSY5qye": {
+      "file": "rough.esm-0qSY5qye.js",
+      "isDynamicEntry": false
+    },
+    "sankeyDiagram-XADWPNL6-Bu_4kue9": {
+      "file": "sankeyDiagram-XADWPNL6-Bu_4kue9.js",
+      "isDynamicEntry": true
+    },
+    "sequenceDiagram-FGHM5R23-C-6KWnEJ": {
+      "file": "sequenceDiagram-FGHM5R23-C-6KWnEJ.js",
+      "isDynamicEntry": true
+    },
+    "space-separated-tokens-BH3YQ3gp": {
+      "file": "space-separated-tokens-BH3YQ3gp.js",
+      "isDynamicEntry": false
+    },
+    "src-hPY6rTsk": {
+      "file": "src-hPY6rTsk.js",
+      "isDynamicEntry": false
+    },
+    "stateDiagram-FHFEXIEX-DoVvAxmx": {
+      "file": "stateDiagram-FHFEXIEX-DoVvAxmx.js",
+      "isDynamicEntry": true
+    },
+    "stateDiagram-v2-QKLJ7IA2-BUSetK5-": {
+      "file": "stateDiagram-v2-QKLJ7IA2-BUSetK5-.js",
+      "isDynamicEntry": true
+    },
+    "timeline-definition-GMOUNBTQ-DKj_NmDa": {
+      "file": "timeline-definition-GMOUNBTQ-DKj_NmDa.js",
+      "isDynamicEntry": true
+    },
+    "treeView-SZITEDCU-CZlEO9OW": {
+      "file": "treeView-SZITEDCU-CZlEO9OW.js",
+      "isDynamicEntry": true
+    },
+    "treemap-W4RFUUIX-Bcdxq2aP": {
+      "file": "treemap-W4RFUUIX-Bcdxq2aP.js",
+      "isDynamicEntry": true
+    },
+    "vennDiagram-DHZGUBPP-Dwx2ceg6": {
+      "file": "vennDiagram-DHZGUBPP-Dwx2ceg6.js",
+      "isDynamicEntry": true
+    },
+    "wardley-RL74JXVD-B25BC8c5": {
+      "file": "wardley-RL74JXVD-B25BC8c5.js",
+      "isDynamicEntry": true
+    },
+    "wardleyDiagram-NUSXRM2D-DFpG6h3w": {
+      "file": "wardleyDiagram-NUSXRM2D-DFpG6h3w.js",
+      "isDynamicEntry": true
+    },
+    "xychartDiagram-5P7HB3ND-ByxqT7mb": {
+      "file": "xychartDiagram-5P7HB3ND-ByxqT7mb.js",
+      "isDynamicEntry": true
+    }
+  }
+}
