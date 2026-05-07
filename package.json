@@ -7,6 +7,8 @@
     "plugins/*"
   ],
   "scripts": {
+    "dev:v1": "cd frontend-v1 && npm run dev",
+    "dev:v2": "cd frontend && npm run dev",
     "build:plugins": "npm run build --workspace plugin-template --workspace plugin-chemistry-molecule-3d --workspace plugin-chemistry-orbital-3d --workspace plugin-physics-high-school",
     "typecheck:plugins": "npm run typecheck --workspace plugin-template --workspace plugin-chemistry-molecule-3d --workspace plugin-chemistry-orbital-3d --workspace plugin-physics-high-school"
   },

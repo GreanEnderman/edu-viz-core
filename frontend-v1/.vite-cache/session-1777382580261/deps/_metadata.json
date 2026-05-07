@@ -1,0 +1,498 @@
+{
+  "hash": "bd17f974",
+  "configHash": "8818a00f",
+  "lockfileHash": "4abf77ff",
+  "browserHash": "20690867",
+  "optimized": {
+    "3dmol": {
+      "src": "../../../../node_modules/3dmol/build/3Dmol.js",
+      "file": "3dmol.js",
+      "fileHash": "90cc86c4",
+      "needsInterop": true
+    },
+    "@a2ui/web_core/data/model-processor": {
+      "src": "../../../../vendor/A2UI-main/renderers/react/node_modules/@a2ui/web_core/dist/src/v0_8/data/model-processor.js",
+      "file": "@a2ui_web___core_data_model-processor.js",
+      "fileHash": "33fa38fb",
+      "needsInterop": false
+    },
+    "@a2ui/web_core/styles/index": {
+      "src": "../../../../vendor/A2UI-main/renderers/react/node_modules/@a2ui/web_core/dist/src/v0_8/styles/index.js",
+      "file": "@a2ui_web___core_styles_index.js",
+      "fileHash": "87a39530",
+      "needsInterop": false
+    },
+    "clsx": {
+      "src": "../../../../node_modules/clsx/dist/clsx.mjs",
+      "file": "clsx.js",
+      "fileHash": "7af11721",
+      "needsInterop": false
+    },
+    "markdown-it": {
+      "src": "../../../../node_modules/markdown-it/index.mjs",
+      "file": "markdown-it.js",
+      "fileHash": "e3f2829f",
+      "needsInterop": false
+    },
+    "mermaid": {
+      "src": "../../../../node_modules/mermaid/dist/mermaid.core.mjs",
+      "file": "mermaid.js",
+      "fileHash": "71eee15c",
+      "needsInterop": false
+    },
+    "react-dom": {
+      "src": "../../../../node_modules/react-dom/index.js",
+      "file": "react-dom.js",
+      "fileHash": "5fd49beb",
+      "needsInterop": true
+    },
+    "react-dom/client": {
+      "src": "../../../../node_modules/react-dom/client.js",
+      "file": "react-dom_client.js",
+      "fileHash": "9eb80bce",
+      "needsInterop": true
+    },
+    "react-markdown": {
+      "src": "../../../node_modules/react-markdown/index.js",
+      "file": "react-markdown.js",
+      "fileHash": "8485344b",
+      "needsInterop": false
+    },
+    "react": {
+      "src": "../../../../node_modules/react/index.js",
+      "file": "react.js",
+      "fileHash": "7e3350a9",
+      "needsInterop": true
+    },
+    "react/jsx-dev-runtime": {
+      "src": "../../../../node_modules/react/jsx-dev-runtime.js",
+      "file": "react_jsx-dev-runtime.js",
+      "fileHash": "63a3f779",
+      "needsInterop": true
+    },
+    "react/jsx-runtime": {
+      "src": "../../../../node_modules/react/jsx-runtime.js",
+      "file": "react_jsx-runtime.js",
+      "fileHash": "c7510ea6",
+      "needsInterop": true
+    },
+    "rehype-katex": {
+      "src": "../../../node_modules/rehype-katex/index.js",
+      "file": "rehype-katex.js",
+      "fileHash": "0d2f9d7b",
+      "needsInterop": false
+    },
+    "remark-gfm": {
+      "src": "../../../node_modules/remark-gfm/index.js",
+      "file": "remark-gfm.js",
+      "fileHash": "8afe43e9",
+      "needsInterop": false
+    },
+    "remark-math": {
+      "src": "../../../node_modules/remark-math/index.js",
+      "file": "remark-math.js",
+      "fileHash": "0a07e41d",
+      "needsInterop": false
+    },
+    "three": {
+      "src": "../../../../node_modules/three/build/three.module.js",
+      "file": "three.js",
+      "fileHash": "21b181b6",
+      "needsInterop": false
+    },
+    "three/examples/jsm/controls/OrbitControls.js": {
+      "src": "../../../../node_modules/three/examples/jsm/controls/OrbitControls.js",
+      "file": "three_examples_jsm_controls_OrbitControls__js.js",
+      "fileHash": "36de69c7",
+      "needsInterop": false
+    },
+    "zustand": {
+      "src": "../../../node_modules/zustand/esm/index.mjs",
+      "file": "zustand.js",
+      "fileHash": "88252ddf",
+      "needsInterop": false
+    }
+  },
+  "chunks": {
+    "arc-C2W8m1de": {
+      "file": "arc-C2W8m1de.js",
+      "isDynamicEntry": false
+    },
+    "architecture-YZFGNWBL-DyAsikg9": {
+      "file": "architecture-YZFGNWBL-DyAsikg9.js",
+      "isDynamicEntry": true
+    },
+    "architectureDiagram-Q4EWVU46-D8FUicc_": {
+      "file": "architectureDiagram-Q4EWVU46-D8FUicc_.js",
+      "isDynamicEntry": true
+    },
+    "array-Bx1vyFe7": {
+      "file": "array-Bx1vyFe7.js",
+      "isDynamicEntry": false
+    },
+    "blockDiagram-DXYQGD6D-CJ4lJJtV": {
+      "file": "blockDiagram-DXYQGD6D-CJ4lJJtV.js",
+      "isDynamicEntry": true
+    },
+    "c4Diagram-AHTNJAMY-BxSo-Imp": {
+      "file": "c4Diagram-AHTNJAMY-BxSo-Imp.js",
+      "isDynamicEntry": true
+    },
+    "channel-2Ju-PJzT": {
+      "file": "channel-2Ju-PJzT.js",
+      "isDynamicEntry": false
+    },
+    "chunk-2KRD3SAO-De6emiX4": {
+      "file": "chunk-2KRD3SAO-De6emiX4.js",
+      "isDynamicEntry": false
+    },
+    "chunk-336JU56O-AfOkzx0p": {
+      "file": "chunk-336JU56O-AfOkzx0p.js",
+      "isDynamicEntry": false
+    },
+    "chunk-426QAEUC-CTcb4foH": {
+      "file": "chunk-426QAEUC-CTcb4foH.js",
+      "isDynamicEntry": false
+    },
+    "chunk-4BX2VUAB-CI2SkS-W": {
+      "file": "chunk-4BX2VUAB-CI2SkS-W.js",
+      "isDynamicEntry": false
+    },
+    "chunk-4TB4RGXK-CePqlDp9": {
+      "file": "chunk-4TB4RGXK-CePqlDp9.js",
+      "isDynamicEntry": false
+    },
+    "chunk-55IACEB6-DPd5V5QK": {
+      "file": "chunk-55IACEB6-DPd5V5QK.js",
+      "isDynamicEntry": false
+    },
+    "chunk-5FUZZQ4R-BGQH4-7A": {
+      "file": "chunk-5FUZZQ4R-BGQH4-7A.js",
+      "isDynamicEntry": false
+    },
+    "chunk-5PVQY5BW-uD9Fgrn4": {
+      "file": "chunk-5PVQY5BW-uD9Fgrn4.js",
+      "isDynamicEntry": false
+    },
+    "chunk-67CJDMHE-_GBbqD-a": {
+      "file": "chunk-67CJDMHE-_GBbqD-a.js",
+      "isDynamicEntry": false
+    },
+    "chunk-7N4EOEYR-Bwe8oxce": {
+      "file": "chunk-7N4EOEYR-Bwe8oxce.js",
+      "isDynamicEntry": false
+    },
+    "chunk-AA7GKIK3-CEbhuVuA": {
+      "file": "chunk-AA7GKIK3-CEbhuVuA.js",
+      "isDynamicEntry": false
+    },
+    "chunk-BSJP7CBP-BQRf3rbg": {
+      "file": "chunk-BSJP7CBP-BQRf3rbg.js",
+      "isDynamicEntry": false
+    },
+    "chunk-CIAEETIT-DwC74JtV": {
+      "file": "chunk-CIAEETIT-DwC74JtV.js",
+      "isDynamicEntry": false
+    },
+    "chunk-EDXVE4YY-DSUeNgu1": {
+      "file": "chunk-EDXVE4YY-DSUeNgu1.js",
+      "isDynamicEntry": false
+    },
+    "chunk-ENJZ2VHE-C5llrVjZ": {
+      "file": "chunk-ENJZ2VHE-C5llrVjZ.js",
+      "isDynamicEntry": false
+    },
+    "chunk-FMBD7UC4-C03JTGd8": {
+      "file": "chunk-FMBD7UC4-C03JTGd8.js",
+      "isDynamicEntry": false
+    },
+    "chunk-FOC6F5B3-CSjSJwPC": {
+      "file": "chunk-FOC6F5B3-CSjSJwPC.js",
+      "isDynamicEntry": false
+    },
+    "chunk-ICPOFSXX-BwOo0aC0": {
+      "file": "chunk-ICPOFSXX-BwOo0aC0.js",
+      "isDynamicEntry": false
+    },
+    "chunk-K5T4RW27-CL3jULAa": {
+      "file": "chunk-K5T4RW27-CL3jULAa.js",
+      "isDynamicEntry": false
+    },
+    "chunk-KGLVRYIC-CLKU0Ouo": {
+      "file": "chunk-KGLVRYIC-CLKU0Ouo.js",
+      "isDynamicEntry": false
+    },
+    "chunk-LIHQZDEY-CD9NtFTG": {
+      "file": "chunk-LIHQZDEY-CD9NtFTG.js",
+      "isDynamicEntry": false
+    },
+    "chunk-ORNJ4GCN-DqWHceRq": {
+      "file": "chunk-ORNJ4GCN-DqWHceRq.js",
+      "isDynamicEntry": false
+    },
+    "chunk-OYMX7WX6-DQzWNYFp": {
+      "file": "chunk-OYMX7WX6-DQzWNYFp.js",
+      "isDynamicEntry": false
+    },
+    "chunk-QZHKN3VN-BS5y2G92": {
+      "file": "chunk-QZHKN3VN-BS5y2G92.js",
+      "isDynamicEntry": false
+    },
+    "chunk-U2HBQHQK--MHI5FdN": {
+      "file": "chunk-U2HBQHQK--MHI5FdN.js",
+      "isDynamicEntry": false
+    },
+    "chunk-X2U36JSP-Dp4b1zsp": {
+      "file": "chunk-X2U36JSP-Dp4b1zsp.js",
+      "isDynamicEntry": false
+    },
+    "chunk-XPW4576I-BHfvO-m5": {
+      "file": "chunk-XPW4576I-BHfvO-m5.js",
+      "isDynamicEntry": false
+    },
+    "chunk-YZCP3GAM-DRfkS-JA": {
+      "file": "chunk-YZCP3GAM-DRfkS-JA.js",
+      "isDynamicEntry": false
+    },
+    "chunk-ZZ45TVLE-CTPGWkLR": {
+      "file": "chunk-ZZ45TVLE-CTPGWkLR.js",
+      "isDynamicEntry": false
+    },
+    "chunk-y4iZ7GFx": {
+      "file": "chunk-y4iZ7GFx.js",
+      "isDynamicEntry": false
+    },
+    "classDiagram-6PBFFD2Q-BKmLkYmg": {
+      "file": "classDiagram-6PBFFD2Q-BKmLkYmg.js",
+      "isDynamicEntry": true
+    },
+    "classDiagram-v2-HSJHXN6E-BngIE0Ik": {
+      "file": "classDiagram-v2-HSJHXN6E-BngIE0Ik.js",
+      "isDynamicEntry": true
+    },
+    "cose-bilkent-S5V4N54A-D28Qeze3": {
+      "file": "cose-bilkent-S5V4N54A-D28Qeze3.js",
+      "isDynamicEntry": true
+    },
+    "cytoscape.esm-ilURmhVr": {
+      "file": "cytoscape.esm-ilURmhVr.js",
+      "isDynamicEntry": false
+    },
+    "dagre-CoXMD55m": {
+      "file": "dagre-CoXMD55m.js",
+      "isDynamicEntry": false
+    },
+    "dagre-KV5264BT-C-yshRUl": {
+      "file": "dagre-KV5264BT-C-yshRUl.js",
+      "isDynamicEntry": true
+    },
+    "dev-juwLPdvV": {
+      "file": "dev-juwLPdvV.js",
+      "isDynamicEntry": false
+    },
+    "diagram-5BDNPKRD-BXpyhSwy": {
+      "file": "diagram-5BDNPKRD-BXpyhSwy.js",
+      "isDynamicEntry": true
+    },
+    "diagram-G4DWMVQ6-C_ffKWUd": {
+      "file": "diagram-G4DWMVQ6-C_ffKWUd.js",
+      "isDynamicEntry": true
+    },
+    "diagram-MMDJMWI5-COz8Di8J": {
+      "file": "diagram-MMDJMWI5-COz8Di8J.js",
+      "isDynamicEntry": true
+    },
+    "diagram-TYMM5635-BwXaPq72": {
+      "file": "diagram-TYMM5635-BwXaPq72.js",
+      "isDynamicEntry": true
+    },
+    "dist-Hhn6lPMJ": {
+      "file": "dist-Hhn6lPMJ.js",
+      "isDynamicEntry": false
+    },
+    "erDiagram-SMLLAGMA-CIfvG4hY": {
+      "file": "erDiagram-SMLLAGMA-CIfvG4hY.js",
+      "isDynamicEntry": true
+    },
+    "flowDiagram-DWJPFMVM-471c88WL": {
+      "file": "flowDiagram-DWJPFMVM-471c88WL.js",
+      "isDynamicEntry": true
+    },
+    "ganttDiagram-T4ZO3ILL-50wjp6u8": {
+      "file": "ganttDiagram-T4ZO3ILL-50wjp6u8.js",
+      "isDynamicEntry": true
+    },
+    "gitGraph-7Q5UKJZL-DY3frCKN": {
+      "file": "gitGraph-7Q5UKJZL-DY3frCKN.js",
+      "isDynamicEntry": true
+    },
+    "gitGraphDiagram-UUTBAWPF-CMHg0fbJ": {
+      "file": "gitGraphDiagram-UUTBAWPF-CMHg0fbJ.js",
+      "isDynamicEntry": true
+    },
+    "graphlib-DHdKcpzd": {
+      "file": "graphlib-DHdKcpzd.js",
+      "isDynamicEntry": false
+    },
+    "identity-BL4w39L7": {
+      "file": "identity-BL4w39L7.js",
+      "isDynamicEntry": false
+    },
+    "info-OMHHGYJF-ejz4kb3f": {
+      "file": "info-OMHHGYJF-ejz4kb3f.js",
+      "isDynamicEntry": true
+    },
+    "infoDiagram-42DDH7IO-B6Y-vuE5": {
+      "file": "infoDiagram-42DDH7IO-B6Y-vuE5.js",
+      "isDynamicEntry": true
+    },
+    "init-DaqUMEeO": {
+      "file": "init-DaqUMEeO.js",
+      "isDynamicEntry": false
+    },
+    "isEmpty-CxHYTlA3": {
+      "file": "isEmpty-CxHYTlA3.js",
+      "isDynamicEntry": false
+    },
+    "ishikawaDiagram-UXIWVN3A-C6bIqoh0": {
+      "file": "ishikawaDiagram-UXIWVN3A-C6bIqoh0.js",
+      "isDynamicEntry": true
+    },
+    "journeyDiagram-VCZTEJTY-kkBvCzFW": {
+      "file": "journeyDiagram-VCZTEJTY-kkBvCzFW.js",
+      "isDynamicEntry": true
+    },
+    "kanban-definition-6JOO6SKY-S3XyIqkA": {
+      "file": "kanban-definition-6JOO6SKY-S3XyIqkA.js",
+      "isDynamicEntry": true
+    },
+    "katex-DKQSwV21": {
+      "file": "katex-DKQSwV21.js",
+      "isDynamicEntry": false
+    },
+    "lib-BdF6sKoW": {
+      "file": "lib-BdF6sKoW.js",
+      "isDynamicEntry": false
+    },
+    "lib-CBafVWF-": {
+      "file": "lib-CBafVWF-.js",
+      "isDynamicEntry": false
+    },
+    "line-8KpFNfZ_": {
+      "file": "line-8KpFNfZ_.js",
+      "isDynamicEntry": false
+    },
+    "linear-UfVze079": {
+      "file": "linear-UfVze079.js",
+      "isDynamicEntry": false
+    },
+    "longest-streak-QtMZ0m3h": {
+      "file": "longest-streak-QtMZ0m3h.js",
+      "isDynamicEntry": false
+    },
+    "mermaid-parser.core-C6aDZ3Yy": {
+      "file": "mermaid-parser.core-C6aDZ3Yy.js",
+      "isDynamicEntry": false
+    },
+    "mindmap-definition-QFDTVHPH-TBLtWNG2": {
+      "file": "mindmap-definition-QFDTVHPH-TBLtWNG2.js",
+      "isDynamicEntry": true
+    },
+    "ordinal-CRqSXlxR": {
+      "file": "ordinal-CRqSXlxR.js",
+      "isDynamicEntry": false
+    },
+    "packet-4T2RLAQJ-D7VelWH6": {
+      "file": "packet-4T2RLAQJ-D7VelWH6.js",
+      "isDynamicEntry": true
+    },
+    "path-BQiIuBPh": {
+      "file": "path-BQiIuBPh.js",
+      "isDynamicEntry": false
+    },
+    "pie-ZZUOXDRM-mUmAAbxG": {
+      "file": "pie-ZZUOXDRM-mUmAAbxG.js",
+      "isDynamicEntry": true
+    },
+    "pieDiagram-DEJITSTG-CLXfNhFu": {
+      "file": "pieDiagram-DEJITSTG-CLXfNhFu.js",
+      "isDynamicEntry": true
+    },
+    "quadrantDiagram-34T5L4WZ-5G1ybsQ0": {
+      "file": "quadrantDiagram-34T5L4WZ-5G1ybsQ0.js",
+      "isDynamicEntry": true
+    },
+    "radar-PYXPWWZC-h0dcV2GK": {
+      "file": "radar-PYXPWWZC-h0dcV2GK.js",
+      "isDynamicEntry": true
+    },
+    "reduce-DVaHOqNh": {
+      "file": "reduce-DVaHOqNh.js",
+      "isDynamicEntry": false
+    },
+    "requirementDiagram-MS252O5E-DIN0m8Wu": {
+      "file": "requirementDiagram-MS252O5E-DIN0m8Wu.js",
+      "isDynamicEntry": true
+    },
+    "rough.esm-0qSY5qye": {
+      "file": "rough.esm-0qSY5qye.js",
+      "isDynamicEntry": false
+    },
+    "sankeyDiagram-XADWPNL6-CObi0Ohz": {
+      "file": "sankeyDiagram-XADWPNL6-CObi0Ohz.js",
+      "isDynamicEntry": true
+    },
+    "sequenceDiagram-FGHM5R23-VP4eMmHY": {
+      "file": "sequenceDiagram-FGHM5R23-VP4eMmHY.js",
+      "isDynamicEntry": true
+    },
+    "space-separated-tokens-BH3YQ3gp": {
+      "file": "space-separated-tokens-BH3YQ3gp.js",
+      "isDynamicEntry": false
+    },
+    "src-hPY6rTsk": {
+      "file": "src-hPY6rTsk.js",
+      "isDynamicEntry": false
+    },
+    "stateDiagram-FHFEXIEX-DZo_9QVJ": {
+      "file": "stateDiagram-FHFEXIEX-DZo_9QVJ.js",
+      "isDynamicEntry": true
+    },
+    "stateDiagram-v2-QKLJ7IA2-CVDUieBC": {
+      "file": "stateDiagram-v2-QKLJ7IA2-CVDUieBC.js",
+      "isDynamicEntry": true
+    },
+    "three.module-DqTmZnip": {
+      "file": "three.module-DqTmZnip.js",
+      "isDynamicEntry": false
+    },
+    "timeline-definition-GMOUNBTQ-9_bnffjQ": {
+      "file": "timeline-definition-GMOUNBTQ-9_bnffjQ.js",
+      "isDynamicEntry": true
+    },
+    "treeView-SZITEDCU-zXiJ8bNN": {
+      "file": "treeView-SZITEDCU-zXiJ8bNN.js",
+      "isDynamicEntry": true
+    },
+    "treemap-W4RFUUIX-Ftt7p8JP": {
+      "file": "treemap-W4RFUUIX-Ftt7p8JP.js",
+      "isDynamicEntry": true
+    },
+    "vennDiagram-DHZGUBPP-CLrSIeZy": {
+      "file": "vennDiagram-DHZGUBPP-CLrSIeZy.js",
+      "isDynamicEntry": true
+    },
+    "wardley-RL74JXVD-Bf0CUlT1": {
+      "file": "wardley-RL74JXVD-Bf0CUlT1.js",
+      "isDynamicEntry": true
+    },
+    "wardleyDiagram-NUSXRM2D-CD7b-9Py": {
+      "file": "wardleyDiagram-NUSXRM2D-CD7b-9Py.js",
+      "isDynamicEntry": true
+    },
+    "xychartDiagram-5P7HB3ND-Cxe-ojpY": {
+      "file": "xychartDiagram-5P7HB3ND-Cxe-ojpY.js",
+      "isDynamicEntry": true
+    }
+  }
+}
