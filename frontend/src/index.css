@@ -1,0 +1,135 @@
+@import 'tailwindcss';
+
+/* 字体导入 */
+@import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&family=Manrope:wght@200..800&family=Noto+Serif+SC:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
+
+/* Material Symbols 配置 */
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+/* 全局样式 */
+:root {
+  /* Material Design 3 色彩系统 */
+  --color-primary: #182544;
+  --color-on-primary: #ffffff;
+  --color-primary-container: #2e3b5b;
+  --color-on-primary-container: #98a5cb;
+
+  --color-secondary: #775a19;
+  --color-on-secondary: #ffffff;
+  --color-secondary-container: #fed488;
+  --color-on-secondary-container: #785a1a;
+  --color-secondary-fixed: #ffdea5;
+  --color-secondary-fixed-dim: #e9c176;
+
+  --color-tertiary: #322400;
+  --color-on-tertiary: #ffffff;
+  --color-tertiary-container: #4b390b;
+  --color-on-tertiary-container: #bda36b;
+
+  --color-error: #ba1a1a;
+  --color-on-error: #ffffff;
+  --color-error-container: #ffdad6;
+  --color-on-error-container: #93000a;
+
+  --color-background: #faf9f5;
+  --color-on-background: #1b1c1a;
+  --color-surface: #faf9f5;
+  --color-on-surface: #1b1c1a;
+  --color-surface-variant: #e3e2df;
+  --color-on-surface-variant: #45464e;
+
+  --color-surface-dim: #dbdad6;
+  --color-surface-bright: #faf9f5;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low: #f4f4f0;
+  --color-surface-container: #efeeea;
+  --color-surface-container-high: #e9e8e4;
+  --color-surface-container-highest: #e3e2df;
+
+  --color-outline: #75777e;
+  --color-outline-variant: #c5c6cf;
+
+  --color-inverse-surface: #2f312e;
+  --color-inverse-on-surface: #f2f1ed;
+  --color-inverse-primary: #b9c6ed;
+
+  --color-surface-tint: #515e80;
+
+  /* 阴影 */
+  --shadow-ambient: 0px 20px 40px rgba(27, 28, 26, 0.06);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Manrope', sans-serif;
+  background-color: var(--color-background);
+  color: var(--color-on-surface);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 字体类 */
+.font-display,
+.font-headline,
+.font-serif {
+  font-family: 'Newsreader', 'Noto Serif SC', serif;
+}
+
+.font-body,
+.font-label {
+  font-family: 'Manrope', sans-serif;
+}
+
+/* 滚动条隐藏 */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* 全局动画类 */
+.lifted-card {
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
+  transform: translateY(-2px);
+  transition: all 0.3s ease;
+}
+
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+/* 玻璃态效果 */
+.glass-panel {
+  background: rgba(250, 249, 245, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+/* 选择文本样式 */
+::selection {
+  background-color: var(--color-secondary-fixed);
+  color: var(--color-secondary);
+}
+
+/* 焦点样式 */
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* 禁用状态 */
+:disabled {
+  opacity: 0.38;
+  cursor: not-allowed;
+}
