@@ -26,27 +26,12 @@ export function ProjectCard({ project, onSelect }: ProjectCardProps) {
       </div>
 
       {/* 标题 */}
-      <h3 className="font-serif text-xl font-bold text-primary mb-3 leading-tight">
-        {project.title}
-      </h3>
+      <h4 className="font-bold text-primary mb-2">{project.title}</h4>
 
       {/* 标签 */}
-      <div className="flex flex-wrap gap-2 mb-3">
-        {project.tags.map((tag) => (
-          <span
-            key={tag}
-            className="px-2 py-0.5 bg-surface-container-low text-[10px]
-              font-medium text-on-surface-variant rounded uppercase tracking-wider"
-          >
-            {tag}
-          </span>
-        ))}
-      </div>
-
-      {/* 描述 */}
-      <p className="text-sm text-on-surface-variant leading-relaxed">
-        {project.description}
-      </p>
+      <span className="text-[10px] text-outline-variant font-medium uppercase tracking-widest">
+        {project.tags.join(' • ')}
+      </span>
     </button>
   )
 }

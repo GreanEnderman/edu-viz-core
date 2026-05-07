@@ -1,5 +1,9 @@
 import { A2UISetup } from './a2ui-engine/A2UISetup'
+import { TopNav } from './components/Layout/TopNav'
+import { LeftSidebarPlaceholder } from './components/Layout/LeftSidebarPlaceholder'
+import { RightSidebarPlaceholder } from './components/Layout/RightSidebarPlaceholder'
 import { WelcomeScreen } from './components/Welcome/WelcomeScreen'
+import { BottomInput } from './components/Welcome/BottomInput'
 
 function AppShell() {
   const handleSelectProject = (projectPrompt: string) => {
@@ -7,42 +11,32 @@ function AppShell() {
     // TODO: 创建新对话并发送消息
   }
 
+  const handleSend = (message: string) => {
+    console.log('Send message:', message)
+    // TODO: 发送消息
+  }
+
   return (
     <div className="h-screen overflow-hidden bg-background text-on-surface">
-      {/* 背景装饰 */}
-      <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none opacity-20">
-        <svg
-          className="absolute top-0 right-0 w-full h-full"
-          viewBox="0 0 1000 1000"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M-100,200 C150,150 300,450 600,350 S850,50 1100,100"
-            fill="none"
-            stroke="#e9c176"
-            strokeWidth="0.3"
-          />
-          <path
-            d="M-50,800 C200,750 400,950 700,800 S950,550 1150,600"
-            fill="none"
-            stroke="#775a19"
-            strokeWidth="0.2"
-          />
-          <path
-            d="M200,-50 C250,200 50,400 200,700 S450,950 400,1150"
-            fill="none"
-            opacity="0.3"
-            stroke="#182544"
-            strokeWidth="0.1"
-          />
-        </svg>
-      </div>
+      {/* 顶部导航栏 */}
+      <TopNav />
 
-      {/* 主内容区域 */}
-      <div className="relative z-10 flex h-screen overflow-hidden">
-        <main className="relative flex flex-1 flex-col h-full overflow-hidden">
+      {/* 主内容区域：三栏布局 */}
+      <div className="flex h-[calc(100vh-72px)] overflow-hidden bg-[#fffdf9] shadow-sm rounded-[24px] rounded-tr-none">
+        {/* 左侧边栏占位 */}
+        <LeftSidebarPlaceholder />
+
+        {/* 中央内容区域 */}
+        <main className="flex-1 bg-surface-container-lowest overflow-y-auto relative no-scrollbar flex flex-col">
+          {/* 欢迎屏 */}
           <WelcomeScreen onSelectProject={handleSelectProject} />
+
+          {/* 底部输入框 */}
+          <BottomInput onSend={handleSend} />
         </main>
+
+        {/* 右侧边栏占位 */}
+        <RightSidebarPlaceholder />
       </div>
     </div>
   )
