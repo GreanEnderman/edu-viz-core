@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { A2UISetup } from './a2ui-engine/A2UISetup'
 import { TopNav } from './components/Layout/TopNav'
-import { LeftSidebarPlaceholder } from './components/Layout/LeftSidebarPlaceholder'
+import { LeftSidebar } from './components/Layout/LeftSidebar'
 import { RightSidebarPlaceholder } from './components/Layout/RightSidebarPlaceholder'
 import { WelcomeScreen } from './components/Welcome/WelcomeScreen'
 import { BottomInput } from './components/Welcome/BottomInput'
@@ -35,8 +35,8 @@ function AppShell() {
 
       {/* 主内容区域：三栏布局 */}
       <div className="flex h-[calc(100vh-72px)] overflow-hidden bg-[#fffdf9] shadow-sm rounded-[24px] rounded-tr-none">
-        {/* 左侧边栏占位 */}
-        <LeftSidebarPlaceholder />
+        {/* 左侧边栏 - 真实功能 */}
+        <LeftSidebar open={leftOpen} onClose={() => setLeftOpen(false)} />
 
         {/* 中央内容区域 */}
         <main className="flex-1 bg-surface-container-lowest overflow-y-auto relative no-scrollbar flex flex-col">
