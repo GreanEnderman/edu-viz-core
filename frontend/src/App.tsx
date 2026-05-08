@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { A2UISetup } from './a2ui-engine/A2UISetup'
 import { TopNav } from './components/Layout/TopNav'
 import { LeftSidebarPlaceholder } from './components/Layout/LeftSidebarPlaceholder'
@@ -8,6 +9,9 @@ import { useChatStore } from './store/chatStore'
 import { useChat } from './hooks/useChat'
 
 function AppShell() {
+  const [leftOpen, setLeftOpen] = useState(false)
+  const [rightOpen, setRightOpen] = useState(false)
+
   const currentId = useChatStore((state) => state.currentId)
   const { handleSend } = useChat()
 
@@ -24,7 +28,10 @@ function AppShell() {
   return (
     <div className="h-screen overflow-hidden bg-background text-on-surface">
       {/* 顶部导航栏 */}
-      <TopNav />
+      <TopNav
+        onToggleLeft={() => setLeftOpen(!leftOpen)}
+        onToggleRight={() => setRightOpen(!rightOpen)}
+      />
 
       {/* 主内容区域：三栏布局 */}
       <div className="flex h-[calc(100vh-72px)] overflow-hidden bg-[#fffdf9] shadow-sm rounded-[24px] rounded-tr-none">
