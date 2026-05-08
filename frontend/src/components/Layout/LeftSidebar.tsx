@@ -42,6 +42,36 @@ export function LeftSidebar({ open, onClose }: LeftSidebarProps) {
         </p>
       </div>
 
+      {/* 项目卡片 */}
+      <div className="bg-white/50 p-6 rounded-[24px] border border-white/20">
+        <label className="text-[10px] uppercase tracking-widest text-outline-variant font-bold mb-2 block">
+          上个项目
+        </label>
+        <h3 className="font-serif text-xl font-bold text-primary/60 mb-2">弹簧振子模拟器</h3>
+        <p className="text-xs text-on-surface-variant/60 leading-relaxed">
+          完成一个可调节参数的交互模拟网页。
+        </p>
+      </div>
+
+      {/* 知识树导航 */}
+      <div className="flex-1 flex flex-col pt-4">
+        <h4 className="text-[10px] uppercase tracking-widest text-outline-variant font-bold mb-4">
+          知识树
+        </h4>
+        <div className="space-y-2 mb-6">
+          <div className="bg-white/30 p-3 rounded-xl border border-white/20">
+            <div className="flex items-center gap-3">
+              <span className="w-2 h-2 rounded-full bg-outline-variant/40"></span>
+              <span className="text-xs font-bold text-outline-variant">物理基础</span>
+            </div>
+          </div>
+          <div className="ml-5 pl-4 border-l border-outline-variant/10 space-y-2">
+            <div className="text-xs text-on-surface-variant/40">位移速度关系</div>
+            <div className="text-xs text-on-surface-variant/40">能量守恒</div>
+          </div>
+        </div>
+      </div>
+
       {/* 新建对话按钮 */}
       <button
         onClick={handleNew}
@@ -84,15 +114,10 @@ export function LeftSidebar({ open, onClose }: LeftSidebarProps) {
         )}
       </nav>
 
-      {/* 底部占位 - 项目卡片和知识树（未来实现） */}
-      <div className="pt-4 border-t border-outline-variant/10 opacity-40">
-        <div className="bg-white/50 p-4 rounded-xl border border-white/20">
-          <label className="text-[10px] uppercase tracking-widest text-outline-variant font-bold mb-2 block">
-            上个项目
-          </label>
-          <p className="text-xs text-on-surface-variant/60">弹簧振子模拟器</p>
-        </div>
-      </div>
+      {/* 插件管理按钮 */}
+      <button className="w-full py-3 px-4 bg-surface-container hover:bg-surface-container-high rounded-xl transition-colors font-medium text-sm text-on-surface">
+        插件管理
+      </button>
     </aside>
   )
 }

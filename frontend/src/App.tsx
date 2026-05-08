@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { A2UISetup } from './a2ui-engine/A2UISetup'
 import { TopNav } from './components/Layout/TopNav'
 import { LeftSidebar } from './components/Layout/LeftSidebar'
-import { RightSidebarPlaceholder } from './components/Layout/RightSidebarPlaceholder'
+import { RightSidebar } from './components/Layout/RightSidebar'
 import { WelcomeScreen } from './components/Welcome/WelcomeScreen'
 import { BottomInput } from './components/Welcome/BottomInput'
 import { useChatStore } from './store/chatStore'
@@ -47,8 +47,8 @@ function AppShell() {
           <BottomInput onSend={handleSendMessage} />
         </main>
 
-        {/* 右侧边栏占位 */}
-        <RightSidebarPlaceholder />
+        {/* 右侧边栏 - 真实功能 */}
+        <RightSidebar open={rightOpen} onClose={() => setRightOpen(false)} />
       </div>
     </div>
   )
