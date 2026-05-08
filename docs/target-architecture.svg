@@ -1,0 +1,220 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1100" viewBox="0 0 1600 1100" role="img" aria-labelledby="title desc">
+  <title id="title">AhaTutor 目标架构图</title>
+  <desc id="desc">AhaTutor 的目标架构，展示用户、前端宿主、API、PBL 学习编排、LLM、插件和数据层之间的关系。</desc>
+  <defs>
+    <linearGradient id="page-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#faf9f5"/>
+      <stop offset="58%" stop-color="#fffdf9"/>
+      <stop offset="100%" stop-color="#f4f4f0"/>
+    </linearGradient>
+    <linearGradient id="primary-card" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#21345f"/>
+      <stop offset="100%" stop-color="#182544"/>
+    </linearGradient>
+    <linearGradient id="gold-card" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#fff7df"/>
+      <stop offset="100%" stop-color="#f3dfad"/>
+    </linearGradient>
+    <filter id="soft-shadow" x="-15%" y="-15%" width="130%" height="140%">
+      <feDropShadow dx="0" dy="18" stdDeviation="18" flood-color="#1b1c1a" flood-opacity="0.08"/>
+    </filter>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#775a19"/>
+    </marker>
+    <marker id="arrow-blue" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#182544"/>
+    </marker>
+    <style>
+      .title { font-family: "Newsreader", "Noto Serif SC", "Microsoft YaHei", serif; font-size: 42px; font-weight: 700; fill: #182544; }
+      .subtitle { font-family: "Manrope", "Noto Sans SC", "Microsoft YaHei", sans-serif; font-size: 18px; fill: rgba(27,28,26,0.66); }
+      .section-title { font-family: "Manrope", "Noto Sans SC", "Microsoft YaHei", sans-serif; font-size: 18px; font-weight: 800; fill: #182544; letter-spacing: 0.04em; }
+      .section-title-light { font-family: "Manrope", "Noto Sans SC", "Microsoft YaHei", sans-serif; font-size: 18px; font-weight: 800; fill: #fffdf9; letter-spacing: 0.04em; }
+      .card-title { font-family: "Manrope", "Noto Sans SC", "Microsoft YaHei", sans-serif; font-size: 18px; font-weight: 800; fill: #182544; }
+      .card-title-light { font-family: "Manrope", "Noto Sans SC", "Microsoft YaHei", sans-serif; font-size: 18px; font-weight: 800; fill: #fffdf9; }
+      .card-body { font-family: "Manrope", "Noto Sans SC", "Microsoft YaHei", sans-serif; font-size: 14px; fill: rgba(27,28,26,0.72); }
+      .card-body-light { font-family: "Manrope", "Noto Sans SC", "Microsoft YaHei", sans-serif; font-size: 14px; fill: rgba(255,253,249,0.82); }
+      .tiny { font-family: "Manrope", "Noto Sans SC", "Microsoft YaHei", sans-serif; font-size: 12px; fill: rgba(27,28,26,0.56); }
+      .label { font-family: "Manrope", "Noto Sans SC", "Microsoft YaHei", sans-serif; font-size: 13px; font-weight: 700; fill: #775a19; }
+      .panel { fill: rgba(255,255,255,0.72); stroke: rgba(197,198,207,0.28); stroke-width: 1.2; filter: url(#soft-shadow); }
+      .panel-soft { fill: rgba(250,249,245,0.78); stroke: rgba(197,198,207,0.20); stroke-width: 1.2; filter: url(#soft-shadow); }
+      .implemented { fill: rgba(255,255,255,0.86); stroke: rgba(197,198,207,0.20); stroke-width: 1; }
+      .target { fill: url(#gold-card); stroke: rgba(119,90,25,0.22); stroke-width: 1; }
+      .data { fill: #f4f4f0; stroke: rgba(197,198,207,0.24); stroke-width: 1; }
+      .line { stroke: #775a19; stroke-width: 2.2; fill: none; marker-end: url(#arrow); }
+      .line-blue { stroke: #182544; stroke-width: 2.2; fill: none; marker-end: url(#arrow-blue); }
+      .line-soft { stroke: rgba(119,90,25,0.44); stroke-width: 1.8; fill: none; marker-end: url(#arrow); stroke-dasharray: 7 7; }
+    </style>
+  </defs>
+
+  <rect width="1600" height="1100" fill="url(#page-bg)"/>
+  <circle cx="1330" cy="130" r="210" fill="#f0dfb4" opacity="0.18"/>
+  <circle cx="180" cy="930" r="260" fill="#d9e4ec" opacity="0.28"/>
+
+  <text x="80" y="76" class="title">AhaTutor 目标架构图</text>
+  <text x="82" y="112" class="subtitle">从“对话 + A2UI 组件”底座，升级为“项目驱动学习编排系统”</text>
+
+  <!-- User -->
+  <rect x="80" y="170" width="250" height="112" rx="30" fill="url(#primary-card)" filter="url(#soft-shadow)"/>
+  <text x="118" y="214" class="card-title-light">学习者</text>
+  <text x="118" y="242" class="card-body-light">输入项目目标</text>
+  <text x="118" y="264" class="card-body-light">回答测评 / 操作组件</text>
+
+  <!-- Frontend panel -->
+  <rect x="390" y="150" width="410" height="300" rx="34" class="panel"/>
+  <text x="426" y="190" class="section-title">前端宿主层 React Host App</text>
+  <rect x="425" y="220" width="160" height="82" rx="18" class="implemented"/>
+  <text x="446" y="252" class="card-title">学习空间界面</text>
+  <text x="446" y="278" class="card-body">目标树 / 对话 / 进度</text>
+  <rect x="605" y="220" width="160" height="82" rx="18" class="implemented"/>
+  <text x="626" y="252" class="card-title">Chat Store</text>
+  <text x="626" y="278" class="card-body">会话 / 流式状态</text>
+  <rect x="425" y="326" width="160" height="82" rx="18" class="implemented"/>
+  <text x="446" y="358" class="card-title">A2UI Runtime</text>
+  <text x="446" y="384" class="card-body">Provider / Renderer</text>
+  <rect x="605" y="326" width="160" height="82" rx="18" class="implemented"/>
+  <text x="626" y="358" class="card-title">插件组件加载</text>
+  <text x="626" y="384" class="card-body">bundle / Registry</text>
+
+  <!-- API panel -->
+  <rect x="390" y="520" width="410" height="240" rx="34" class="panel-soft"/>
+  <text x="426" y="560" class="section-title">后端 API 层 FastAPI</text>
+  <rect x="425" y="590" width="160" height="64" rx="18" class="implemented"/>
+  <text x="446" y="626" class="card-title">Chat API</text>
+  <text x="446" y="648" class="card-body">SSE 流式输出</text>
+  <rect x="605" y="590" width="160" height="64" rx="18" class="target"/>
+  <text x="626" y="626" class="card-title">Learning API</text>
+  <text x="626" y="648" class="card-body">目标树 / 节点状态</text>
+  <rect x="425" y="676" width="160" height="64" rx="18" class="implemented"/>
+  <text x="446" y="712" class="card-title">Plugin API</text>
+  <text x="446" y="734" class="card-body">列表 / 启停 / invoke</text>
+  <rect x="605" y="676" width="160" height="64" rx="18" class="implemented"/>
+  <text x="626" y="712" class="card-title">会话 API</text>
+  <text x="626" y="734" class="card-body">会话与历史</text>
+
+  <!-- PBL panel -->
+  <rect x="860" y="150" width="430" height="610" rx="38" fill="rgba(255,247,223,0.78)" stroke="rgba(119,90,25,0.22)" stroke-width="1.3" filter="url(#soft-shadow)"/>
+  <text x="898" y="190" class="section-title">PBL 学习编排层 目标新增</text>
+  <rect x="900" y="222" width="350" height="84" rx="22" fill="url(#primary-card)"/>
+  <text x="930" y="256" class="card-title-light">LearningOrchestratorAgent</text>
+  <text x="930" y="282" class="card-body-light">维护学习状态，决定下一步</text>
+
+  <rect x="900" y="336" width="160" height="70" rx="18" class="target"/>
+  <text x="920" y="366" class="card-title">GoalClarifier</text>
+  <text x="920" y="390" class="card-body">目标与约束</text>
+  <rect x="1090" y="336" width="160" height="70" rx="18" class="target"/>
+  <text x="1110" y="358" class="card-title">Curriculum</text>
+  <text x="1110" y="378" class="card-title">Architect</text>
+  <text x="1110" y="398" class="card-body">知识目标树</text>
+
+  <rect x="900" y="430" width="160" height="70" rx="18" class="target"/>
+  <text x="920" y="452" class="card-title">Assessment</text>
+  <text x="920" y="472" class="card-title">Designer</text>
+  <text x="920" y="492" class="card-body">节点测评</text>
+  <rect x="1090" y="430" width="160" height="70" rx="18" class="target"/>
+  <text x="1110" y="460" class="card-title">MasteryJudge</text>
+  <text x="1110" y="484" class="card-body">掌握度判断</text>
+
+  <rect x="900" y="524" width="160" height="70" rx="18" class="target"/>
+  <text x="920" y="554" class="card-title">TutorAgent</text>
+  <text x="920" y="578" class="card-body">节点教学</text>
+  <rect x="1090" y="524" width="160" height="70" rx="18" class="target"/>
+  <text x="1110" y="554" class="card-title">Visualizer</text>
+  <text x="1110" y="578" class="card-body">选择 A2UI 组件</text>
+
+  <rect x="900" y="618" width="160" height="70" rx="18" class="target"/>
+  <text x="920" y="640" class="card-title">Integration</text>
+  <text x="920" y="660" class="card-title">Agent</text>
+  <text x="920" y="680" class="card-body">回溯整合</text>
+  <rect x="1090" y="618" width="160" height="70" rx="18" class="target"/>
+  <text x="1110" y="648" class="card-title">ProjectBridge</text>
+  <text x="1110" y="672" class="card-body">推进项目产物</text>
+
+  <!-- LLM panel -->
+  <rect x="1340" y="150" width="200" height="300" rx="34" class="panel"/>
+  <text x="1372" y="190" class="section-title">模型生成层</text>
+  <rect x="1370" y="222" width="140" height="64" rx="18" class="implemented"/>
+  <text x="1390" y="250" class="card-title">Prompt</text>
+  <text x="1390" y="272" class="card-title">Builder</text>
+  <rect x="1370" y="314" width="140" height="64" rx="18" class="implemented"/>
+  <text x="1388" y="349" class="card-title">LLM Service</text>
+  <text x="1388" y="371" class="card-body">文本 + JSONL</text>
+  <rect x="1370" y="398" width="140" height="34" rx="14" class="implemented"/>
+  <text x="1392" y="421" class="card-body">A2UI Builder</text>
+
+  <!-- Plugin panel -->
+  <rect x="860" y="820" width="680" height="200" rx="34" class="panel-soft"/>
+  <text x="898" y="860" class="section-title">插件能力层</text>
+  <rect x="900" y="890" width="145" height="76" rx="18" class="implemented"/>
+  <text x="922" y="916" class="card-title">Plugin</text>
+  <text x="922" y="936" class="card-title">Registry</text>
+  <text x="922" y="958" class="card-body">manifest 注册表</text>
+  <rect x="1070" y="890" width="145" height="76" rx="18" class="implemented"/>
+  <text x="1092" y="923" class="card-title">学科插件</text>
+  <text x="1092" y="947" class="card-body">物理 / 化学 / 生物</text>
+  <rect x="1240" y="890" width="145" height="76" rx="18" class="implemented"/>
+  <text x="1262" y="923" class="card-title">React 组件</text>
+  <text x="1262" y="947" class="card-body">模拟器 / 3D / 图表</text>
+  <rect x="1405" y="890" width="95" height="76" rx="18" class="implemented"/>
+  <text x="1424" y="923" class="card-title">知识库</text>
+  <text x="1424" y="947" class="card-body">vector_db</text>
+
+  <!-- Data panel -->
+  <rect x="80" y="820" width="720" height="200" rx="34" class="panel-soft"/>
+  <text x="118" y="860" class="section-title">数据与记忆层</text>
+  <rect x="120" y="890" width="145" height="76" rx="18" class="data"/>
+  <text x="142" y="923" class="card-title">SQLite</text>
+  <text x="142" y="947" class="card-body">会话 / 消息 / 插件设置</text>
+  <rect x="295" y="890" width="145" height="76" rx="18" class="target"/>
+  <text x="317" y="923" class="card-title">学习状态库</text>
+  <text x="317" y="947" class="card-body">goal / tree / node</text>
+  <rect x="470" y="890" width="145" height="76" rx="18" class="target"/>
+  <text x="492" y="923" class="card-title">用户画像</text>
+  <text x="492" y="947" class="card-body">掌握度 / 偏好</text>
+  <rect x="645" y="890" width="115" height="76" rx="18" class="target"/>
+  <text x="666" y="923" class="card-title">项目进度</text>
+  <text x="666" y="947" class="card-body">里程碑</text>
+
+  <!-- Arrows -->
+  <path class="line-blue" d="M330 226 C355 226, 365 226, 390 226"/>
+  <text x="342" y="198" class="label">输入 / 操作</text>
+
+  <path class="line" d="M595 450 L595 520"/>
+  <text x="612" y="492" class="label">HTTP / SSE</text>
+
+  <path class="line" d="M800 638 L835 638 L835 264 L900 264"/>
+  <text x="846" y="462" class="label">学习请求</text>
+
+  <path class="line" d="M1250 264 L1370 254"/>
+  <text x="1288" y="238" class="label">生成提示</text>
+
+  <path class="line" d="M1370 346 L1318 346 L1318 653 L1250 653"/>
+  <text x="1328" y="510" class="label">教学输出</text>
+
+  <path class="line-soft" d="M1438 820 C1438 690, 1438 560, 1438 450"/>
+  <text x="1450" y="640" class="label">能力 / 知识注入</text>
+
+  <path class="line-soft" d="M1240 890 C1060 770, 820 540, 685 408"/>
+  <text x="830" y="690" class="label">组件 bundle</text>
+
+  <path class="line" d="M1180 760 C1180 790, 1180 800, 1180 820"/>
+  <text x="1196" y="794" class="label">调用插件能力</text>
+
+  <path class="line-soft" d="M860 700 C760 760, 690 820, 615 890"/>
+  <text x="720" y="814" class="label">写入学习状态</text>
+
+  <path class="line-soft" d="M505 760 L265 890"/>
+  <text x="330" y="806" class="label">持久化会话</text>
+
+  <path class="line-blue" d="M390 680 C300 610, 300 430, 390 360"/>
+  <text x="194" y="532" class="label">SSE 返回：text / a2ui / title / done</text>
+
+  <!-- Legend -->
+  <rect x="80" y="1038" width="18" height="18" rx="5" class="implemented"/>
+  <text x="106" y="1053" class="tiny">已实现底座</text>
+  <rect x="210" y="1038" width="18" height="18" rx="5" class="target"/>
+  <text x="236" y="1053" class="tiny">目标新增 / 待增强</text>
+  <line x1="364" y1="1048" x2="424" y2="1048" class="line"/>
+  <text x="438" y="1053" class="tiny">主流程</text>
+  <line x1="520" y1="1048" x2="580" y2="1048" class="line-soft"/>
+  <text x="594" y="1053" class="tiny">能力注入 / 持久化</text>
+</svg>

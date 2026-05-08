@@ -9,19 +9,19 @@ export function TopNav() {
             className="font-display italic text-2xl font-medium tracking-tight text-stone-500 hover:text-primary transition-colors"
             href="#"
           >
-            Curriculum
+            课程
           </a>
           <a
             className="font-display italic text-2xl font-medium tracking-tight text-stone-500 hover:text-primary transition-colors"
             href="#"
           >
-            Archive
+            归档
           </a>
           <a
             className="font-display italic text-2xl font-medium tracking-tight text-stone-500 hover:text-primary transition-colors"
             href="#"
           >
-            Mentors
+            导师
           </a>
         </nav>
       </div>
