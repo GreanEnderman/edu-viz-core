@@ -43,5 +43,6 @@ export interface MessageResponse {
   role: MessageRole
   type: string
   content: string
+  node_id?: string
   created_at: string
 }

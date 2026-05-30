@@ -1,3 +1,3 @@
-from backend.app.plugins_manager.registry import PluginRegistry
+from .registry import PluginRegistry
 
 __all__ = ["PluginRegistry"]

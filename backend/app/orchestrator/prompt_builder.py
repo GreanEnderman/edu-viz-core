@@ -232,8 +232,8 @@ def _build_plugin_section(plugin_capabilities: list[dict] | None) -> str:
 
 async def get_plugin_capabilities_for_user(user_id: str) -> list[dict]:
     """Fetch enabled plugin capabilities for a user from DB + registry."""
-    from backend.app.db import get_db
-    from backend.app.plugins_manager.registry import PluginRegistry
+    from ..db import get_db
+    from ..plugins_manager.registry import PluginRegistry
 
     db = get_db()
     rows = await db.execute_fetchall(
@@ -274,3 +274,15 @@ def build_system_prompt(
         _COMPONENT_EXAMPLES,
     ]
     return "\n".join(parts)
+
+
+def build_pbl_system_prompt(
+    pbl_context: str,
+    available_components: list[str] | None = None,
+    plugin_capabilities: list[dict] | None = None,
+) -> str:
+    base_prompt = build_system_prompt(
+        available_components=available_components,
+        plugin_capabilities=plugin_capabilities,
+    )
+    return "\n\n".join([base_prompt, pbl_context])

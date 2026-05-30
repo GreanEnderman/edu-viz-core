@@ -1,4 +1,4 @@
-from backend.app.models.a2ui_schema import (
+from .a2ui_schema import (
     A2UIMessage,
     BeginRenderingMessage,
     DataModelUpdateMessage,

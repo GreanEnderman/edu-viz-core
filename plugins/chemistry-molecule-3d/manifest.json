@@ -1,6 +1,6 @@
 {
   "id": "chemistry-molecule-3d",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "subject": "chemistry",
   "name": "3D分子可视化插件",
   "keywords": ["分子", "3D", "结构", "化学键", "SMILES", "分子式", "球棍模型", "空间填充"],

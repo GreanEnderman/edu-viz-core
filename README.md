@@ -132,8 +132,8 @@ npm install
 npm run dev
 ```
 
-访问 `http://localhost:5173` 查看主应用  
-访问 `http://localhost:5173/?gallery=1` 查看组件预览
+访问 `http://localhost:5174` 查看主应用  
+访问 `http://localhost:5174/?gallery=1` 查看组件预览
 
 ### 后端开发
 ```bash

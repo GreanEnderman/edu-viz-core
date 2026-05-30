@@ -26,5 +26,9 @@ frontend/.vite-cache/
 .DS_Store
 Thumbs.db
 
+# Archives / release bundles
+*.zip
+*.tar.gz
+
 # Plugins
 plugins/

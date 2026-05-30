@@ -4,13 +4,14 @@ import type { ComponentExample } from './showcaseData'
 
 interface ComponentCardProps {
   example: ComponentExample
+  onClick?: () => void
 }
 
 /**
  * 单个组件预览卡片
  * 显示组件的实时预览和说明信息
  */
-export function ComponentCard({ example }: ComponentCardProps) {
+export function ComponentCard({ example, onClick }: ComponentCardProps) {
   const { processMessages } = useA2UIActions()
 
   useEffect(() => {
@@ -20,7 +21,8 @@ export function ComponentCard({ example }: ComponentCardProps) {
 
   return (
     <div
-      className="bg-surface-container-lowest rounded-2xl overflow-hidden transition-all hover:scale-[1.02] duration-300"
+      onClick={onClick}
+      className="bg-surface-container-lowest rounded-lg overflow-hidden transition-all hover:scale-[1.03] duration-300 cursor-pointer"
       style={{ boxShadow: '0px 20px 40px rgba(27, 28, 26, 0.06)' }}
     >
       {/* 预览区域 */}

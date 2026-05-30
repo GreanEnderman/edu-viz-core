@@ -1,63 +1,17 @@
-import { useState } from 'react'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { A2UISetup } from './a2ui-engine/A2UISetup'
-import { TopNav } from './components/Layout/TopNav'
-import { LeftSidebar } from './components/Layout/LeftSidebar'
-import { RightSidebar } from './components/Layout/RightSidebar'
-import { WelcomeScreen } from './components/Welcome/WelcomeScreen'
-import { BottomInput } from './components/Welcome/BottomInput'
-import { useChatStore } from './store/chatStore'
-import { useChat } from './hooks/useChat'
-
-function AppShell() {
-  const [leftOpen, setLeftOpen] = useState(false)
-  const [rightOpen, setRightOpen] = useState(false)
-
-  const currentId = useChatStore((state) => state.currentId)
-  const { handleSend } = useChat()
-
-  const handleSelectProject = (projectPrompt: string) => {
-    console.log('Selected project:', projectPrompt)
-    handleSend(projectPrompt)
-  }
-
-  const handleSendMessage = (message: string) => {
-    console.log('Send message:', message)
-    handleSend(message)
-  }
-
-  return (
-    <div className="h-screen overflow-hidden bg-background text-on-surface">
-      {/* 顶部导航栏 */}
-      <TopNav
-        onToggleLeft={() => setLeftOpen(!leftOpen)}
-        onToggleRight={() => setRightOpen(!rightOpen)}
-      />
-
-      {/* 主内容区域：三栏布局 */}
-      <div className="flex h-[calc(100vh-72px)] overflow-hidden bg-[#fffdf9] shadow-sm rounded-[24px] rounded-tr-none">
-        {/* 左侧边栏 - 真实功能 */}
-        <LeftSidebar open={leftOpen} onClose={() => setLeftOpen(false)} />
-
-        {/* 中央内容区域 */}
-        <main className="flex-1 bg-surface-container-lowest overflow-y-auto relative no-scrollbar flex flex-col">
-          {/* 欢迎屏 */}
-          <WelcomeScreen onSelectProject={handleSelectProject} />
-
-          {/* 底部输入框 */}
-          <BottomInput onSend={handleSendMessage} />
-        </main>
-
-        {/* 右侧边栏 - 真实功能 */}
-        <RightSidebar open={rightOpen} onClose={() => setRightOpen(false)} />
-      </div>
-    </div>
-  )
-}
+import { AppShell } from './components/AppShell'
+import { ProjectsPage } from './components/Projects/ProjectsPage'
 
 export default function App() {
   return (
     <A2UISetup>
-      <AppShell />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<AppShell />} />
+          <Route path="/projects" element={<ProjectsPage />} />
+        </Routes>
+      </BrowserRouter>
     </A2UISetup>
   )
 }

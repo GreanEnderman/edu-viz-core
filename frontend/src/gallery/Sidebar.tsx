@@ -26,7 +26,7 @@ export function Sidebar({ categories, selectedCategory, onSelectCategory }: Side
       {/* 全部选项 */}
       <button
         onClick={() => onSelectCategory(null)}
-        className={`w-full text-left px-4 py-3 rounded-xl transition-all ${
+        className={`w-full text-left px-4 py-3 rounded-lg transition-all ${
           selectedCategory === null
             ? 'bg-primary-container text-on-primary-container shadow-sm'
             : 'hover:bg-surface-container-lowest text-on-surface'
@@ -48,7 +48,7 @@ export function Sidebar({ categories, selectedCategory, onSelectCategory }: Side
           <button
             key={category.id}
             onClick={() => onSelectCategory(category.id)}
-            className={`w-full text-left px-4 py-3 rounded-xl transition-all ${
+            className={`w-full text-left px-4 py-3 rounded-lg transition-all ${
               selectedCategory === category.id
                 ? 'bg-primary-container text-on-primary-container shadow-sm'
                 : 'hover:bg-surface-container-lowest text-on-surface'

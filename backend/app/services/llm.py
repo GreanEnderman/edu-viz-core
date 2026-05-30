@@ -2,7 +2,7 @@ from typing import AsyncIterator
 
 from openai import AsyncOpenAI
 
-from backend.app.core.config import settings
+from ..core.config import settings
 
 _client: AsyncOpenAI | None = None
 

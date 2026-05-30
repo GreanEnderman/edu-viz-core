@@ -13,13 +13,13 @@ export function ProjectCard({ project, onSelect }: ProjectCardProps) {
   return (
     <button
       onClick={handleClick}
-      className="bg-white p-6 rounded-[28px] border border-outline-variant/10
+      className="bg-white p-6 rounded-[20px] border border-outline-variant/10
         shadow-sm hover:shadow-xl hover:border-secondary/20 transition-all
         flex flex-col items-start text-left group cursor-pointer w-full"
     >
       {/* 图标容器 */}
       <div
-        className="w-10 h-10 rounded-xl bg-secondary/10 flex items-center
+        className="w-10 h-10 rounded-lg bg-secondary/10 flex items-center
           justify-center text-secondary mb-4 group-hover:scale-110 transition-transform"
       >
         <span className="material-symbols-outlined text-2xl">{project.icon}</span>

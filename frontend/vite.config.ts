@@ -14,9 +14,14 @@ export default defineConfig({
     emptyOutDir: false,
   },
   resolve: {
-    alias: {
-      '@plugins': resolve(currentDir, '../plugins'),
-    },
+    dedupe: ['react', 'react-dom', 'react/jsx-runtime'],
+    alias: [
+      { find: 'react/jsx-runtime', replacement: resolve(currentDir, '../node_modules/react/jsx-runtime.js') },
+      { find: 'react-dom/client', replacement: resolve(currentDir, '../node_modules/react-dom/client.js') },
+      { find: 'react-dom', replacement: resolve(currentDir, '../node_modules/react-dom') },
+      { find: 'react', replacement: resolve(currentDir, '../node_modules/react') },
+      { find: '@plugins', replacement: resolve(currentDir, '../plugins') },
+    ],
   },
   server: {
     port: 5174,

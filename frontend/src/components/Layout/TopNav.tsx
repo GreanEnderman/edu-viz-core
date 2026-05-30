@@ -1,81 +1,102 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { useChatStore } from '../../store/chatStore'
+import { PluginManager } from '../Plugins/PluginManager'
+import type { AppState } from '../../types/appFlow'
 
 interface TopNavProps {
   onToggleLeft?: () => void
   onToggleRight?: () => void
+  appState?: AppState
+  projectTitle?: string
+  progress?: number
 }
 
-export function TopNav({ onToggleLeft, onToggleRight }: TopNavProps) {
+export function TopNav({ appState = 'welcome', projectTitle, progress = 0 }: TopNavProps) {
   const conversations = useChatStore((state) => state.conversations)
   const currentId = useChatStore((state) => state.currentId)
+  const [showPluginManager, setShowPluginManager] = useState(false)
 
-  // 获取当前对话标题
   const currentTitle = useMemo(() => {
     if (!currentId) return null
     const conversation = conversations.find((c) => c.id === currentId)
     return conversation?.title || '新会话'
   }, [currentId, conversations])
 
+  const displayTitle = useMemo(() => {
+    if (appState === 'planning' && projectTitle) {
+      return `正在生成：${projectTitle}`
+    }
+    if ((appState === 'learning' || appState === 'reflection') && projectTitle) {
+      return projectTitle
+    }
+    return currentTitle
+  }, [appState, projectTitle, currentTitle])
+
+  const showProgress = appState === 'learning' || appState === 'reflection'
+
   return (
-    <header className="flex justify-between items-center w-full px-8 py-4 sticky top-0 z-50 bg-background shadow-ambient backdrop-blur-md">
-      {/* 左侧：Logo + 导航链接 */}
-      <div className="flex items-center gap-12">
-        <h1 className="font-display text-2xl font-bold text-primary">AhaTutor v2.0</h1>
-        <nav className="hidden md:flex items-center gap-8">
-          <a
-            className="font-display italic text-2xl font-medium tracking-tight text-stone-500 hover:text-primary transition-colors"
-            href="#"
-          >
-            课程
+    <>
+      <header className="sticky top-0 z-50 flex w-full items-center justify-between bg-background px-8 py-3 shadow-ambient backdrop-blur-md">
+        <div className="flex items-center gap-12">
+          <a href="/" className="font-display text-2xl font-bold text-primary transition-opacity hover:opacity-80">
+            AhaTutor v2.0
           </a>
-          <a
-            className="font-display italic text-2xl font-medium tracking-tight text-stone-500 hover:text-primary transition-colors"
-            href="#"
-          >
-            归档
-          </a>
-          <a
-            className="font-display italic text-2xl font-medium tracking-tight text-stone-500 hover:text-primary transition-colors"
-            href="#"
-          >
-            导师
-          </a>
-        </nav>
-      </div>
-
-      {/* 中央：会话标题（动态显示） */}
-      <div
-        className={`flex-1 max-w-md mx-8 relative transition-opacity duration-300 ${
-          currentTitle ? 'opacity-100' : 'opacity-0 pointer-events-none'
-        }`}
-      >
-        <div className="flex items-center gap-4">
-          <span className="text-sm font-medium text-secondary truncate">{currentTitle}</span>
-          <div className="flex-1 h-px bg-outline-variant/20 relative"></div>
+          <nav className="hidden items-center gap-8 md:flex">
+            <Link
+              to="/projects"
+              className="font-display text-lg font-medium italic tracking-tight text-stone-500 transition-colors hover:text-primary"
+            >
+              项目
+            </Link>
+          </nav>
         </div>
-      </div>
 
-      {/* 右侧：功能按钮 + 头像 */}
-      <div className="flex items-center gap-6">
-        <button
-          onClick={onToggleLeft}
-          className="material-symbols-outlined text-primary hover:bg-white/50 p-2 rounded-full transition-all"
-          title="历史会话"
+        <div
+          className={`relative mx-8 max-w-md flex-1 transition-opacity duration-300 ${
+            displayTitle ? 'opacity-100' : 'pointer-events-none opacity-0'
+          }`}
         >
-          history_edu
-        </button>
-        <button
-          onClick={onToggleRight}
-          className="material-symbols-outlined text-primary hover:bg-white/50 p-2 rounded-full transition-all"
-          title="通知"
-        >
-          notifications
-        </button>
-        <div className="w-10 h-10 rounded-full bg-surface-container overflow-hidden cursor-pointer hover:ring-2 hover:ring-primary/20 transition-all">
-          <div className="w-full h-full bg-gradient-to-br from-primary/20 to-secondary/20"></div>
+          <div className="flex items-center gap-4">
+            <span className="truncate text-sm font-medium text-secondary">{displayTitle}</span>
+            <div className="relative h-px flex-1 bg-outline-variant/20">
+              {showProgress && (
+                <div
+                  className="absolute left-0 top-0 h-full bg-secondary transition-all duration-500"
+                  style={{ width: `${progress}%` }}
+                />
+              )}
+            </div>
+          </div>
         </div>
-      </div>
-    </header>
+
+        <div className="flex items-center gap-6">
+          <button
+            onClick={() => setShowPluginManager(true)}
+            className="material-symbols-outlined rounded-full p-2 text-primary transition-all hover:bg-white/50"
+            title="插件管理"
+          >
+            extension
+          </button>
+          <button
+            className="material-symbols-outlined rounded-full p-2 text-primary transition-all hover:bg-white/50"
+            title="历史会话"
+          >
+            history_edu
+          </button>
+          <button
+            className="material-symbols-outlined rounded-full p-2 text-primary transition-all hover:bg-white/50"
+            title="通知"
+          >
+            notifications
+          </button>
+          <div className="h-10 w-10 cursor-pointer overflow-hidden rounded-full bg-surface-container transition-all hover:ring-2 hover:ring-primary/20">
+            <div className="h-full w-full bg-gradient-to-br from-primary/20 to-secondary/20" />
+          </div>
+        </div>
+      </header>
+
+      {showPluginManager && <PluginManager onClose={() => setShowPluginManager(false)} />}
+    </>
   )
 }

@@ -1,6 +1,7 @@
 export const SHARED_RUNTIME_DEPENDENCIES = [
   'react',
   'react-dom',
+  'react-dom/client',
   '@a2ui/react',
 ] as const
 

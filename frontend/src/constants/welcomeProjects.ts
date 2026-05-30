@@ -9,23 +9,23 @@ export interface WelcomeProject {
 export const welcomeProjects: WelcomeProject[] = [
   {
     id: 'spring-oscillator',
-    icon: 'waves',
+    icon: 'animation',
     title: '弹簧振子模拟器',
-    tags: ['物理', '动画', 'Canvas'],
+    tags: ['物理可视化', 'JS基础'],
     description: '完成一个可调节参数的交互模拟网页，理解简谐运动的本质。',
   },
   {
     id: 'mini-transformer',
     icon: 'psychology',
     title: '迷你 Transformer',
-    tags: ['AI', 'Python', 'PyTorch'],
+    tags: ['人工智能', '线性代数'],
     description: '从零实现一个小型语言模型，掌握注意力机制的核心原理。',
   },
   {
     id: 'finance-analyzer',
-    icon: 'monitoring',
+    icon: 'account_balance_wallet',
     title: '个人财务分析工具',
-    tags: ['数据分析', 'Python', '可视化'],
+    tags: ['数据处理', '前端架构'],
     description: '构建一个自动化的财务报表生成器，学习数据处理和图表绘制。',
   },
   {

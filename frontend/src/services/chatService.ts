@@ -12,6 +12,7 @@ interface StreamCallbacks {
 
 export interface StreamOptions {
   conversationId?: string
+  endpoint?: string
 }
 
 const MOCK_RESPONSE_PART1 = `很好的问题！让我来解释一下。
@@ -100,7 +101,7 @@ export async function streamChat(
 
   let response: Response
   try {
-    response = await fetch(`${API_BASE}/v1/chat`, {
+    response = await fetch(options?.endpoint ?? `${API_BASE}/v1/chat`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

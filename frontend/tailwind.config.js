@@ -68,10 +68,14 @@ export default {
         serif: ['Newsreader', 'Noto Serif SC', 'serif'],
       },
       borderRadius: {
-        DEFAULT: '0.125rem',
-        lg: '0.25rem',
-        xl: '0.5rem',
-        full: '0.75rem',
+        DEFAULT: '0.125rem',  // 2px (保持不变)
+        sm: '0.1875rem',      // 3px
+        md: '0.25rem',        // 4px
+        lg: '0.375rem',       // 6px (从 4px 调整)
+        xl: '0.5rem',         // 8px (从 8px 调整)
+        '2xl': '0.75rem',     // 12px (新增)
+        '3xl': '1rem',        // 16px (新增)
+        full: '9999px',       // 完全圆形 (pill 按钮用)
       },
       boxShadow: {
         ambient: '0px 20px 40px rgba(27, 28, 26, 0.06)',

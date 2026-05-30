@@ -19,6 +19,11 @@ class Settings(BaseSettings):
     DATABASE_PATH: str = "data/aha_tutor.db"
     PLUGINS_DIR: str = "plugins"
 
+    # Agent 配置（可选，有默认值）
+    AGENT_MAX_RETRIES: int = 3
+    AGENT_TIMEOUT_SECONDS: int = 60
+    AGENT_DEFAULT_TEMPERATURE: float = 0.7
+
     def allowed_origins_list(self) -> list[str]:
         return [o.strip() for o in self.ALLOWED_ORIGINS.split(",") if o.strip()]
 

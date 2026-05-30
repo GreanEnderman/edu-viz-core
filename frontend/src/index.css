@@ -60,8 +60,22 @@
   --font-sans: 'Manrope', system-ui, sans-serif;
   --font-serif: 'Newsreader', 'Noto Serif SC', serif;
 
-  /* Shadows */
+  /* Shadows - 多层级阴影系统 */
   --shadow-ambient: 0px 20px 40px rgba(27, 28, 26, 0.06);
+  --shadow-sm: 0px 2px 8px rgba(27, 28, 26, 0.04);
+  --shadow-md: 0px 8px 16px rgba(27, 28, 26, 0.05);
+  --shadow-lg: 0px 16px 32px rgba(27, 28, 26, 0.06);
+  --shadow-xl: 0px 24px 48px rgba(27, 28, 26, 0.08);
+  --shadow-float: 0px 12px 24px rgba(27, 28, 26, 0.04), 0px 4px 8px rgba(27, 28, 26, 0.02);
+
+  /* Glass effect - 玻璃态效果层级 */
+  --glass-light: rgba(250, 249, 245, 0.7);
+  --glass-medium: rgba(250, 249, 245, 0.4);
+  --glass-heavy: rgba(250, 249, 245, 0.85);
+  --glass-blur-sm: 12px;
+  --glass-blur-md: 20px;
+  --glass-blur-lg: 32px;
+  --glass-blur-xl: 40px;
 }
 
 * {
@@ -90,10 +104,289 @@ body {
 }
 
 .glass-panel {
-  background: rgba(250, 249, 245, 0.4);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: var(--glass-medium);
+  backdrop-filter: blur(var(--glass-blur-sm));
+  -webkit-backdrop-filter: blur(var(--glass-blur-sm));
+}
+
+.glass-light {
+  background: var(--glass-light);
+  backdrop-filter: blur(var(--glass-blur-md));
+  -webkit-backdrop-filter: blur(var(--glass-blur-md));
+}
+
+.glass-heavy {
+  background: var(--glass-heavy);
+  backdrop-filter: blur(var(--glass-blur-lg));
+  -webkit-backdrop-filter: blur(var(--glass-blur-lg));
+}
+
+.glass-nav {
+  background: var(--glass-light);
+  backdrop-filter: blur(var(--glass-blur-xl));
+  -webkit-backdrop-filter: blur(var(--glass-blur-xl));
+}
+
+/* 阴影工具类 */
+.shadow-ambient { box-shadow: var(--shadow-ambient); }
+.shadow-float { box-shadow: var(--shadow-float); }
+
+/* 幽灵边框 - 用于必须有边界时 */
+.ghost-border {
+  outline: 1px solid rgba(197, 198, 207, 0.15);
+  outline-offset: -1px;
+}
+
+/* 全局动画类 */
+.transition-smooth {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.transition-fast {
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.transition-slow {
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.transition-colors {
+  transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.transition-transform {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.transition-opacity {
+  transition: opacity 0.3s ease;
+}
+
+/* Hover 变换效果 */
+.hover-lift {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-float);
+}
+
+.hover-scale {
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hover-scale:hover {
+  transform: scale(1.02);
+}
+
+/* 脉冲动画 - 用于状态指示器 */
+@keyframes ping {
+  75%, 100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+.animate-ping {
+  animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+/* 淡入淡出动画 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+@keyframes slideInFromLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInFromRight {
+  from {
+    opacity: 0;
+    transform: translateX(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.animate-fade-out {
+  animation: fadeOut 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.animate-slide-in-left {
+  animation: slideInFromLeft 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.animate-slide-in-right {
+  animation: slideInFromRight 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* 延迟动画 - 用于交错效果 */
+.animate-delay-100 { animation-delay: 100ms; }
+.animate-delay-200 { animation-delay: 200ms; }
+.animate-delay-300 { animation-delay: 300ms; }
+.animate-delay-400 { animation-delay: 400ms; }
+
+/* 响应式优化 */
+/* 移动端：减小间距和字号 */
+@media (max-width: 768px) {
+  body {
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  /* 移动端隐藏背景装饰以提升性能 */
+  .fixed.inset-0.pointer-events-none {
+    display: none;
+  }
+
+  /* 移动端减小圆角 */
+  .rounded-\[24px\] {
+    border-radius: 12px;
+  }
+
+  .rounded-\[28px\] {
+    border-radius: 14px;
+  }
+
+  /* 移动端减小内边距 */
+  .p-8 { padding: 1rem; }
+  .p-6 { padding: 0.75rem; }
+  .px-8 { padding-left: 1rem; padding-right: 1rem; }
+  .py-8 { padding-top: 1rem; padding-bottom: 1rem; }
+
+  /* 移动端减小间距 */
+  .gap-8 { gap: 1rem; }
+  .gap-6 { gap: 0.75rem; }
+  .gap-4 { gap: 0.5rem; }
+
+  /* 移动端侧边栏全屏 */
+  .w-80 { width: 100vw; }
+  .w-96 { width: 100vw; }
+}
+
+/* 平板端：适度调整 */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .w-80 { width: 280px; }
+  .w-96 { width: 320px; }
+}
+
+/* 大屏：增强视觉效果 */
+@media (min-width: 1920px) {
+  body {
+    font-size: 17px;
+  }
+
+  /* 大屏增强背景装饰 */
+  .fixed.inset-0.pointer-events-none svg {
+    opacity: 0.05;
+  }
+}
+
+/* 触摸设备优化 */
+@media (hover: none) and (pointer: coarse) {
+  /* 增大可点击区域 */
+  button, a, [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* 禁用 hover 效果 */
+  .hover-lift:hover,
+  .hover-scale:hover {
+    transform: none;
+  }
+
+  /* 触摸反馈 */
+  button:active, a:active, [role="button"]:active {
+    opacity: 0.7;
+    transform: scale(0.98);
+  }
+}
+
+/* 减少动画偏好 */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* 高对比度模式 */
+@media (prefers-contrast: high) {
+  .ghost-border {
+    outline-color: rgba(197, 198, 207, 0.4);
+  }
+
+  .glass-panel,
+  .glass-light,
+  .glass-heavy,
+  .glass-nav {
+    background: rgba(250, 249, 245, 0.95);
+  }
 }
 
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* A2UI 组件样式覆盖 - 让卡片更紧凑 */
+[data-a2ui-surface] {
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* A2UI 组件内部元素样式调整 */
+[data-a2ui-surface] > div {
+  max-width: 100%;
+}

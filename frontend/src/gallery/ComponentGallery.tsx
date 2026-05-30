@@ -1,87 +1,63 @@
-import { useState } from 'react'
-import { Sidebar } from './Sidebar'
-import { ComponentCard } from './ComponentCard'
-import { componentExamples } from './componentExamples'
-import { showcaseCategories } from './showcaseData'
-import { pluginGalleryExamples } from './pluginGalleryRegistry'
-import type { ComponentExample } from './showcaseData'
+import { useState, useEffect } from 'react'
+import { ComponentListView } from './ComponentListView'
+import { ComponentDetail } from './ComponentDetail'
 
 /**
- * A2UI 组件预览库主页面
- * 提供所有已注册组件的可视化预览
+ * A2UI 组件预览库主容器
+ * 处理 URL 参数和视图路由
  */
 export function ComponentGallery() {
+  const [selectedComponentId, setSelectedComponentId] = useState<string | null>(null)
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
 
-  // Merge static examples with dynamically registered plugin examples
-  const allExamples: ComponentExample[] = [
-    ...componentExamples,
-    ...pluginGalleryExamples,
-  ]
+  // 初始化：从 URL 读取参数
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search)
+    const componentId = urlParams.get('component')
+    setSelectedComponentId(componentId)
+  }, [])
 
-  // 根据选中的分类过滤组件示例
-  const filteredExamples = selectedCategory
-    ? allExamples.filter(ex => ex.category.id === selectedCategory)
-    : allExamples
+  // 监听浏览器前进/后退
+  useEffect(() => {
+    const handlePopState = () => {
+      const urlParams = new URLSearchParams(window.location.search)
+      setSelectedComponentId(urlParams.get('component'))
+    }
+
+    window.addEventListener('popstate', handlePopState)
+    return () => window.removeEventListener('popstate', handlePopState)
+  }, [])
+
+  // 导航到详情页
+  const navigateToDetail = (componentId: string) => {
+    const newUrl = `${window.location.pathname}?gallery=1&component=${componentId}`
+    window.history.pushState({}, '', newUrl)
+    setSelectedComponentId(componentId)
+  }
+
+  // 返回列表
+  const navigateToList = () => {
+    const newUrl = `${window.location.pathname}?gallery=1`
+    window.history.pushState({}, '', newUrl)
+    setSelectedComponentId(null)
+  }
+
+  // 视图切换
+  if (selectedComponentId) {
+    return (
+      <ComponentDetail
+        componentId={selectedComponentId}
+        onBack={navigateToList}
+        onNavigateToComponent={navigateToDetail}
+      />
+    )
+  }
 
   return (
-    <div className="h-screen overflow-hidden bg-surface text-on-surface flex flex-col">
-      {/* 顶部栏 */}
-      <header className="px-8 py-4 flex items-center justify-between border-b border-outline-variant/15 bg-surface">
-        <div className="flex items-center gap-4">
-          <h1 className="font-serif text-2xl text-primary">A2UI 组件预览库</h1>
-          <span className="text-xs text-on-surface/50 bg-surface-container-low px-2 py-1 rounded-md">
-            开发模式
-          </span>
-        </div>
-        <a
-          href="/"
-          className="text-sm text-secondary hover:underline font-sans transition-colors"
-        >
-          返回主界面 →
-        </a>
-      </header>
-
-      {/* 主布局 */}
-      <div className="flex flex-1 overflow-hidden">
-        {/* 侧边栏 */}
-        <Sidebar
-          categories={showcaseCategories}
-          selectedCategory={selectedCategory}
-          onSelectCategory={setSelectedCategory}
-        />
-
-        {/* 组件网格 */}
-        <main className="flex-1 overflow-y-auto p-8">
-          <div className="max-w-6xl mx-auto">
-            {/* 当前分类标题 */}
-            <div className="mb-6">
-              <h2 className="font-serif text-xl text-primary">
-                {selectedCategory
-                  ? showcaseCategories.find((c) => c.id === selectedCategory)?.name
-                  : '全部组件'}
-              </h2>
-              <p className="text-sm text-on-surface/60 font-sans mt-1">
-                共 {filteredExamples.length} 个示例
-              </p>
-            </div>
-
-            {/* 组件网格 */}
-            {filteredExamples.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredExamples.map(example => (
-                  <ComponentCard key={example.id} example={example} />
-                ))}
-              </div>
-            ) : (
-              <div className="text-center py-16 text-on-surface/50">
-                <p className="font-serif text-lg">该分类暂无组件示例</p>
-                <p className="text-sm mt-2">请选择其他分类或等待后续更新</p>
-              </div>
-            )}
-          </div>
-        </main>
-      </div>
-    </div>
+    <ComponentListView
+      selectedCategory={selectedCategory}
+      onSelectCategory={setSelectedCategory}
+      onSelectComponent={navigateToDetail}
+    />
   )
 }

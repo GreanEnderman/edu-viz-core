@@ -4,6 +4,7 @@ import { resolve } from 'node:path'
 const SHARED_RUNTIME_EXTERNALS = [
   'react',
   'react-dom',
+  'react-dom/client',
   '@a2ui/react',
   'react/jsx-runtime',
 ]

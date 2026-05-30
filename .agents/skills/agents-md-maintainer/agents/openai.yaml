@@ -1,0 +1,4 @@
+interface:
+  display_name: "AGENTS.md Maintainer"
+  short_description: "Create and update project AGENTS.md guidance."
+  default_prompt: "Create or update AGENTS.md for this project based on the current repository state and conventions."

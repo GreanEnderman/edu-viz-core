@@ -1,19 +1,23 @@
-import { useState, useRef, useEffect } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type { InputMode } from '../../constants/inputModes'
 import { inputModes } from '../../constants/inputModes'
 
 interface InputModeSelectorProps {
   mode: InputMode
   onModeChange: (mode: InputMode) => void
+  compact?: boolean
 }
 
-export function InputModeSelector({ mode, onModeChange }: InputModeSelectorProps) {
+export function InputModeSelector({
+  mode,
+  onModeChange,
+  compact = false,
+}: InputModeSelectorProps) {
   const [isOpen, setIsOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
 
   const currentMode = inputModes.find((m) => m.id === mode) || inputModes[0]
 
-  // 点击外部关闭下拉菜单
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -37,26 +41,32 @@ export function InputModeSelector({ mode, onModeChange }: InputModeSelectorProps
 
   return (
     <div ref={dropdownRef} className="relative">
-      {/* 当前模式按钮 */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-1.5 pl-5 pr-4 py-3 cursor-pointer hover:bg-black/5 rounded-l-full transition-colors border-r border-outline-variant/10"
+        className={
+          compact
+            ? 'inline-flex items-center gap-1.5 rounded-full bg-white/92 px-4 py-2 text-xs shadow-[0px_10px_24px_rgba(27,28,26,0.08)] ring-1 ring-outline-variant/10 backdrop-blur-xl transition-all duration-300 hover:-translate-y-0.5 hover:bg-white'
+            : 'flex cursor-pointer items-center gap-1.5 rounded-l-full border-r border-outline-variant/10 pl-5 pr-4 py-3 transition-colors hover:bg-black/5'
+        }
       >
-        <span className="text-[10px] font-bold text-outline-variant tracking-widest uppercase">
+        <span
+          className={`text-[10px] font-bold uppercase tracking-widest ${
+            compact ? 'text-outline' : 'text-outline-variant'
+          }`}
+        >
           {currentMode.label}
         </span>
         <span
-          className={`material-symbols-outlined text-outline-variant text-[18px] transition-transform ${
-            isOpen ? 'rotate-180' : ''
-          }`}
+          className={`material-symbols-outlined text-[18px] transition-transform ${
+            compact ? 'text-outline' : 'text-outline-variant'
+          } ${isOpen ? 'rotate-180' : ''}`}
         >
           expand_more
         </span>
       </button>
 
-      {/* 下拉菜单 - 向上展开 */}
       {isOpen && (
-        <div className="absolute bottom-full left-0 mb-2 bg-white rounded-xl shadow-lg border border-outline-variant/10 py-2 z-50 min-w-[120px]">
+        <div className="absolute bottom-full left-0 z-50 mb-2 min-w-[120px] rounded-lg border border-outline-variant/10 bg-white py-2 shadow-lg">
           {inputModes.map((m) => (
             <button
               key={m.id}

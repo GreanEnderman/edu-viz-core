@@ -4,12 +4,12 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
-from backend.app.core.config import settings
-from backend.app.db import init_db
-from backend.app.plugins_manager.loader import load_plugins
-from backend.app.plugins_manager.registry import PluginRegistry
-from backend.app.routers import chat, conversations
-from backend.app.routers import plugins as plugins_router
+from .core.config import settings
+from .db import init_db, get_db
+from .plugins_manager.loader import load_plugins
+from .plugins_manager.registry import PluginRegistry
+from .routers import chat, conversations, pbl
+from .routers import plugins as plugins_router
 
 
 @asynccontextmanager
@@ -19,7 +19,6 @@ async def lifespan(app: FastAPI):
     PluginRegistry.get_instance().load_all(plugins)
     yield
     # cleanup: close db connection
-    from backend.app.db import get_db
     db = get_db()
     await db.close()
 
@@ -37,6 +36,7 @@ app.add_middleware(
 app.include_router(chat.router, prefix="/api/v1")
 app.include_router(conversations.router, prefix="/api/v1")
 app.include_router(plugins_router.router, prefix="/api/v1")
+app.include_router(pbl.router, prefix="/api/v1")
 
 import os
 if os.path.exists(settings.PLUGINS_DIR):

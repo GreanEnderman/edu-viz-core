@@ -6,8 +6,8 @@ import importlib.util
 import sys
 from pathlib import Path
 
-from backend.app.db import get_db
-from backend.app.plugins_manager.registry import PluginRegistry
+from ..db import get_db
+from ..plugins_manager.registry import PluginRegistry
 
 router = APIRouter()
 

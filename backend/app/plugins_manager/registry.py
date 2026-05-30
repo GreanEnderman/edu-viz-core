@@ -1,6 +1,6 @@
 from typing import Any
 
-from backend.app.models.plugin import PluginManifest
+from ..models.plugin import PluginManifest
 
 
 class PluginRegistry:

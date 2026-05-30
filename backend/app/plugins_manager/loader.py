@@ -4,7 +4,7 @@ from pathlib import Path
 
 from pydantic import ValidationError
 
-from backend.app.models.plugin import PluginManifest
+from ..models.plugin import PluginManifest
 
 logger = logging.getLogger(__name__)
 

@@ -49,7 +49,7 @@ export function useTypewriter(
   isStreaming: boolean,
   options: UseTypewriterOptions = {},
 ) {
-  const { charDelay = 45, minCharDelay = 5 } = options
+  const { charDelay = 80, minCharDelay = 15 } = options
   const indexRef = useRef(0)
   const [displayedIndex, setDisplayedIndex] = useState(0)
   const rafIdRef = useRef(0)
